@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+set -euf -o pipefail
+
+echo "**** Upgrading from Mac App Store ****"
+mas upgrade
+
+echo "\n\n**** Updating Homebrew ****"
+brew update
+
+echo "\n\n**** Updating Homebrew brews ****"
+brew upgrade
+
+echo "\n\n**** Updating Homebrew Casks ****"
+brew cask upgrade
+
+echo "\n\n**** Removing outdated brews ****"
+brew cleanup
+
+echo "\n\n**** Verifying Homebrew integrity ****"
+brew doctor
+
+echo "\n\n**** Applications to update manually ****"
+brew cask list | xargs brew cask info | grep auto
+echo "adobe-creative-cloud (apps)"
+echo "sophos-home (definitions)"
+echo "sqldeveloper"
+echo "steam (games)"
+echo "wipr (definitions)"
+
+HOMEDIRCOUNT=`ls /Users/patrick | wc -l`
+DESKTOPCOUNT=`ls /Users/patrick/Desktop | wc -l`
+DOWNLOADSCOUNT=`ls /Users/patrick/Downloads | wc -l`
+
+if [ $HOMEDIRCOUNT -gt 12 ]; then
+  echo "\nHome directory is not empty, contains $HOMEDIRCOUNT files"
+fi
+
+if [ $DESKTOPCOUNT -gt 0 ]; then
+  echo "\nDesktop is not empty, contains $DESKTOPCOUNT files"
+fi
+
+if [ $DOWNLOADSCOUNT -gt 0 ]; then
+  echo "\nDownloads is not empty, contains $DOWNLOADSCOUNT files"
+fi

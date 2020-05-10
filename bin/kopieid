@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euf -o pipefail
+
+echo "Name of organisation?"
+read ORG
+echo "For what purpose can this organisation use this document?"
+read PURPOSE
+
+TODAY=`date +'%Y-%m-%d'`
+
+convert $1 \
+\( -background none -pointsize 48 -fill "rgba(10,20,30,0.30)" label:"Copy for $ORG\nPurpose: $PURPOSE\nDate: $TODAY" -font Skia -rotate 20 -write mpr:tile +delete \) \
+\( +clone -tile mpr:tile -draw "color 0,0 reset" \) \
+-compose over -composite -strip -interlace Plane -gaussian-blur 0.05 -quality 70% $1.watermarked.jpg
