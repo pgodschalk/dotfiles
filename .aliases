@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+# Shortcuts
+alias cdmackup="cd /Users/patrick/Library/Mobile\ Documents/com~apple~CloudDocs/.config/mackup"
+alias g="git"
+
+# Use exa as ls
+alias ls="exa --classify --git --icons"
+alias la="ll"
+alias l="ls -1"
+
+# Use exa as tree
+alias tree="exa --tree --git --icons"
+
+# Use tldr as man
+alias man="tldr"
+
+# Get week number
+alias week='date +%V'
+
+# IP addresses
+alias ip="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com -4 && dig TXT +short o-o.myaddr.l.google.com @ns1.google.com -6"
+alias localip="ipconfig getifaddr en0"
+
+# Show active network interfaces
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+
+# macOS has no `md5sum`, so use `md5` as a fallback
+command -v md5sum > /dev/null || alias md5sum="md5"
+
+# macOS has no `sha1sum`, so use `shasum` as a fallback
+command -v sha1sum > /dev/null || alias sha1sum="shasum"
+
+# Trim new lines and copy to clipboard
+alias c="tr -d '\n' | it2copy"
+
+# Recursively delete `.DS_Store` files
+alias rmds="find . -type f -name '*.DS_Store' -ls -delete"
+
+# Empty the Trash on all mounted volumes and the main HDD.
+# Also, clear Apple’s System Logs to improve shell startup speed.
+# Finally, clear download history from quarantine.
+alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
+
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+
+# Merge PDF files, preserving hyperlinks
+# Usage: `mergepdf input{1,2,3}.pdf`
+alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.pdf'
+
+# http://xkcd.com/530/
+alias stfu="osascript -e 'set volume output muted true'"
+alias pumpitup="osascript -e 'set volume output volume 100'"
+
+# Lock the screen (when going AFK)
+alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+
+# Reload the shell (i.e. invoke as a login shell)
+alias reload="exec ${SHELL} -l"
+
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'

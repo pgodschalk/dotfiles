@@ -1,0 +1,149 @@
+[user]
+  name = Patrick Godschalk
+  email = patrick@kernelpanics.nl
+  signingKey = 476551454A68C913016BD6CA1F4620F5540CF3C6
+[core]
+  editor = nano
+  excludesfile = /Users/patrick/.gitignore_global
+  pager = diff-so-fancy | less --tabs=4 -RFX
+[alias]
+  aa = add --all
+  amend = commit --amend --reuse-message=HEAD
+  ci = commit --verbose
+  co = checkout
+  dc = diff --find-copies-harder --cached
+  dh1 = diff HEAD~1
+  di = diff --find-copies-harder
+  ds = diff --stat=160,120
+  fa = fetch --all
+  ff = merge --ff-only
+  noff = merge --no-ff
+  pom = push origin master
+  st = status
+
+  # Divergence (commits we added and commits remote added)
+  div = divergence
+
+  # Goodness (summary of diff lines added/removed/total)
+  gn = goodness
+  gnc = goodness --cached
+
+  # Fancy logging.
+  #   h = head
+  #   hp = head with patch
+  #   r = recent commits, only current branch
+  #   ra = recent commits, all reachable refs
+  #   l = all commits, only current branch
+  #   la = all commits, all reachable refs
+  #   b = all branches
+  #   bs = all branches, sorted by last commit date
+  b = "!. /Users/patrick/Code/bin/githelpers && pretty_git_branch"
+  bs = "!. /Users/patrick/Code/bin/githelpers && pretty_git_branch_sorted"
+  cp = cherry-pick
+  h = !git head
+  head = !git r -1
+  hp = "!. /Users/patrick/Code/bin/githelpers && show_git_head"
+  l = "!. /Users/patrick/Code/bin/githelpers && pretty_git_log"
+  la = !git l --all
+  pf = push --force-with-lease
+  r = !GIT_NO_PAGER=1 git l -30
+  ra = !git r --all
+  ski = !git stash --keep-index
+
+  # Clone a repository including all submodules
+  c = clone --recursive
+
+  # Commit all changes
+  ca = !git add -A && git commit -av
+
+  # List contributors with number of commits
+  contributors = shortlog --summary --numbered
+
+  # Credit an author on the latest commit
+  credit = "!f() { git commit --amend --author \"$1 <$2>\" -C HEAD; }; f"
+
+  # Remove branches that have already been merged with master
+  # a.k.a. ‘delete merged’
+  dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+  # Find branches containing commit
+  fb = "!f() { git branch -a --contains $1; }; f"
+
+  # Find commits by source code
+  fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+
+  # Find tags containing commit
+  ft = "!f() { git describe --always --contains $1; }; f"
+
+  # Find commits by commit message
+  fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+  # Switch to a branch, creating it if necessary
+  go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
+
+  # Interactive rebase with the given number of latest commits
+  reb = "!r() { git rebase -i HEAD~$1; }; r"
+
+  # Remove the old tag with this name and tag the latest commit with it.
+  retag = "!r() { git tag -d $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
+
+  # View the current working tree status using the short format
+  s = status -s
+
+  # Pull in remote changes for the current repository and all its submodules
+  p = pull --recurse-submodules
+
+  # Show verbose output about tags, branches or remotes
+  tags = tag -l
+  branches = branch -a
+  remotes = remote -v
+[apply]
+  # Detect whitespace errors when applying a patch
+  whitespace = fix
+[color]
+  ui = auto
+[commit]
+  # https://help.github.com/articles/signing-commits-using-gpg/
+  gpgSign = true
+[diff "bin"]
+  # Use `hexdump` to diff binary files
+  textconv = hexdump -v -C
+[diff-so-fancy]
+  stripLeadingSymbols = false
+  markEmptyLines = false
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  required = true
+  process = git-lfs filter-process
+[merge]
+  # Include summaries of merged commits in newly created merge commit messages
+  log = true
+[push]
+  # https://git-scm.com/docs/git-config#git-config-pushdefault
+  default = simple
+  # Make `git push` push relevant annotated tags when pushing branches out.
+  followTags = true
+[tag]
+  forceSignAnnotated = true
+
+# URL shorthands
+
+[url "git@github.com:"]
+  insteadOf = "gh:"
+  pushInsteadOf = "github:"
+  pushInsteadOf = "https://github.com/"
+[url "https://github.com/"]
+  insteadOf = "github:"
+[url "git@gist.github.com:"]
+  insteadOf = "gst:"
+  pushInsteadOf = "gist:"
+  pushInsteadOf = "https://gist.github.com/"
+[url "https://gist.github.com/"]
+  insteadOf = "gist:"
+[url "git@gitlab.com:"]
+  insteadOf = "gl:"
+  pushInsteadOf = "gitlab:"
+  pushInsteadOf = "https://gitlab.com/"
+[url "https://gitlab.com/"]
+  insteadOf = "gitlab:"

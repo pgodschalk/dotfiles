@@ -1,0 +1,5 @@
+{
+    "Alt-/": "lua:comment.comment",
+    "CtrlX": "Quit",
+    "CtrlW": "Find"
+}
