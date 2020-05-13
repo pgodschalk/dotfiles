@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+# Some people insist on scanned wet signature pdf's...
+function bureaucracy() {
+convert \
+  -density 150 \
+  $1 \
+  -colorspace gray \
+  -linear-stretch 3.5%x10% \
+  -blur 0x0.5 \
+  -attenuate 0.25 \
+  +noise Gaussian \
+  -rotate 0.5 \
+  -depth 2 \
+  "$1"-SCANNED.pdf
+}
+
 # Change working directory to the top-most Finder window location
 function cdf() { # short for `cdfinder`
   cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
