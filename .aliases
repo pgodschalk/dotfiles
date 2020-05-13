@@ -2,6 +2,7 @@
 
 # Shortcuts
 alias cdmackup="cd /Users/patrick/Library/Mobile\ Documents/com~apple~CloudDocs/.config/mackup"
+alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222"
 alias g="git"
 
 # Use exa as ls
