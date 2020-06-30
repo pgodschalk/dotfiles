@@ -25,5 +25,5 @@ export GPG_TTY=$(tty);
 export HOMEBREW_CASK_OPTS="--require-sha";
 export HOMEBREW_NO_INSECURE_REDIRECTS=1;
 export SSH_KEY_PATH="~/.ssh/id_ed25519";
-export PATH=/Users/patrick/Code/bin:/Users/patrick/.composer/vendor/bin:$PATH;
+export PATH=$HOME/Code/bin:$HOME/.composer/vendor/bin:$PATH;
 export BAT_THEME="Solarized (light)"

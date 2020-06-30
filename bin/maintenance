@@ -27,9 +27,9 @@ echo "sqldeveloper"
 echo "steam (games)"
 echo "wipr (definitions)"
 
-HOMEDIRCOUNT=`ls /Users/patrick | wc -l`
-DESKTOPCOUNT=`ls /Users/patrick/Desktop | wc -l`
-DOWNLOADSCOUNT=`ls /Users/patrick/Downloads | wc -l`
+HOMEDIRCOUNT=`ls $HOME | wc -l`
+DESKTOPCOUNT=`ls $HOME/Desktop | wc -l`
+DOWNLOADSCOUNT=`ls $HOME/Downloads | wc -l`
 
 if [ $HOMEDIRCOUNT -gt 12 ]; then
   echo "\nHome directory is not empty, contains $HOMEDIRCOUNT files"

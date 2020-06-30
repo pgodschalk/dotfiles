@@ -5,7 +5,7 @@ HOUR=$(date +%H) # no leading zero
 DOW=$(date +%u) # 1=monday, 7=sunday
 MONTH=$(date +%b) # three letter format
 DAY=$(date +%d) # includes leading zero
-VRIJ="/Users/patrick/.ikbenvrij" # if this file exists I'm on vacation
+VRIJ="$HOME/.ikbenvrij" # if this file exists I'm on vacation
 
 # Before 09:00
 if [ "$HOUR" -lt "9" ]; then
