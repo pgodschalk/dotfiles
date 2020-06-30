@@ -22,6 +22,6 @@ if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 
-source $HOME/patrick/.aliases
-source $HOME/patrick/.exports
-source $HOME/patrick/.functions
+source $HOME/.aliases
+source $HOME/.exports
+source $HOME/.functions
