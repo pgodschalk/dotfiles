@@ -1,1 +1,8 @@
-include /Users/patrick/Code/build/scopatz/nanorc/*.nanorc
+include ~/Code/build/scopatz/nanorc/*.nanorc
+
+set autoindent
+set historylog
+set nohelp
+set smarthome
+set tabsize 2
+set tabstospaces

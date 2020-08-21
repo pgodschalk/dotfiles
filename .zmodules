@@ -1,0 +1,228 @@
+# When you try to use a command that is not available locally, searches the
+# package manager for a package offering that command and suggests the proper
+# install command.
+#
+# Debian and Arch Linux based distributions use the command-not-found tool.
+#
+# macOS uses Homebrew's command-not-found clone. Note that you also need to
+# follow the instructions to tap the command-not-found homebrew repository.
+
+if [[ $DISTRO == "macos" ]]; then
+  if brew tap | grep -q homebrew/command-not-found; then
+    #pmodload command-not-found
+  fi
+elif [[ $DISTRO == "debian" ]]; then
+  if dpkg -s command-not-found | grep -q installed; then
+    pmodload command-not-found
+  fi
+fi
+# TODO: Arch
+
+if command -v dnf &> /dev/null; then
+  # Defines dnf aliases.
+  pmodload dnf
+fi
+
+if command -v docker &> /dev/null; then
+  # Defines Docker aliases and functions.
+  #pmodload docker
+fi
+
+if command -v dpkg &> /dev/null; then
+  # Defines dpkg aliases and functions.
+  pmodload dpkg
+fi
+
+if command -v carton &> /dev/null; then
+  # Enables Emacs dependency management.
+  pmodload emacs
+fi
+
+if command -v fasd &> /dev/null; then
+  # Fasd is a command-line productivity booster, inspired by tools like
+  # autojump, z and v, it offers quick access to files and directories by
+  # keeping track of files and directories that were previously accessed.
+  #
+  # For completion to work, this module must be loaded after the completion
+  # module.
+
+  # The Prezto Fasd configuration differs from the default. The default aliases
+  # have been disabled.
+  pmodload fasd
+fi
+
+if command -v git &> /dev/null; then
+  # Enhances the Git distributed version control system by providing aliases,
+  # functions and by exposing repository status information to prompts.
+  #
+  # Git 1.7.2 is the minimum required version.
+  pmodload git
+fi
+
+if command -v gpg &> /dev/null; then
+  # Provides for an easier use of GPG by setting up gpg-agent.
+  pmodload gpg
+fi
+
+if command -v cabal &> /dev/null; then
+  # Enables local Haskell package installation.
+  pmodload haskell
+fi
+
+# Provides helper functions for developing modules.
+#pmodload helper
+
+# Defines Homebrew specific environment variables and aliases.
+if command -v brew &> /dev/null; then
+  pmodload homebrew
+fi
+
+# Defines MacPorts aliases and adds MacPorts directories to path variables.
+if command -v port &> /dev/null; then
+  pmodload port
+fi
+
+# Provides utility functions for Node.js, loads the Node Version Manager, and
+# enables npm completion.
+if command -v node &> /dev/null; then
+  pmodload node
+elif command -v nodejs &> /dev/null; then
+  pmodload node
+fi
+
+if command -v opam &> /dev/null; then
+  # Initializes OCaml package management.
+  pmodload opam
+fi
+
+if [[ $DISTRO == "macos" ]]; then
+  # Defines macOS aliases and functions.
+  pmodload osx
+fi
+
+if command -v pacman &> /dev/null; then
+  # Provides aliases and functions for the Pacman package manager and
+  # frontends.
+  pmodload pacman
+fi
+
+if command -v perl &> /dev/null; then
+  # Enables local Perl module installation on macOS and defines aliases.
+  pmodload perl
+fi
+
+if command -v python &> /dev/null; then
+  # Enables local Python and local Python package installation.
+  pmodload python
+elif command -v python3 &> /dev/null; then
+  pmodload python
+fi
+
+if command -v rails &> /dev/null; then
+  # Defines Ruby on Rails aliases.
+  pmodload rails
+fi
+
+if command -v rsync &> /dev/null; then
+  # Defines rsync aliases.
+  #
+  # macOS users are encouraged to use Bombich's rsync, which has HFS+
+  # enhancements.
+  pmodload rsync
+fi
+
+if command -v ruby &> /dev/null; then
+  # Configures Ruby local gem installation, loads version managers, and defines
+  # aliases.
+  pmodload ruby
+fi
+
+if command -v screen &> /dev/null; then
+  # Defines GNU Screen aliases and provides for auto launching it at start-up.
+  pmodload screen
+fi
+
+if command -v ssh &> /dev/null; then
+  # Provides for an easier use of SSH by setting up ssh-agent.
+  pmodload ssh
+fi
+
+if command -v tmux &> /dev/null; then
+  # Defines tmux aliases and provides for auto launching it at start-up.
+  pmodload tmux
+fi
+
+if command -v yum &> /dev/null; then
+  # Defines yum aliases.
+  pmodload yum
+fi
+
+# Integrates zsh clipboard with system clipboard.
+#
+# On OSX, uses pbcopy and pbpaste. On cygwin, uses /dev/clipboard. On linux,
+# requires either xclip or xsel be installed.
+if [[ $DISTRO == "macos" ]]; then
+  pmodload clipboard
+elif [[ $OSTYPE == "linux-gnu"* ]]; then
+  if command -v xclip; then
+    pmodload clipboerd
+  elif command -v xsel; then
+    pmodload clipboard
+  fi
+fi
+
+if command -v mix &> /dev/null; then
+  # Defines Elixir aliases.
+  pmodload elixir
+fi
+
+# FIXME:
+#if cd --help | grep -q ghq; then
+  # Integrates enhancd into Prezto, which implements a next-generation cd
+  # command with an interactive filter. enhancd will memorize all directories
+  # visited by a user and use it for the pathname resolution.
+  #pmodload enhancd
+#fi
+
+if command -v gcloud &> /dev/null; then
+  # [gcloud][1] enables autocompletion for gcloud command..
+  pmodload gcloud
+fi
+
+if command -v kubectl &> /dev/null; then
+  # Enhances Kubernetes command line integration by providing aliases,
+  # functions and by exposing repository status information to prompts.
+  pmodload kubernetes
+fi
+
+if command -v nvm &> /dev/null; then
+  # This module integrates nvm auto use shell integration into Prezto. It will
+  # automatically call nvm use in a directory with a .nvmrc file. This recipe
+  # is not supported by the nvm development team, but they are accepting pull
+  # requests for more examples.
+  #
+  # This module must be loaded after the node module.
+  pmodload nvm-auto-use
+fi
+
+if command -v mix &> /dev/null; then
+  # Defines Elixir Phoenix aliases.
+  pmodload phoenix
+fi
+
+if command -v thefuck &> /dev/null; then
+  # Correct miss typed commands by using thefuck tool.
+  #
+  # Bind ESC-ESC to display corrected command.
+  pmodload thefuck
+fi
+
+if command -v xpanes &> /dev/null; then
+  # tmux-xpanes is a tmux plugin that eases creating multiple tmux panels.
+  pmodload tmux-xpanes
+fi
+
+if command -v zypper &> /dev/null; then
+  # Defines zypper aliases.
+  pmodload zypper
+fi

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euf -o pipefail
+set -uf -o pipefail
 
 echo "**** Upgrading from Mac App Store ****"
 mas upgrade
@@ -19,19 +19,22 @@ brew cleanup
 echo "\n\n**** Verifying Homebrew integrity ****"
 brew doctor
 
+npm -g update
+pecl upgrade-all
+composer global update
+
 echo "\n\n**** Applications to update manually ****"
 brew cask list | xargs brew cask info | grep auto
 echo "adobe-creative-cloud (apps)"
-echo "sophos-home (definitions)"
-echo "sqldeveloper"
 echo "steam (games)"
 echo "wipr (definitions)"
+echo "zprezto-update"
 
 HOMEDIRCOUNT=`ls $HOME | wc -l`
 DESKTOPCOUNT=`ls $HOME/Desktop | wc -l`
 DOWNLOADSCOUNT=`ls $HOME/Downloads | wc -l`
 
-if [ $HOMEDIRCOUNT -gt 12 ]; then
+if [ $HOMEDIRCOUNT -gt 15 ]; then
   echo "\nHome directory is not empty, contains $HOMEDIRCOUNT files"
 fi
 

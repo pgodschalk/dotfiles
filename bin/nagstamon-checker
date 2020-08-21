@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euf -o pipefail
 
+# Install this to your crontab
+
 HOUR=$(date +%H) # no leading zero
 DOW=$(date +%u) # 1=monday, 7=sunday
 MONTH=$(date +%b) # three letter format

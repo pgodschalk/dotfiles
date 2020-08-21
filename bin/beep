@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
+set -euf -o pipefail
 
-say 'beep, beep, beep'
+if [ $DISTRO == "macos"]; then
+  say 'beep, beep, beep'
+else
+  echo "Can only beep on macOS"
+  exit 1
+fi

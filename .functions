@@ -29,6 +29,30 @@ function dataurl() {
   echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')";
 }
 
+# Create a new DigitalOcean droplet for development
+function dmach() {
+  if [ -z "${1}" ]; then
+    echo "ERROR: No hostname specified.";
+    return 1;
+  fi
+
+  docker-machine create                       \
+  --driver                    digitalocean    \
+  --digitalocean-access-token $DOTOKEN        \
+  --digitalocean-image        debian-10-x64   \
+  --digitalocean-ipv6                         \
+  --digitalocean-region       ams3            \
+  --digitalocean-size         s-1vcpu-3gb     \
+  --digitalocean-ssh-key-fingerprint "34:50:d9:0b:49:74:7e:66:cb:43:ea:30:cd:07:d9:e7" \
+  --digitalocean-ssh-key-path ~/.ssh/id_ed25519 \
+  --digitalocean-ssh-user     root            \
+  $1
+}
+
+# Use docker machine
+function dmuse() {
+  eval $(docker-machine env $1)
+}
 
 # Determine size of a file or total size of a directory
 function fs() {
@@ -162,3 +186,4 @@ function targz() {
 
   echo "${tmpFile}.gz ($((zippedSize / 1000)) kB) created successfully.";
 }
+

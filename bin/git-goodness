@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 set -euf -o pipefail
 
-git diff $* | gn
+if command -v git 2>/dev/null; then
+  git diff $* | gn
+else
+  echo "Git is not installed..."
+  exit 1
+fi

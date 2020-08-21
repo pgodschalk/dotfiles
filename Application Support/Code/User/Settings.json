@@ -1,28 +1,63 @@
 {
-  "editor.acceptSuggestionOnEnter": "off",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Commonly Used
+  "editor.fontSize": 14,
   "editor.fontFamily": "'Fira Code', Consolas, Menlo, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, sans-serif",
-  "editor.fontLigatures": true,
-  "editor.rulers": [
-    80,
-    120
-  ],
   "editor.tabSize": 2,
-  "window.autoDetectColorScheme": true,
-  "workbench.colorTheme": "Solarized Light",
-  "workbench.editor.restoreViewState": false,
-  "workbench.editor.tabCloseButton": "left",
-  "workbench.fontAliasing": "auto",
-  "workbench.preferredDarkColorTheme": "Solarized Dark",
-  "workbench.preferredLightColorTheme": "Solarized Light",
-  "window.closeWhenEmpty": true,
-  "window.restoreFullscreen": true,
-  "window.restoreWindows": "none",
-  "window.zoomLevel": -1,
+
+  // Text Editor
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.rulers": [80, 120],
+
+  // Text Editor -> Font
+  "editor.fontLigatures": true,
+
+  // Text Editor -> Formatting
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+
+  // Text Editor -> Minimap
+  "editor.minimap.enabled": false,
+
+  // Text Editor -> Suggestions
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.suggestSelection": "first",
+
+  // Text Editor -> Files
   "files.hotExit": "off",
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
+
+  // Workbench -> Appearance
+  "workbench.colorTheme": "Solarized Light",
+  "workbench.preferredDarkColorTheme": "Solarized Dark",
+  "workbench.preferredLightColorTheme": "Solarized Light",
+  "workbench.fontAliasing": "auto",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.sideBar.location": "right",
+
+  // Workbench -> Breadcrumbs
+  "breadcrumbs.enabled": true,
+
+  // Workbench -> Editor Management
+  "workbench.editor.restoreViewState": false,
+  "workbench.editor.tabCloseButton": "left",
+
+  // Workbench -> Settings Editor
+  "workbench.settings.editor": "json",
+
+  // Window
+  "window.autoDetectColorScheme": true,
+  "window.closeWhenEmpty": true,
+  "window.restoreFullscreen": true,
+  "window.restoreWindows": "none",
+  "window.zoomLevel": 0,
+
+  // Features -> Explorer
+  "explorer.openEditors.visible": 0,
+
+  // Features -> Search
   "search.exclude": {
     "**/node_modules": true,
     "**/bower_components": true,
@@ -31,8 +66,26 @@
     "**/doc": true,
     "**/vendors": true
   },
-  "html.format.endWithNewline": true,
-  "html.format.indentInnerHtml": true,
+
+  // Features -> Terminal
+  "terminal.external.osxExec": "/Applications/iTerm2.app",
+  "terminal.external.windowsExec": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe",
+  "terminal.integrated.shell.windows": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe",
+
+  // Features -> Problems
+  "problems.autoReveal": false,
+
+  // Features -> Telemetry
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
+
+  // Extensions -> Bracket Pair Colorizer 2
+  "bracket-pair-colorizer-2.colors": ["#dc322f", "#268bd2", "#859900"],
+
+  // Extensions -> Composer Dependency Manager for PHP Configuration
+  "officeManifestUploader.userName": "patrick@kernelpanics.nl",
+
+  // Extensions -> CSS
   "css.lint.boxModel": "warning",
   "css.lint.duplicateProperties": "warning",
   "css.lint.ieHack": "warning",
@@ -41,40 +94,79 @@
   "css.lint.universalSelector": "warning",
   "css.lint.unknownVendorSpecificProperties": "warning",
   "css.lint.zeroUnits": "warning",
-  "php.suggest.basic": false,
-  "less.validate": false,
-  "scss.validate": false,
-  "terminal.external.osxExec": "/Applications/iTerm2.app",
-  "terminal.external.windowsExec": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe",
-  "terminal.integrated.shell.windows": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe",
-  "problems.autoReveal": false,
-  "telemetry.enableCrashReporter": false,
-  "telemetry.enableTelemetry": false,
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
+
+  // Extensions -> Firefox debug
+  "firefox.executable": "/Applications/Firefox Developer Edition.app",
+
+  // Extensions -> Git
+  "git.autofetch": true,
   "git.enableCommitSigning": true,
   "git.suggestSmartCommit": false,
+
+  // Extensions -> GitLens - Use 'GitLens: Open Settings' for a richer,
+  //                         interactive experience
+  "gitlens.advanced.telemetry.enabled": false,
+
+  // Extensions -> HTML
+  "html.format.endWithNewline": true,
+  "html.format.indentInnerHtml": true,
+
+  // Extensions -> IntelliSense for CSS class names in HTML
+  "html-css-class-completion.includeGlobPattern": "**/*.{css,html,scss}",
+
+  // Extensions -> LESS
+  "less.validate": false,
+
+  // Extensions -> Npm
+  "npm.enableScriptExplorer": true,
+
+  // Extensions -> npm-intellisense
+  "npm-intellisense.importQuotes": "'",
+
+  // Extensions -> Oracle Developer Tools for VS Code Configuration
+  "oracleDeveloperTools.networkConfiguration.configFilesLocation": "/Users/patrick/Oracle/network/admin",
+  "oracleDeveloperTools.networkConfiguration.walletFileLocation": "/Users/patrick/Oracle/network/admin",
+
+  // Extensions -> Peacock
+  "peacock.affectActivityBar": false,
+
+  // Extensions -> PHP
+  "php.suggest.basic": false,
+
+  // Extensions -> Prettier
+  "prettier.packageManager": "yarn",
+
+  // Extensions -> Project Manager
   "projectManager.git.baseFolders": [
     "/Users/patrick/Code/for/me",
     "/Users/patrick/Code/for/all",
-    "/Users/patrick/Code/for/mozard",
+    "/Users/patrick/Code/for/mozard"
   ],
-  "npm-intellisense.importQuotes": "\"",
-  "gitlens.advanced.telemetry.enabled": false,
-  "prettier.packageManager": "yarn",
-  "gitlab.showIssueLinkOnStatusBar": false,
-  "gitlab.showProjectMergeRequests": false,
-  "firefox.executable": "/Applications/Firefox Developer Edition.app",
+
+  // Extensions -> Remote - SSH
+  "remote.SSH.path": "/usr/local/bin/ssh",
+
+  // Extensions -> SCSS
+  "scss.validate": false,
+
+  // Extensions -> stylelint
+  "stylelint.packageManager": "yarn",
+
+  // Extensions -> Todo Tree
   "todo-tree.filtering.ignoreGitSubmodules": true,
   "todo-tree.tree.showScanModeButton": false,
-  "officeManifestUploader.userName": "patrick@kernelpanics.nl",
-  "python.jediEnabled": false,
-  "remote.SSH.path": "/usr/local/bin/ssh",
+
+  // Extensions -> Visual Studio IntelliCode
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+
+  // Extensions -> Visual Studio Live Share configuration
   "liveshare.account": "patrick@kernelpanics.nl",
-  "stylelint.packageManager": "yarn",
-  "plsql-language.pldoc.author": "Patrick Godschalk",
-  "html-css-class-completion.includeGlobPattern": "**/*.{css,html,scss}",
-  "oracleDeveloperTools.networkConfiguration.configFilesLocation": "/Users/patrick/Oracle/network/admin",
-  "oracleDeveloperTools.networkConfiguration.walletFileLocation": "/Users/patrick/Oracle/network/admin"
+
+  // JavaScript
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // The following are unsorted
+  "docker.certPath": "/Users/patrick/.docker/machine/machines/pgo.mozard.nl"
 }

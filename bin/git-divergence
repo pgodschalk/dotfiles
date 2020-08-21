@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euf -o pipefail
 
+if ! command -v git 2>/dev/null; then
+  echo "Git is not installed..."
+  exit 1
+fi
+
 (
   function branch() {
     git branch 2>/dev/null | grep -e '^*' | tr -d '\* '
@@ -48,7 +53,7 @@ set -euf -o pipefail
   for rev in `git rev-list $LOCAL..$REMOTE`; do
     show_rev $rev
   done
-    
+
   echo
   echo outgoing:
   echo

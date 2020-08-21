@@ -38,10 +38,12 @@ zstyle ':prezto:load' pmodule \
   'spectrum' \
   'utility' \
   'completion' \
+  'archive' \
+  'syntax-highlighting' \
+  'history-substring-search' \
+  'alias-tips' \
   'contrib-prompt' \
-  'prompt' \
-  'osx'
-
+  'prompt'
 #
 # Autosuggestions
 #

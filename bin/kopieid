@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euf -o pipefail
 
+if ! command -v convert; then
+  echo "ImageMagick is required, exiting"
+  exit 1
+fi
+
 echo "Name of organisation?"
 read ORG
 echo "For what purpose can this organisation use this document?"

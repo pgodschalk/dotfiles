@@ -4,14 +4,14 @@
   signingKey = 8F9F67665D941E44CC53FB4E18332544845E2205
 [core]
   editor = nano
-  excludesfile = /Users/patrick/.gitignore_global
+  excludesfile = ~/.gitignore_global
   pager = diff-so-fancy | less --tabs=4 -RFX
 [alias]
   aa = add --all
   amend = commit --amend --reuse-message=HEAD
   ci = commit --verbose
   co = checkout
-  dc = diff --find-copies-harder --cached
+  dc = diff-dc
   dh1 = diff HEAD~1
   di = diff --find-copies-harder
   ds = diff --stat=160,120
@@ -37,13 +37,13 @@
   #   la = all commits, all reachable refs
   #   b = all branches
   #   bs = all branches, sorted by last commit date
-  b = "!. /Users/patrick/Code/bin/githelpers && pretty_git_branch"
-  bs = "!. /Users/patrick/Code/bin/githelpers && pretty_git_branch_sorted"
+  b = "!. ~/Code/bin/githelpers && pretty_git_branch"
+  bs = "!. ~/Code/bin/githelpers && pretty_git_branch_sorted"
   cp = cherry-pick
   h = !git head
   head = !git r -1
-  hp = "!. /Users/patrick/Code/bin/githelpers && show_git_head"
-  l = "!. /Users/patrick/Code/bin/githelpers && pretty_git_log"
+  hp = "!. ~/Code/bin/githelpers && show_git_head"
+  l = "!. ~/Code/bin/githelpers && pretty_git_log"
   la = !git l --all
   pf = push --force-with-lease
   r = !GIT_NO_PAGER=1 git l -30
@@ -103,7 +103,6 @@
 [color]
   ui = auto
 [commit]
-  # https://help.github.com/articles/signing-commits-using-gpg/
   gpgSign = true
 [diff "bin"]
   # Use `hexdump` to diff binary files
@@ -124,6 +123,8 @@
   default = simple
   # Make `git push` push relevant annotated tags when pushing branches out.
   followTags = true
+[pull]
+  rebase = false
 [tag]
   forceSignAnnotated = true
 
@@ -147,3 +148,5 @@
   pushInsteadOf = "https://gitlab.com/"
 [url "https://gitlab.com/"]
   insteadOf = "gitlab:"
+[url "git@gitlab.com:MozardBV/"]
+  insteadOf = "gm"

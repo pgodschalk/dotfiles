@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euf -o pipefail
 
+if ! command -v git 2>/dev/null; then
+  echo "Git is not installed..."
+  exit 1
+fi
+
 ref=${1:-"HEAD"}
 
 old=$ref@{1}
