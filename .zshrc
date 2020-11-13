@@ -54,6 +54,9 @@ fi
 if [[ -s "${HOME}/.functions" ]]; then
   source "${HOME}/.functions"
 fi
+if [[ -s "${HOME}/.aliases_private" ]]; then
+  source "${HOME}/.aliases_private"
+fi
 
 # Session for Bitwarden CLI
 if [[ -s "${HOME}/.bwsession" ]]; then
