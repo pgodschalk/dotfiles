@@ -30,6 +30,11 @@ if command -v tldr &> /dev/null; then
   alias man="tldr"
 fi
 
+# Use dog as dig
+if command -v dog &> /dev/null; then
+  alias dig="dog"
+  fi
+
 # Get week number
 if command -v date &> /dev/null; then
   alias week='date +%V'
