@@ -6,11 +6,11 @@
 #
 
 if [[ $OSTYPE == "linux-gnu"* ]]; then
-  if grep -q "Debian" /etc/os_release; then
+  if grep -q "Debian" /etc/os-release; then
     export DISTRO="debian"
-  elif grep -q "Arch" /etc/os_release; then
+  elif grep -q "Arch" /etc/os-release; then
     export DISTRO="arch"
-  elif grep -q "rhel" /etc/os_release; then
+  elif grep -q "rhel" /etc/os-release; then
     export DISTRO="rhel"
   fi
 elif [[ $OSTYPE == "darwin"* ]]; then
