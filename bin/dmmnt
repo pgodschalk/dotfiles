@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 set -euf -o pipefail
 
-IP=`docker-machine ip $1`
-ME=`whoami`
+IP=$(docker-machine ip $1)
 ssh root@$IP mkdir -p /opt/mozard
 ssh root@$IP rm -rf   /opt/mozard/docker
 ssh root@$IP mkdir -p /opt/mozard/docker
@@ -10,7 +9,11 @@ ssh root@$IP mkdir -p /opt/mozard/src
 ssh root@$IP rm -rf   /opt/mozard/src/map100
 ssh root@$IP mkdir -p /opt/mozard/src/map100
 ssh root@$IP -R 10000:127.0.0.1:22 -Nf
-ssh root@$IP sshfs -p 10000 -o idmap=user,nonempty,allow_other $WHOAMI@127.0.0.1:$HOME/Code/for/mozard/mozard-backend/docker /opt/mozard/docker
-ssh root@$IP sshfs -p 10000 -o idmap=user,nonempty,allow_other $WHOAMI@127.0.0.1:$HOME/Code/for/mozard/mozard-backend/src/map100 /opt/mozard/src/map100
+ssh root@$IP sshfs -p 10000 -o idmap=user,nonempty,allow_other \
+    $(whoami)@127.0.0.1:$HOME/Code/for/mozard/mozard-backend/docker \
+    /opt/mozard/docker
+ssh root@$IP sshfs -p 10000 -o idmap=user,nonempty,allow_other \
+    $(whoami)@127.0.0.1:$HOME/Code/for/mozard/mozard-backend/src/map100 \
+    /opt/mozard/src/map100
 ssh root@$IP "find /opt/mozard -type d -exec chmod 755 {} \;"
 ssh root@$IP "find /opt/mozard -type f -exec chmod 644 {} \;"
