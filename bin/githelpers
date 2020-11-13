@@ -28,20 +28,28 @@ BRANCH_CONTENTS="%(contents:subject)"
 BRANCH_FORMAT="$BRANCH_PREFIX}$BRANCH_REF}$BRANCH_HASH}$BRANCH_DATE}$BRANCH_AUTHOR}$BRANCH_CONTENTS"
 
 show_git_head() {
-  pretty_git_log -1
-  git show -p --pretty="tformat:"
+  pretty_git_log --max-count=1
+  git show --patch --pretty="tformat:"
 }
 
 pretty_git_log() {
-  git log --graph --pretty="tformat:${LOG_FORMAT}" --no-show-signature $* | pretty_git_format | git_page_maybe
+  git log --graph --pretty="tformat:${LOG_FORMAT}" --no-show-signature $* \
+  | pretty_git_format \
+  | git_page_maybe
 }
 
 pretty_git_branch() {
-  git branch -v --color=always --format=${BRANCH_FORMAT} $* | pretty_git_format
+  git branch --verbose --color=always --format=${BRANCH_FORMAT} $* \
+  | pretty_git_format
 }
 
 pretty_git_branch_sorted() {
-  git branch -v --color=always --format=${BRANCH_FORMAT} --sort=-committerdate $* | pretty_git_format
+  git branch \
+      --verbose \
+      --color=always \
+      --format=${BRANCH_FORMAT} \
+      --sort=-committerdate $* \
+  | pretty_git_format
 }
 
 pretty_git_format() {
@@ -59,6 +67,6 @@ git_page_maybe() {
     cat
   else
     # Page only if needed.
-    less --quit-if-one-screen --no-init --RAW-CONTROL-CHARS --chop-long-lines
+    less --quit-if-one-screen --no-init --raw-control-chars --chop-long-lines
   fi
 }

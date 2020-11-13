@@ -30,8 +30,13 @@ set -euf -o pipefail
 # (These are all standard arguments to `git log`.)
 
 if command -v git 2>/dev/null; then
-  set -e
-  git log --all -M -C --name-only --format='format:' "$@" | sort | grep -v '^$' | uniq -c | sort -n
+  git log \
+      --all \
+      --find-renames \
+      --find-copies \
+      --name-only \
+      --format='format:' "$@" \
+      | sort | grep --invert-match '^$' | uniq -c | sort --numeric-sort
 else
   echo "Git is not installed..."
   exit 1
