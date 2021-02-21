@@ -195,6 +195,6 @@ function der2pem() {
 # Convert PFX certificates to PEM
 function pfx2pem() {
   openssl pkcs12 -in $1 -nocerts -out $1.encrypted.key.pem
-  openssl pkcs12 -in $1 -clcerts -nokeys -out $1.cert.pem
+  openssl pkcs12 -in $1 -nokeys -out $1.cert.pem
   openssl rsa -in $1.encrypted.key.pem -out $1.decrypted.key.pem
 }
