@@ -41,8 +41,6 @@ zstyle ':prezto:load' pmodule \
   'archive' \
   'syntax-highlighting' \
   'history-substring-search' \
-  'alias-tips' \
-  'contrib-prompt' \
   'prompt'
 #
 # Autosuggestions
@@ -120,7 +118,7 @@ zstyle ':prezto:module:editor' dot-expansion 'yes'
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-zstyle ':prezto:module:prompt' theme 'spaceship'
+# zstyle ':prezto:module:prompt' theme 'spaceship'
 
 # Set the working directory prompt display length.
 # By default, it is set to 'short'. Set it to 'long' (without '~' expansion)

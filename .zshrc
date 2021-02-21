@@ -63,7 +63,4 @@ if [[ -s "${HOME}/.bwsession" ]]; then
   source "${HOME}/.bwsession"
 fi
 
-# Auth token for DigitalOcean
-if [[ -s "${HOME}/.dotoken" ]]; then
-  source "${HOME}/.dotoken"
-fi
+eval "$(starship init zsh)"
