@@ -51,3 +51,6 @@ fi
 if command -v docker-compose &> /dev/null; then
   export COMPOSE_HTTP_TIMEOUT=3600
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
