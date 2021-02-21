@@ -1,11 +1,13 @@
 [user]
   name = Patrick Godschalk
   email = patrick@kernelpanics.nl
-  signingKey = 8F9F67665D941E44CC53FB4E18332544845E2205
+  signingKey = BC6A6FFD4632F79F5D27C602792C7B7FD15716AA
 [core]
   editor = nano
   excludesfile = ~/.gitignore_global
   pager = diff-so-fancy | less --tabs=4 -RFX
+[init]
+  defaultBranch = main
 [alias]
   aa = add --all
   amend = commit --amend --reuse-message=HEAD
