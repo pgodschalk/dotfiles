@@ -101,3 +101,8 @@ alias path='echo -e ${PATH//:/\\n}'
 if ! command -v diff-so-fancy &> /dev/null; then
   alias diff-so-fancy="diff"
 fi
+
+if command -v nvim &> /dev/null; then
+  alias vim="nvim"
+  alias vi="nvim"
+fi
