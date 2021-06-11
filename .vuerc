@@ -1,8 +1,8 @@
 {
   "useTaobaoRegistry": false,
   "packageManager": "yarn",
-  "latestVersion": "4.5.8",
-  "lastChecked": 1603477280183,
+  "latestVersion": "4.5.12",
+  "lastChecked": 1617188489333,
   "presets": {
     "mozard": {
       "useConfigFiles": true,
