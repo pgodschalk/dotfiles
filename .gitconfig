@@ -1,7 +1,7 @@
 [user]
   name = Patrick Godschalk
   email = patrick@kernelpanics.nl
-  signingKey = BC6A6FFD4632F79F5D27C602792C7B7FD15716AA
+  signingkey = 07B1A68011CA609C8AB0F67C4E6C0EAA175F13A2
 [core]
   editor = nano
   excludesfile = ~/.gitignore_global
@@ -106,7 +106,7 @@
 [color]
   ui = auto
 [commit]
-  gpgSign = true
+  gpgsign = true
 [diff "bin"]
   # Use `hexdump` to diff binary files
   textconv = hexdump -v -C
