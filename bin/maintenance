@@ -84,7 +84,7 @@ brew cleanup
 msg "${BLUE}Verifying Homebrew integrity${NOFORMAT}"
 brew doctor
 msg "${BLUE}Upgrading PECL packages${NOFORMAT}"
-pecl upgrade-all
+pecl upgrade xdebug
 msg "${BLUE}Updating Composer packages${NOFORMAT}"
 composer global update
 msg "${BLUE}Updating tldr${NOFORMAT}"
