@@ -64,3 +64,12 @@ if [[ -s "${HOME}/.bwsession" ]]; then
 fi
 
 eval "$(starship init zsh)"
+
+if [[ -s "/usr/local/opt/openjdk/bin" ]];
+  export PATH="/usr/local/opt/openjdk/bin:$PATH"
+fi
+
+if [[ -s "usr/local/Caskroom/google-cloud-sdk" ]];
+  source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+  source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+fi
