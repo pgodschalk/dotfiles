@@ -65,11 +65,13 @@ fi
 
 eval "$(starship init zsh)"
 
-if [[ -s "/usr/local/opt/openjdk/bin" ]];
+if [[ -s "/usr/local/opt/openjdk/bin" ]]; then
   export PATH="/usr/local/opt/openjdk/bin:$PATH"
 fi
 
-if [[ -s "usr/local/Caskroom/google-cloud-sdk" ]];
+if [[ -s "usr/local/Caskroom/google-cloud-sdk" ]]; then
   source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
   source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
 fi
+
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
