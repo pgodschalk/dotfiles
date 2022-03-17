@@ -50,3 +50,4 @@ if command -v docker-compose &> /dev/null; then
 fi
 
 # Workaround for Ansible issue with network lookup
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
