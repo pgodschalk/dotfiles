@@ -37,11 +37,13 @@ zstyle ':prezto:load' pmodule \
   'directory' \
   'spectrum' \
   'utility' \
+  'git' \
+  'node' \
+  'python' \
   'completion' \
   'archive' \
   'syntax-highlighting' \
-  'history-substring-search' \
-  'prompt'
+  'history-substring-search'
 #
 # Autosuggestions
 #
@@ -161,7 +163,7 @@ zstyle ':prezto:module:editor' dot-expansion 'yes'
 #
 
 # Set the SSH identities to load into the agent.
-# zstyle ':prezto:module:ssh:load' identities 'id_rsa' 'id_rsa2' 'id_github'
+zstyle ':prezto:module:ssh:load' identities 'id_ed25519' 'id_ecdsa' 'id_rsa'
 
 #
 # Syntax Highlighting
@@ -192,7 +194,7 @@ zstyle ':prezto:module:editor' dot-expansion 'yes'
 #
 
 # Auto set the tab and window titles.
-# zstyle ':prezto:module:terminal' auto-title 'yes'
+zstyle ':prezto:module:terminal' auto-title 'yes'
 
 # Set the window title format.
 # zstyle ':prezto:module:terminal:window-title' format '%n@%m: %s'
@@ -214,7 +216,7 @@ zstyle ':prezto:module:editor' dot-expansion 'yes'
 # zstyle ':prezto:module:tmux:auto-start' remote 'yes'
 
 # Integrate with iTerm2.
-# zstyle ':prezto:module:tmux:iterm' integrate 'yes'
+zstyle ':prezto:module:tmux:iterm' integrate 'yes'
 
 # Set the default session name:
 # zstyle ':prezto:module:tmux:session' name 'YOUR DEFAULT SESSION NAME'

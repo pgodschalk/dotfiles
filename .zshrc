@@ -6,7 +6,7 @@
 #
 
 if [[ $OSTYPE == "linux-gnu"* ]]; then
-  if grep -q "Debian" /etc/os-release; then
+  if grep -q "debian" /etc/os-release; then
     export DISTRO="debian"
   elif grep -q "Arch" /etc/os-release; then
     export DISTRO="arch"
@@ -17,7 +17,7 @@ elif [[ $OSTYPE == "darwin"* ]]; then
   export DISTRO="macos"
 fi
 
-# Source Prezto.
+# Source Prezto
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
@@ -27,13 +27,14 @@ if [[ -s "${HOME}/.iterm2_shell_integration.zsh" ]]; then
   source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
-# Source Z
-if [[ -s /usr/local/etc/profile.d/z.sh ]]; then
-  source /usr/local/etc/profile.d/z.sh
-fi
+# Source Starship
+eval "$(starship init zsh)"
+
+# Source Zoxide
+eval "$(zoxide init zsh)"
 
 # Brew completions
-if type brew &>/dev/null; then
+if command -v brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
   autoload -Uz compinit
   compinit
@@ -63,15 +64,25 @@ if [[ -s "${HOME}/.bwsession" ]]; then
   source "${HOME}/.bwsession"
 fi
 
-eval "$(starship init zsh)"
-
+# Add OpenJDK to $PATH
 if [[ -s "/usr/local/opt/openjdk/bin" ]]; then
   export PATH="/usr/local/opt/openjdk/bin:$PATH"
 fi
 
-if [[ -s "usr/local/Caskroom/google-cloud-sdk" ]]; then
+# Add Google Cloud SDK to $PATH on macOS
+if [[ -s "/usr/local/Caskroom/google-cloud-sdk" ]]; then
   source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
   source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
 fi
 
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+# Add command-not-found to $PATH on macOS
+if [[ $DISTRO == "macos" ]]; then
+  HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+  if [ -f "$HB_CNF_HANDLER" ]; then
+    source "$HB_CNF_HANDLER";
+  fi
+fi
+
+# This loads nvm
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"

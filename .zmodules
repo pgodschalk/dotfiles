@@ -1,3 +1,9 @@
+# syntax highlighting
+
+if [[ -s "/usr/share/zsh-autosuggestions" ]]; then
+  pmodload autosuggestions
+fi
+
 # When you try to use a command that is not available locally, searches the
 # package manager for a package offering that command and suggests the proper
 # install command.
@@ -6,17 +12,15 @@
 #
 # macOS uses Homebrew's command-not-found clone. Note that you also need to
 # follow the instructions to tap the command-not-found homebrew repository.
-
 if [[ $DISTRO == "macos" ]]; then
   if brew tap | grep -q homebrew/command-not-found; then
-    #pmodload command-not-found
+    pmodload command-not-found
   fi
 elif [[ $DISTRO == "debian" ]]; then
   if dpkg -s command-not-found | grep -q installed; then
     pmodload command-not-found
   fi
 fi
-# TODO: Arch
 
 if command -v dnf &> /dev/null; then
   # Defines dnf aliases.
@@ -51,14 +55,6 @@ if command -v fasd &> /dev/null; then
   pmodload fasd
 fi
 
-if command -v git &> /dev/null; then
-  # Enhances the Git distributed version control system by providing aliases,
-  # functions and by exposing repository status information to prompts.
-  #
-  # Git 1.7.2 is the minimum required version.
-  pmodload git
-fi
-
 if command -v gpg &> /dev/null; then
   # Provides for an easier use of GPG by setting up gpg-agent.
   pmodload gpg
@@ -82,14 +78,6 @@ if command -v port &> /dev/null; then
   pmodload port
 fi
 
-# Provides utility functions for Node.js, loads the Node Version Manager, and
-# enables npm completion.
-if command -v node &> /dev/null; then
-  pmodload node
-elif command -v nodejs &> /dev/null; then
-  pmodload node
-fi
-
 if command -v opam &> /dev/null; then
   # Initializes OCaml package management.
   pmodload opam
@@ -111,13 +99,6 @@ if command -v perl &> /dev/null; then
   pmodload perl
 fi
 
-if command -v python &> /dev/null; then
-  # Enables local Python and local Python package installation.
-  pmodload python
-elif command -v python3 &> /dev/null; then
-  pmodload python
-fi
-
 if command -v rails &> /dev/null; then
   # Defines Ruby on Rails aliases.
   pmodload rails
@@ -125,9 +106,6 @@ fi
 
 if command -v rsync &> /dev/null; then
   # Defines rsync aliases.
-  #
-  # macOS users are encouraged to use Bombich's rsync, which has HFS+
-  # enhancements.
   pmodload rsync
 fi
 
@@ -152,77 +130,66 @@ if command -v tmux &> /dev/null; then
   pmodload tmux
 fi
 
+if command -v wakeonlan &> /dev/null; then
+  pmodload wakeonlan
+fi
+
 if command -v yum &> /dev/null; then
   # Defines yum aliases.
   pmodload yum
 fi
 
-# Integrates zsh clipboard with system clipboard.
-#
-# On OSX, uses pbcopy and pbpaste. On cygwin, uses /dev/clipboard. On linux,
-# requires either xclip or xsel be installed.
-if [[ $DISTRO == "macos" ]]; then
-  pmodload clipboard
-elif [[ $OSTYPE == "linux-gnu"* ]]; then
-  if command -v xclip; then
-    pmodload clipboerd
-  elif command -v xsel; then
+if [[ -s "${HOME}/.zprezto/contrib" ]]; then
+  pmodload alias-tips
+  pmodload enhancd
+
+  if [[ $DISTRO == "macos" ]]; then
     pmodload clipboard
+  else
+    if command -v xclip &> /dev/null; then
+      pmodload clipboard
+    elif command -v xsel &> /dev/null; then
+      pmodload clipboard
+    fi
   fi
-fi
 
-if command -v mix &> /dev/null; then
-  # Defines Elixir aliases.
-  pmodload elixir
-fi
+  if command -v direnv &> /dev/null; then
+    pmodload direnv
+  fi
 
-# FIXME:
-#if cd --help | grep -q ghq; then
-  # Integrates enhancd into Prezto, which implements a next-generation cd
-  # command with an interactive filter. enhancd will memorize all directories
-  # visited by a user and use it for the pathname resolution.
-  #pmodload enhancd
-#fi
+  if command -v elixir &> /dev/null; then
+    pmodload elixir
+  fi
 
-if command -v gcloud &> /dev/null; then
-  # [gcloud][1] enables autocompletion for gcloud command..
-  pmodload gcloud
-fi
+  if command -v fzy &> /dev/null; then
+    pmodload fzy
+  fi
 
-if command -v kubectl &> /dev/null; then
-  # Enhances Kubernetes command line integration by providing aliases,
-  # functions and by exposing repository status information to prompts.
-  pmodload kubernetes
-fi
+  if command -v gcloud &> /dev/null; then
+    pmodload gcloud
+  fi
 
-if command -v nvm &> /dev/null; then
-  # This module integrates nvm auto use shell integration into Prezto. It will
-  # automatically call nvm use in a directory with a .nvmrc file. This recipe
-  # is not supported by the nvm development team, but they are accepting pull
-  # requests for more examples.
-  #
-  # This module must be loaded after the node module.
-  pmodload nvm-auto-use
-fi
+  if command -v kubectl &> /dev/null; then
+    pmodload kubernetes
+  fi
 
-if command -v mix &> /dev/null; then
-  # Defines Elixir Phoenix aliases.
-  pmodload phoenix
-fi
+  if command -v nvm &> /dev/null; then
+    pmodload nvm-auto-use
+  fi
 
-if command -v thefuck &> /dev/null; then
-  # Correct miss typed commands by using thefuck tool.
-  #
-  # Bind ESC-ESC to display corrected command.
-  pmodload thefuck
-fi
+  if command -v mix &> /dev/null; then
+    pmodload phoenix
+  fi
 
-if command -v xpanes &> /dev/null; then
-  # tmux-xpanes is a tmux plugin that eases creating multiple tmux panels.
-  pmodload tmux-xpanes
-fi
+  if command -v thefuck &> /dev/null; then
+    pmodload thefuck
+  fi
 
-if command -v zypper &> /dev/null; then
-  # Defines zypper aliases.
-  pmodload zypper
+  if command -v tmux &> /dev/null; then
+    pmodload tmux-xpanes
+  fi
+
+  if command -v zypper &> /dev/null; then
+    pmodload zypper
+  fi
 fi
