@@ -36,6 +36,7 @@ fi
 if command -v composer &> /dev/null; then
   export PATH=$HOME/.composer/vendor/bin:$PATH;
 fi
+
 if [[ -s "${HOME}/Code/bin" ]]; then
   export PATH=$HOME/Code/bin:$PATH;
 fi
@@ -44,13 +45,8 @@ if command -v bat &> /dev/null; then
   export BAT_THEME="Solarized (light)"
 fi
 
-if command -v byobu &> /dev/null; then
-  export BYOBU_PREFIX=/usr/local
-fi
-
 if command -v docker-compose &> /dev/null; then
   export COMPOSE_HTTP_TIMEOUT=3600
 fi
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
+# Workaround for Ansible issue with network lookup
