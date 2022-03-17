@@ -83,10 +83,6 @@ msg "${BLUE}Cleaning Homebrew${NOFORMAT}"
 brew cleanup
 msg "${BLUE}Verifying Homebrew integrity${NOFORMAT}"
 brew doctor
-msg "${BLUE}Upgrading PECL packages${NOFORMAT}"
-pecl upgrade xdebug
-msg "${BLUE}Updating Composer packages${NOFORMAT}"
-composer global update
 msg "${BLUE}Updating tldr${NOFORMAT}"
 tldr --update
 msg "${GREEN}Applications to update manually${NOFORMAT}"
