@@ -13,7 +13,7 @@ if command -v node &> /dev/null; then
   export NODE_REPL_MODE='sloppy';
 fi
 
-if command -v python &> /dev/null|| command -v python3 &> /dev/null || command -v python2 &> /dev/null; then
+if command -v python &> /dev/null || command -v python3 &> /dev/null || command -v python2 &> /dev/null; then
   # Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
   export PYTHONIOENCODING='UTF-8';
 fi
