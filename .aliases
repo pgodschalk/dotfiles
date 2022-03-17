@@ -16,6 +16,9 @@ if command -v exa &> /dev/null; then
   if [[ $DISTRO == "macos" ]]; then
     alias ls="exa --classify --git --icons"
     alias tree="exa --tree --git --icons"
+  elif [[ $DISTRO == "debian" ]]; then
+    alias ls=" exa --classify --icons"
+    alias tree="exa --tree --icons"
   else
     alias ls="exa --classify --git"
     alias tree="exa --tree --git"
