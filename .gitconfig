@@ -124,6 +124,7 @@
 [push]
   # https://git-scm.com/docs/git-config#git-config-pushdefault
   default = simple
+
   # Make `git push` push relevant annotated tags when pushing branches out.
   followTags = true
 [pull]
@@ -132,7 +133,6 @@
   forceSignAnnotated = true
 
 # URL shorthands
-
 [url "git@github.com:"]
   insteadOf = "gh:"
   pushInsteadOf = "github:"
@@ -153,5 +153,3 @@
   insteadOf = "gitlab:"
 [url "git@gitlab.com:MozardBV/"]
   insteadOf = "gm"
-[gpg]
-	program = /usr/local/MacGPG2/bin/gpg2
