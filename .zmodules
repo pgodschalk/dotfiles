@@ -1,6 +1,8 @@
-# syntax highlighting
+#!/usr/bin/env bash
 
 if [[ -s "/usr/share/zsh-autosuggestions" ]]; then
+  pmodload autosuggestions
+elif [[ -s "/usr/local/share/zsh-autosuggestions" ]]; then
   pmodload autosuggestions
 fi
 
