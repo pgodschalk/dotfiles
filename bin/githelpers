@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ef -o pipefail
+set -ef
 
 # The time massaging regexes start with ^[^<]* because that ensures that they
 # only operate before the first "<". That "<" will be the beginning of the
