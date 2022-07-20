@@ -52,6 +52,9 @@ fi
 if [[ -s "${HOME}/.exports" ]]; then
   source "${HOME}/.exports"
 fi
+if [[ -s "${HOME}/.exports_private" ]]; then
+  source "${HOME}/.exports_private"
+fi
 if [[ -s "${HOME}/.functions" ]]; then
   source "${HOME}/.functions"
 fi
@@ -88,3 +91,5 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
