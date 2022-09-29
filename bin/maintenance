@@ -83,12 +83,15 @@ msg "${BLUE}Cleaning Homebrew${NOFORMAT}"
 brew cleanup
 msg "${BLUE}Verifying Homebrew integrity${NOFORMAT}"
 brew doctor
+msg "${BLUE}Updating gcloud${NOFORMAT}"
+gcloud components update
 msg "${BLUE}Updating tldr${NOFORMAT}"
 tldr --update
 msg "${GREEN}Applications to update manually${NOFORMAT}"
 brew list --cask -1 | xargs brew info --cask | rg auto_updates
-msg "adobe-creative-cloud (apps)"
-msg "steam (games)"
+msg "Mozilla Firefox"
+msg "Oracle SQL Developer"
+msg "Stoplight Studio"
 msg "wipr (definitions)"
 msg "zprezto-update"
 
