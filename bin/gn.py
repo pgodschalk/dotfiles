@@ -1,1 +1,1 @@
-gn
+gn  # type: ignore

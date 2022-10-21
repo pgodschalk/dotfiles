@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034
 
+set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR EXIT
-
-script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
 usage() {
   cat <<EOF
-Gebruik: $(basename "${BASH_SOURCE[0]}") [-h] [-v] [-f] -p param_value arg1 [arg2...]
+Usage: $(basename "${BASH_SOURCE[0]}") [-h] [-v]
 
-Hier een beschrijving.
+Runs maintenance on macOS.
 
-Beschikbare opties:
+Available options:
 
--h, --help      Print deze help en exit
+-h, --help      Print this help and exit
 -v, --verbose   Print script debug info
 EOF
   exit
@@ -20,7 +20,6 @@ EOF
 
 cleanup() {
   trap - SIGINT SIGTERM ERR EXIT
-  # script cleanup hier
 }
 
 setup_colors() {
@@ -43,21 +42,12 @@ die() {
 }
 
 parse_params() {
-  # defaultwaardes van parameters
-  flag=0
-  param=''
-
   while :; do
     case "${1-}" in
     -h | --help) usage ;;
     -v | --verbose) set -x ;;
     --no-color) NO_COLOR=1 ;;
-    -f | --flag) flag=1 ;; # voorbeeld flag
-    -p | --param) # voorbeeld named parameter
-      param="${2-}"
-      shift
-      ;;
-    -?*) die "Onbekende optie: $1" ;;
+    -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac
     shift
@@ -73,29 +63,48 @@ setup_colors
 
 msg "${BLUE}Updating Mac App Store${NOFORMAT}"
 mas upgrade
+
 msg "${BLUE}Updating Homebrew${NOFORMAT}"
 brew update
+
 msg "${BLUE}Updating brews${NOFORMAT}"
 brew upgrade
+
 msg "${BLUE}Updating casks${NOFORMAT}"
 brew upgrade --cask
+
+msg "${BLUE}Pruning stale dependencies${NOFORMAT}"
+brew autoremove
+
 msg "${BLUE}Cleaning Homebrew${NOFORMAT}"
 brew cleanup
+
 msg "${BLUE}Verifying Homebrew integrity${NOFORMAT}"
 brew doctor
+
 msg "${BLUE}Updating gcloud${NOFORMAT}"
 gcloud components update
+
 msg "${BLUE}Updating tldr${NOFORMAT}"
 tldr --update
+
+msg "${BLUE}Updating dotfile git repositories${NOFORMAT}"
+cd "$HOME/.nano/nanorc" || true
+git pull
+cd "$HOME/.zprezto" || true
+git pull
+cd "$HOME" || true
+
+
+msg "${BLUE}Emptying trash${NOFORMAT}"
+sudo rm --recursive --force --verbose /Volumes/*/.Trashes
+sudo rm --recursive --force --verbose ~/.Trash
+sudo rm -rfv /private/var/log/asl/*.asl
+sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'
+
 msg "${GREEN}Applications to update manually${NOFORMAT}"
 brew list --cask -1 | xargs brew info --cask | rg auto_updates
 msg "Mozilla Firefox"
 msg "Oracle SQL Developer"
 msg "Stoplight Studio"
-msg "wipr (definitions)"
-msg "zprezto-update"
-
-msg "${RED}Read parameters:${NOFORMAT}"
-msg "- flag: ${flag}"
-msg "- param: ${param}"
-msg "- arguments: ${args[*]-}"
+msg "Wipr (definitions)"

@@ -1,25 +1,41 @@
 #!/usr/bin/env bash
-set -euf -o pipefail
+
+set -Eeuo pipefail
+trap cleanup SIGINT SIGTERM ERR EXIT
+
+cleanup() {
+  trap - SIGINT SIGTERM ERR EXIT
+}
+
+msg() {
+  echo >&2 -e "${1-}"
+}
+
+die() {
+  local msg=$1
+  local code=${2-1} # default exit status 1
+  msg "$msg"
+  exit "$code"
+}
 
 if ! command -v git 2>/dev/null; then
-  echo "Git is not installed..."
-  exit 1
+  die "Git is not installed"
 fi
 
 ref=${1:-"HEAD"}
 
-old=$ref@{1}
+old="$ref@{1}"
 new=$ref
 
 log() {
-  git log --graph --pretty=short --max-count=1 $1
+  git log --graph --pretty=short --max-count=1 "$1"
 }
 
-echo "Old revision:"
-log $old
+msg "Old revision:"
+log "$old"
 echo
-echo "New revision:"
-log $new
+msg "New revision:"
+log "$new"
 echo
-echo "Changes:"
-git diff --stat --summary $new $old
+msg "Changes:"
+git diff --stat --summary "$new" "$old"

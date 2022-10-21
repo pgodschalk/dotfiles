@@ -28,10 +28,14 @@ if [[ -s "${HOME}/.iterm2_shell_integration.zsh" ]]; then
 fi
 
 # Source Starship
-eval "$(starship init zsh)"
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+fi
 
 # Source Zoxide
-eval "$(zoxide init zsh)"
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init zsh)"
+fi
 
 # Brew completions
 if command -v brew &>/dev/null; then
@@ -67,6 +71,26 @@ if [[ -s "${HOME}/.bwsession" ]]; then
   source "${HOME}/.bwsession"
 fi
 
+# Add GNU Coreutils to $PATH
+if [[ -s "/usr/local/opt/coreutils/libexec/gnubin" ]]; then
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+fi
+
+# Add GNU sed to $PATH
+if [[ -s "/usr/local/opt/gnu-sed/libexec/gnubin" ]]; then
+  export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
+
+# Add Composer packages to $PATH
+if command -v composer &>/dev/null; then
+  export PATH="$HOME/.composer/vendor/bin:$PATH"
+fi
+
+# Add XDG binaries to $PATH
+if [[ -s "${HOME}/.local/bin" ]]; then
+  export PATH="$HOME/.local/bin:$PATH";
+fi
+
 # Add OpenJDK to $PATH
 if [[ -s "/usr/local/opt/openjdk/bin" ]]; then
   export PATH="/usr/local/opt/openjdk/bin:$PATH"
@@ -89,7 +113,6 @@ fi
 # This loads nvm
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

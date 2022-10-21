@@ -1,46 +1,71 @@
-<!-- markdownlint-disable MD041 -->
-<!-- PROJECT SHIELDS -->
+# @pgodschalk/dotfiles
 
-<!-- PROJECT LOGO -->
-<!-- markdownlint-disable MD033 -->
+A collection of .files
 
-<br>
-<p style="text-align: center;">
-  <a href="https://github.com/pgodschalk/dotfiles">
-    <img src="https://miro.medium.com/max/700/1*ayVl2ie6CS0Flqr8TxoYgQ.png" alt="pgodschalk/dotfiles" style="width: 80px; height: 80px;">
-  </a>
-  <h3 style="text-align: center;">pgodschalk/dotfiles</h3>
-  <p style="text-align: center;">A collection of .files</p>
-</p>
-<!-- markdownlint-enable MD033 -->
+- [Report bug]()
+- [Request new feature]()
 
 ## Table of Contents
 
-* [About this project](#about-this-project)
-* [Getting started](#getting-started)
-  * [Dependencies](#dependencies)
-  * [Install](#install)
-* [Built with](#built-with)
-* [Contributing](#contributing)
-* [Versioning](#versioning)
-* [Authors](#authors)
-* [License](#license)
+- [@pgodschalk/dotfiles](#pgodschalkdotfiles)
+  - [Table of Contents](#table-of-contents)
+  - [About this project](#about-this-project)
+  - [Getting started](#getting-started)
+    - [Tested on](#tested-on)
+    - [Installing](#installing)
+  - [Built with](#built-with)
+  - [Contributing](#contributing)
+  - [Versioning](#versioning)
+  - [Authors](#authors)
+  - [License](#license)
 
 ## About this project
 
 This is my collection of dotfiles.
 
+## Getting started
+
+### Tested on
+
+- Alpine 3.14
+- Debian 10
+- Debian 11
+- Oracle Linux 8
+- Oracle Linux 9
+- Ubuntu 20.04
+- Ubuntu 22.04
+
+### Installing
+
+Clone this git repository:
+
+```sh
+git clone https://github.com/pgodschalk/dotfiles.git
+```
+
+Run the installation script:
+
+```sh
+cd dotfiles/
+./install.sh
+```
+
+## Built with
+
+- Good old Bash scripts
+
 ## Contributing
 
-Please do not contribute to this repo.
+These are my personal dotfiles, merge requests will likely not be accepted, but
+feel free to fork.
 
 ## Versioning
 
-Non existent.
+Rolling release of the `main` branch.
 
 ## Authors
 
-* **Patrick Godschalk** - *Me* - [pgodschalk](https://github.com/pgodschalk)
+- **Patrick Godschalk** - _Me_ - [pgodschalk](https://github.com/pgodschalk)
 
 ...and a whole bunch of people I borrowed their configs and concepts from. ❤
 
@@ -48,4 +73,6 @@ Non existent.
 
 [SPDX](https://spdx.org/licenses/) license: `MIT`
 
-See [LICENSE.md](https://github.com/pgodschalk/dotfiles/blob/master/LICENSE.md).
+Copyright (c) 2020-2022 Patrick Godschalk
+
+See [LICENSE.txt](https://github.com/pgodschalk/dotfiles/blob/main/LICENSE.txt).

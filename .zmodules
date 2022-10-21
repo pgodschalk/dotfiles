@@ -1,10 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ -s "/usr/share/zsh-autosuggestions" ]]; then
-  pmodload autosuggestions
-elif [[ -s "/usr/local/share/zsh-autosuggestions" ]]; then
-  pmodload autosuggestions
-fi
+pmodload autosuggestions
 
 # When you try to use a command that is not available locally, searches the
 # package manager for a package offering that command and suggests the proper
@@ -15,11 +11,15 @@ fi
 # macOS uses Homebrew's command-not-found clone. Note that you also need to
 # follow the instructions to tap the command-not-found homebrew repository.
 if [[ $DISTRO == "macos" ]]; then
-  if brew tap | grep -q homebrew/command-not-found; then
+  if brew tap | grep --quiet homebrew/command-not-found; then
     pmodload command-not-found
   fi
 elif [[ $DISTRO == "debian" ]]; then
-  if dpkg -s command-not-found | grep -q installed; then
+  if dpkg --status command-not-found | grep --quiet installed; then
+    pmodload command-not-found
+  fi
+elif [[ $DISTRO == "arch" ]]; then
+  if pacman --query --info command-not-found | grep --quiet installed; then
     pmodload command-not-found
   fi
 fi

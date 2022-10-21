@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2124,SC2199
 
 # Some people insist on scanned wet signature pdf's...
 function bureaucracy() {
 convert \
   -density 150 \
-  $1 \
+  "$1" \
   -colorspace gray \
   -linear-stretch 3.5%x10% \
   -blur 0x0.5 \
@@ -17,21 +18,26 @@ convert \
 
 # Change working directory to the top-most Finder window location
 function cdf() { # short for `cdfinder`
-  /bin/cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
+  if [[ $DISTRO == "macos" ]]; then
+    /bin/cd \
+      "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
+  else
+    echo "Not on macOS!"
+  fi
 }
 
-# Create a data URL from a file
-function dataurl() {
-  local mimeType=$(file --brief --mime-type "$1");
-  if [[ $mimeType == text/* ]]; then
-    mimeType="${mimeType};charset=utf-8";
-  fi
-  echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr --delete '\n')";
+# Create a data URI from a file
+function datauri() {
+  local mimetype
+  local content
+  mimetype=$(file --brief --no-pad --mime-type "$1")
+  content=$(base64 < "$1")
+  echo "data:$mimetype;base64,$content"
 }
 
 # Determine size of a file or total size of a directory
 function fs() {
-  if du -b /dev/null > /dev/null 2>&1; then
+  if du --bytes /dev/null > /dev/null 2>&1; then
     local arg=-sbh;
   else
     local arg=-sh;
@@ -55,21 +61,25 @@ function getcertnames() {
   echo "Testing ${domain}…";
   echo ""; # newline
 
-  local tmp=$(echo -e "GET / HTTP/1.0\nEOT" \
+  local tmp
+  tmp=$(echo -e "GET / HTTP/1.0\nEOT" \
     | openssl s_client -connect "${domain}:443" -servername "${domain}" 2>&1);
 
   if [[ "${tmp}" = *"-----BEGIN CERTIFICATE-----"* ]]; then
-    local certText=$(echo "${tmp}" \
+    local certText
+    certText=$(echo "${tmp}" \
     | openssl x509 -text -certopt "no_aux, no_header, no_issuer, no_pubkey, \
     no_serial, no_sigdump, no_signame, no_validity, no_version");
     echo "Common Name:";
     echo ""; # newline
-    echo "${certText}" | grep "Subject:" | sed --expression="s/^.*CN=//" | sed --eexpression="s/\/emailAddress=.*//";
+    echo "${certText}" | grep "Subject:" | sed --expression="s/^.*CN=//" \
+      | sed --expression="s/\/emailAddress=.*//";
     echo ""; # newline
     echo "Subject Alternative Name(s):";
     echo ""; # newline
     echo "${certText}" | grep --after-context=1 "Subject Alternative Name:" \
-      | sed --expression="2s/DNS://g" -e "s/ //g" | tr "," "\n" | tail --lines=+2;
+      | sed --expression="2s/DNS://g" -e "s/ //g" | tr "," "\n" \
+      | tail --lines=+2;
     return 0;
   else
     echo "ERROR: Certificate not found.";
@@ -80,22 +90,25 @@ function getcertnames() {
 
 # Compare original and gzipped file size
 function gz() {
-  local origsize=$(wc --bytes < "$1");
-  local gzipsize=$(gzip --to-stdout "$1" | wc --bytes);
-  local ratio=$(echo "$gzipsize * 100 / $origsize" | bc --mathlib);
+  local origsize
+  local gzipsize
+  local ratio
+  origsize=$(wc --bytes < "$1");
+  gzipsize=$(gzip --to-stdout "$1" | wc --bytes);
+  ratio=$(echo "$gzipsize * 100 / $origsize" | bc --mathlib);
   printf "orig: %d bytes\n" "$origsize";
   printf "gzip: %d bytes (%2.2f%%)\n" "$gzipsize" "$ratio";
 }
 
 # Create a new directory and enter it
 function mkd() {
-  mkdir --parents "$@" && cd "$_";
+  mkdir --parents "$@" && cd "$_" || exit;
 }
 
 # Normalize `open` across Linux, macOS, and Windows.
 # This is needed to make the `o` function cross-platform.
-if [ ! $(uname -s) = 'Darwin' ]; then
-  if grep --silent Microsoft /proc/version; then
+if [ ! "$(uname -s)" = 'Darwin' ]; then
+  if grep -s Microsoft /proc/version; then
     # Ubuntu on Windows using the Linux subsystem
     alias open='explorer.exe';
   else
@@ -113,15 +126,6 @@ function o() {
   fi;
 }
 
-# Start an HTTP server from a directory, optionally specifying the port
-function server() {
-  local port="${1:-8000}";
-  sleep 1 && open "http://localhost:${port}/" &
-  # Set the default Content-Type to `text/plain` instead of `application/octet-stream`
-  # And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-  python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port";
-}
-
 # Set default window title after SSH closes
 function ssh() {
   if [[ -s "/usr/local/bin/ssh" ]]; then
@@ -135,7 +139,8 @@ function ssh() {
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
 function targz() {
   local tmpFile="${@%/}.tar";
-  tar --create --verbose --file "${tmpFile}" --exclude=".DS_Store" "${@}" || return 1;
+  tar --create --verbose --file "${tmpFile}" --exclude=".DS_Store" "${@}" \
+    || return 1;
 
   size=$(
     stat -f"%z" "${tmpFile}" 2> /dev/null; # macOS `stat`
@@ -168,12 +173,12 @@ function targz() {
 
 # Convert DER certificates to PEM
 function der2pem() {
-  openssl x509 -inform der -in $1 -out $1.pem
+  openssl x509 -inform der -in "$1" -out "$1.pem"
 }
 
 # Convert PFX certificates to PEM
 function pfx2pem() {
-  openssl pkcs12 -in $1 -nocerts -out $1.encrypted.key.pem
-  openssl pkcs12 -in $1 -nokeys -out $1.cert.pem
-  openssl rsa -in $1.encrypted.key.pem -out $1.decrypted.key.pem
+  openssl pkcs12 -in "$1" -nocerts -out "$1.encrypted.key.pem"
+  openssl pkcs12 -in "$1" -nokeys -out "$1.cert.pem"
+  openssl rsa -in "$1.encrypted.key.pem" -out "$1.decrypted.key.pem"
 }

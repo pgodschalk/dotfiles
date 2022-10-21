@@ -1,4 +1,4 @@
-include ~/Code/build/scopatz/nanorc/*.nanorc
+include ~/.nano/nanorc/nanorc
 
 set autoindent
 set historylog

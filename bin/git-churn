@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-set -euf -o pipefail
-
 #
 # Written by Corey Haines
 # Scriptified by Gary Bernhardt
@@ -29,6 +27,24 @@ set -euf -o pipefail
 #
 # (These are all standard arguments to `git log`.)
 
+set -Eeuo pipefail
+trap cleanup SIGINT SIGTERM ERR EXIT
+
+cleanup() {
+  trap - SIGINT SIGTERM ERR EXIT
+}
+
+msg() {
+  echo >&2 -e "${1-}"
+}
+
+die() {
+  local msg=$1
+  local code=${2-1} # default exit status 1
+  msg "$msg"
+  exit "$code"
+}
+
 if command -v git 2>/dev/null; then
   git log \
       --all \
@@ -38,6 +54,5 @@ if command -v git 2>/dev/null; then
       --format='format:' "$@" \
       | sort | grep --invert-match '^$' | uniq -c | sort --numeric-sort
 else
-  echo "Git is not installed..."
-  exit 1
+  die "Git is not installed"
 fi
