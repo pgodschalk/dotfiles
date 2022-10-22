@@ -321,9 +321,10 @@ fi
 
 # starship; prompt: https://starship.rs
 curl --silent --show-error https://starship.rs/install.sh \
-  --output /tmp/starship.sh
-chmod o+x /tmp/starship.sh
-/tmp/starship.sh --yes
+  --output "$script_dir/starship.sh"
+chmod a+x "$script_dir/starship.sh"
+"$script_dir/starship.sh" --yes
+rm -f "$script_dir/starship.sh"
 
 # thefuck; error correction: https://github.com/nvbn/thefuck
 if command -v apt-get &>/dev/null; then
