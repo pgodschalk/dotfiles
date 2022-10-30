@@ -1,5 +1,3 @@
-include ~/.nano/nanorc/nanorc
-
 set autoindent
 set historylog
 set nohelp
