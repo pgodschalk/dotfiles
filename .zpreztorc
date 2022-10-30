@@ -136,7 +136,7 @@ zstyle ':prezto:module:editor' dot-expansion 'yes'
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
 
-if ! command -v starship &>/dev/null; then
+if ! command -v starship &> /dev/null; then
   zstyle ':prezto:module:prompt' theme 'spaceship'
 fi
 

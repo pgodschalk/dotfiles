@@ -93,9 +93,9 @@ if [[ $DISTRO == "macos" ]]; then
 fi
 
 # URL-encode strings
-if command -v python &>/dev/null; then
+if command -v python &> /dev/null; then
   alias urlencode='python -c "import sys, urllib, urllib.parse; print(urllib.parse.quote_plus(sys.argv[1]));"'
-elif command -v python3 &>/dev/null; then
+elif command -v python3 &> /dev/null; then
   alias urlencode='python3 -c "import sys, urllib, urllib.parse; print(urllib.quote_plus(sys.argv[1]));"'
 fi
 
