@@ -131,3 +131,8 @@ fi
 if command -v qlmanage &> /dev/null; then
   alias svg2png="qlmanage -t -s 1000 -o . $1"
 fi
+
+# Alias bat to batcat
+if command -v batcat &> /dev/null; then
+  alias bat="batcat"
+fi
