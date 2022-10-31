@@ -229,18 +229,22 @@ if ! command -v it2copy &> /dev/null; then
   if command -v bash; then
     curl --location --output "$HOME/.iterm2_shell_integration.bash" \
       https://iterm2.com/shell_integration/bash
+    chmod a+x "$HOME/.iterm2_shell_integration.bash"
   fi
   if command -v fish; then
     curl --location --output "$HOME/.iterm2_shell_integration.fish" \
       https://iterm2.com/shell_integration/fish
+    chmod a+x "$HOME/.iterm2_shell_integration.fish"
   fi
   if command -v tcsh; then
     curl --location --output "$HOME/.iterm2_shell_integration.tcsh" \
       https://iterm2.com/shell_integration/tcsh
+    chmod a+x "$HOME/.iterm2_shell_integration.tcsh"
   fi
   if command -v zsh; then
     curl --location --output "$HOME/.iterm2_shell_integration.zsh" \
       https://iterm2.com/shell_integration/zsh
+    chmod a+x "$HOME/.iterm2_shell_integration.zsh"
   fi
 fi
 
