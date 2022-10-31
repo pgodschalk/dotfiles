@@ -89,12 +89,9 @@ msg "${BLUE}Updating tldr${NOFORMAT}"
 tldr --update
 
 msg "${BLUE}Updating dotfile git repositories${NOFORMAT}"
-cd "$HOME/.nano/nanorc" || true
-git pull
 cd "$HOME/.zprezto" || true
 git pull
 cd "$HOME" || true
-
 
 msg "${BLUE}Emptying trash${NOFORMAT}"
 sudo rm --recursive --force --verbose /Volumes/*/.Trashes
