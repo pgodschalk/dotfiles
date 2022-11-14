@@ -82,18 +82,18 @@ rm --force /tmp/awscliv2.zip
 rm --recursive --force /tmp/aws
 
 msg "${BLUE}Updating OCI CLI${NOFORMAT}"
-python3 -m venv /home/patrick/.local/lib
-.local/lib/bin/pip install --upgrade pip
-.local/lib/bin/pip install --upgrade wheel
-.local/lib/bin/pip install --upgrade oci-cli
-.local/lib/bin/pip install --upgrade cx-Oracle
+python3 -m venv "$HOME/.local/lib"
+#/env/bin/pip install --upgrade pip
+#/env/bin/pip install --upgrade wheel
+#/env/bin/pip install --upgrade oci-cli
+#/env/bin/pip install --upgrade cx-Oracle
 
 msg "${BLUE}Updating asdf${NOFORMAT}"
 asdf update
 asdf install nodejs lts
 asdf global nodejs lts
 asdf install iam-policy-json-to-terraform latest
-asdf global iam-policy-json-to-terrform latest
+asdf global iam-policy-json-to-terraform latest
 
 msg "${BLUE}Updating tldr${NOFORMAT}"
 tldr --update
