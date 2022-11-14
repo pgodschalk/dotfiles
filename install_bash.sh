@@ -63,6 +63,9 @@ parse_params() {
 parse_params "$@"
 setup_colors
 
+DIFF_SO_FANCY_VERSION=1.4.3
+DOGGO_VERSION=0.1.0
+
 ### Basic toolchain dependencies
 if command -v sudo &> /dev/null; then
   sudo -v
@@ -131,12 +134,18 @@ fi
 
 # diff-so-fancy; better diff: https://github.com/so-fancy/diff-so-fancy
 if ! command -v diff-so-fancy &> /dev/null; then
-  if ! command -v curl &> /dev/null; then
-    install curl
+  if command -v snap &> /dev/null; then
+    sudo snap install diff-so-fancy
+  elif command -v brew &> /dev/null; then
+    brew install diff-so-fancy
+  else
+    if ! command -v curl &> /dev/null; then
+      install curl
+    fi
+    mkdir --parents "$HOME/.local/bin"
+    curl --location --output "$HOME/.local/bin/diff-so-fancy" \
+      "https://github.com/so-fancy/diff-so-fancy/releases/download/v$DIFF_SO_FANCY_VERSION/diff-so-fancy"
   fi
-  mkdir --parents "$HOME/.local/bin"
-  curl --location --output "$HOME/.local/bin/diff-so-fancy" \
-    https://github.com/so-fancy/diff-so-fancy/releases/download/v1.4.3/diff-so-fancy
 fi
 
 # diffstat; for git-divergence
@@ -162,40 +171,49 @@ if ! command -v dig; then
   fi
 fi
 
-# dog; dns client: https://dns.lookup.dog
-if ! command -v dog &> /dev/null; then
-  if ! command -v curl &> /dev/null; then
-    install curl
-  fi
-  if ! command -v unzip &> /dev/null; then
-    install unzip
-  fi
-  if [[ $(uname -s) == "Darwin" ]]; then
-    curl --location --output /tmp/dog.zip \
-      https://github.com/ogham/dog/releases/download/v0.1.0/dog-v0.1.0-x86_64-unknown-linux-gnu.zip
+# doggo; dns client: https://doggo.mrkaran.dev
+if ! command -v doggo &> /dev/null; then
+  if command -v snap &> /dev/null; then
+    sudo snap install doggo
+  elif command -v brew &> /dev/null; then
+    install doggo || :
+  elif command -v pacman &> /dev/null; then
+    install doggo || :
   else
-    curl --location --output /tmp/dog.zip \
-      https://github.com/ogham/dog/releases/download/v0.1.0/dog-v0.1.0-x86_64-apple-darwin.zip
+    if [[ $(uname -m) == "x86_64" ]]; then
+      curl --location --output /tmp/doggo.tar.gz \
+        "https://github.com/mr-karan/doggo/releases/download/v$DOGGO_VERSION/doggo_${DOGGO_VERSION}_linux_amd64.tar.gz"
+      cd /tmp || exit
+      tar --gzip --extract --file=/tmp/doggo.tar.gz
+      cp /tmp/doggo "$HOME/.local/bin/doggo"
+
+      if command -v fish &> /dev/null; then
+        mkdir --parents "$HOME/.config/fish/completions"
+        cp /tmp/completions/doggo.fish "$HOME/.config/fish/completions/doggo.fish"
+      fi
+
+      if command -v zsh &> /dev/null; then
+        mkdir --parents "$HOME/.local/share/zsh/vendor-completions"
+        cp /tmp/completions/doggo.zsh "$HOME/.local/share/zsh/vendor-completions/doggo.zsh"
+      fi
+    elif [[ "$(uname -m)" == "aarch64" ]]; then
+      curl --location --output /tmp/doggo.tar.gz \
+        "https://github.com/mr-karan/doggo/releases/download/v$DOGGO_VERSION/doggo_${DOGGO_VERSION}_linux_arm64.tar.gz"
+      cd /tmp || exit
+      tar --gzip --extract --file=/tmp/doggo.tar.gz
+      cp /tmp/doggo "$HOME/.local/bin/doggo"
+
+      if command -v fish &> /dev/null; then
+        mkdir --parents "$HOME/.config/fish/completions"
+        cp /tmp/completions/doggo.fish "$HOME/.config/fish/completions/doggo.fish"
+      fi
+
+      if command -v zsh &> /dev/null; then
+        mkdir --parents "$HOME/.local/share/zsh/vendor-completions"
+        cp /tmp/completions/doggo.zsh "$HOME/.local/share/zsh/vendor-completions/doggo.zsh"
+      fi
+    fi
   fi
-  unzip /tmp/dog.zip -d /tmp/dog
-
-  mkdir --parents "$HOME/.local/bin"
-  cp /tmp/dog/bin/dog "$HOME/.local/bin/dog"
-
-  mkdir --parents "$HOME/.local/share/man/man1"
-  cp /tmp/dog/man/dog.1 "$HOME/.local/share/man/man1/dog.1"
-
-  mkdir --parents "$HOME/.local/share/bash-completion"
-  cp /tmp/dog/completions/dog.bash "$HOME/.local/share/bash-completion/dog.bash"
-
-  mkdir --parents "$HOME/.local/share/fish/completions"
-  cp /tmp/dog/completions/dog.fish "$HOME/.local/share/fish/completions/dog.fish"
-
-  # @TODO: make sure this is sourced
-  mkdir --parents "$HOME/.local/share/zsh/vendor-completions"
-  cp /tmp/dog/completions/dog.zsh "$HOME/.local/share/zsh/vendor-completions/dog.zsh"
-
-  rm -rf /tmp/dog
 fi
 
 # exa; ls replacement: https://github.com/ogham/exa
@@ -213,6 +231,11 @@ if ! command -v gzip &> /dev/null; then
   install gzip || :
 fi
 
+# httpie
+if ! command -v http &> /dev/null; then
+  install httpie || :
+fi
+
 # iterm shell integration
 if ! command -v it2copy &> /dev/null; then
   if ! command -v curl &> /dev/null; then
@@ -226,6 +249,17 @@ if ! command -v it2copy &> /dev/null; then
       install hostname
     fi
   fi
+
+  if command -v bash; then
+    curl --location \
+      https://iterm2.com/shell_integration/install_shell_integration.sh | bash
+  fi
+
+  for cmd in imgcat imgls it2attention it2check it2copy it2dl it2getvar it2setcolor it2setkeylabel it2ul it2universion; do
+    curl -sfLo "$HOME/.local/bin/$cmd" "https://iterm2.com/utilities/$cmd"
+    chmod a+x "$HOME/.local/bin/$cmd"
+  done
+
   if command -v bash; then
     curl --location --output "$HOME/.iterm2_shell_integration.bash" \
       https://iterm2.com/shell_integration/bash
@@ -280,7 +314,12 @@ if ! command -v pigz &> /dev/null; then
   install pigz || :
 fi
 
-# gzip
+# rg
+if ! command -v rg &> /dev/null; then
+  install ripgrep || :
+fi
+
+# ps
 if ! command -v ps &> /dev/null; then
   if command -v apt-get &> /dev/null; then
     install procps || :
@@ -316,36 +355,34 @@ fi
 
 # ruby; for git-whodoneit
 if ! command -v ruby &> /dev/null; then
-  if command -v apt-get &> /dev/null; then
-    install ruby-full || :
-  else
-    install ruby || :
-  fi
+  install ruby || :
 fi
 
 # starship; prompt: https://starship.rs
-curl --silent --show-error https://starship.rs/install.sh \
-  --output "$script_dir/starship.sh"
-chmod a+x "$script_dir/starship.sh"
-"$script_dir/starship.sh" --yes
-rm -f "$script_dir/starship.sh"
+if command -v brew &> /dev/null; then
+  install starship || :
+else
+  curl --silent --show-error https://starship.rs/install.sh \
+    --output "$script_dir/starship.sh"
+  chmod a+x "$script_dir/starship.sh"
+  "$script_dir/starship.sh" --yes
+  rm -f "$script_dir/starship.sh"
+fi
 
 # thefuck; error correction: https://github.com/nvbn/thefuck
 if command -v apt-get &> /dev/null; then
-  if command -v pip &> /dev/null; then
-    pip install thefuck
-  fi
+  install thefuck || :
 elif command -v dnf &> /dev/null; then
   if command -v pip &> /dev/null; then
-    pip install thefuck
+    pip install --user thefuck
   fi
 elif command -v yum &> /dev/null; then
   if command -v pip &> /dev/null; then
-    pip install thefuck
+    pip install --user thefuck
   fi
 elif command -v apk &> /dev/null; then
   if command -v pip &> /dev/null; then
-    pip install thefuck
+    pip install --user thefuck
   fi
 elif command -v brew &> /dev/null; then
   install thefuck || :
@@ -353,11 +390,11 @@ elif command -v pacman &> /dev/null; then
   install thefuck || :
 elif command -v yum &> /dev/null; then
   if command -v pip &> /dev/null; then
-    pip install thefuck
+    pip install --user thefuck
   fi
 elif command -v zypper &> /dev/null; then
   if command -v pip &> /dev/null; then
-    pip install thefuck
+    pip install --user thefuck
   fi
 fi
 
@@ -386,10 +423,10 @@ touch "$HOME/.aliases_private"
 chmod 600 "$HOME/.aliases_private"
 
 if command -v composer &> /dev/null; then
-  composer global require "squizlabs/php_codesniffer=*"
-  mkdir --parents "$HOME/.composer/vendor/squizlabs/php_codesniffer"
-  ln -s "$script_dir/.composer/vendor/squizlabs/php_codesniffer/CodeSniffer.conf" \
-    "$HOME/.composer/vendor/squizlabs/php_codesniffer"
+  composer global require "squizlabs/php_codesniffer=*" --dev
+  mkdir --parents "$HOME/.config/composer/vendor/squizlabs/php_codesniffer"
+  ln -s "$script_dir/.config/composer/vendor/squizlabs/php_codesniffer/CodeSniffer.conf" \
+    "$HOME/.config/composer/vendor/squizlabs/php_codesniffer"
 fi
 
 if command -v curl &> /dev/null; then
