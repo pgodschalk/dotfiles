@@ -93,12 +93,6 @@ cd "$HOME/.zprezto" || true
 git pull
 cd "$HOME" || true
 
-msg "${BLUE}Emptying trash${NOFORMAT}"
-sudo rm --recursive --force --verbose /Volumes/*/.Trashes
-sudo rm --recursive --force --verbose ~/.Trash
-sudo rm -rfv /private/var/log/asl/*.asl
-sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'
-
 msg "${GREEN}Applications to update manually${NOFORMAT}"
 brew list --cask -1 | xargs brew info --cask | rg auto_updates
 msg "Mozilla Firefox"
