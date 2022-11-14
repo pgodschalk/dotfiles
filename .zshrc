@@ -110,6 +110,11 @@ if [[ $DISTRO == "macos" ]]; then
   fi
 fi
 
+# Add dotfiles bin to $PATH
+if [[ -s "${HOME}/Code/for/all/dotfiles/bin" ]]; then
+  export PATH="$HOME/Code/for/all/dotfiles/bin:$PATH";
+fi
+
 # This loads nvm
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
