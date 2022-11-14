@@ -115,13 +115,6 @@ if [[ -s "${HOME}/Code/for/all/dotfiles/bin" ]]; then
   export PATH="$HOME/Code/for/all/dotfiles/bin:$PATH";
 fi
 
-# This loads nvm
-export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 if [ -z "$SSH_AUTH_SOCK" ]; then
   # Check for a currently running instance of the agent
   RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
@@ -131,3 +124,8 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
   fi
   eval $(cat $HOME/.ssh/ssh-agent)
 fi
+
+# asdf version manager
+echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc
+
+. /usr/local/opt/asdf/libexec/asdf.sh
