@@ -96,6 +96,4 @@ cd "$HOME" || true
 msg "${GREEN}Applications to update manually${NOFORMAT}"
 brew list --cask -1 | xargs brew info --cask | rg auto_updates
 msg "Mozilla Firefox"
-msg "Oracle SQL Developer"
-msg "Stoplight Studio"
 msg "Wipr (definitions)"
