@@ -80,7 +80,7 @@ msg "${BLUE}Cleaning Homebrew${NOFORMAT}"
 brew cleanup
 
 msg "${BLUE}Verifying Homebrew integrity${NOFORMAT}"
-brew doctor
+brew doctor || true 
 
 msg "${BLUE}Updating gcloud${NOFORMAT}"
 gcloud components update
