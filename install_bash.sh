@@ -361,6 +361,8 @@ fi
 # starship; prompt: https://starship.rs
 if command -v brew &> /dev/null; then
   install starship || :
+elif command -v snap &> /dev/null; then
+  sudo snap install starship
 else
   curl --silent --show-error https://starship.rs/install.sh \
     --output "$script_dir/starship.sh"

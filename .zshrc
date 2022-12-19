@@ -126,6 +126,10 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
 fi
 
 # asdf version manager
-echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc
-
-. /usr/local/opt/asdf/libexec/asdf.sh
+if command -v brew &> /dev/null; then
+  echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc
+  . /usr/local/opt/asdf/libexec/asdf.sh
+  . /libexec/asdf.sh
+else
+  . "$HOME/.asdf/asdf.sh"
+fi
