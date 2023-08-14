@@ -53,6 +53,9 @@ fi
 if [[ -s "${HOME}/.aliases" ]]; then
   source "${HOME}/.aliases"
 fi
+if [[ -s "${HOME}/.aliases_private" ]]; then
+  source "${HOME}/.aliases_private"
+fi
 if [[ -s "${HOME}/.exports" ]]; then
   source "${HOME}/.exports"
 fi
@@ -62,13 +65,14 @@ fi
 if [[ -s "${HOME}/.functions" ]]; then
   source "${HOME}/.functions"
 fi
-if [[ -s "${HOME}/.aliases_private" ]]; then
-  source "${HOME}/.aliases_private"
+if [[ -s "${HOME}/.functions_private" ]]; then
+  source "${HOME}/.functions_private"
 fi
-
-# Session for Bitwarden CLI
-if [[ -s "${HOME}/.bwsession" ]]; then
-  source "${HOME}/.bwsession"
+if [[ -s "${HOME}/.sources" ]]; then
+  source "${HOME}/.sources"
+fi
+if [[ -s "${HOME}/.sources_private" ]]; then
+  source "${HOME}/.sources_private"
 fi
 
 # Add GNU Coreutils to $PATH
