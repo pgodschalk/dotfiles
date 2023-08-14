@@ -14,20 +14,20 @@
   pager = diff-so-fancy | less --tabs=4 -RFX
 
   # Prevent showing files whose names contain non-ASCII symbols as unversioned.
-	# http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
-	precomposeunicode = false
+  # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
+  precomposeunicode = false
 
   # Make `git rebase` safer on macOS.
-	# More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
-	trustctime = false
+  # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
+  trustctime = false
 
   # Speed up commands involving untracked files such as `git status`.
-	# https://git-scm.com/docs/git-update-index#_untracked_cache
-	untrackedCache = true
+  # https://git-scm.com/docs/git-update-index#_untracked_cache
+  untrackedCache = true
 
   # Treat spaces before tabs and all kinds of trailing whitespace as an error.
-	# [default] trailing-space:   looks for spaces at the end of a line
-	# [default] space-before-tab: looks for spaces before tabs at the beginning
+  # [default] trailing-space:   looks for spaces at the end of a line
+  # [default] space-before-tab: looks for spaces before tabs at the beginning
   #                             of a line
   whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 [init]
@@ -129,27 +129,27 @@
   whitespace = fix
 [branch]
   # Show most recently changed branches first.
-	sort = -committerdate
+  sort = -committerdate
 [color]
   # Use colors in Git commands that are capable of colored output when
-	# outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
+  # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
   ui = auto
 [color "branch"]
-	current = yellow reverse
-	local = yellow
-	remote = green
+  current = yellow reverse
+  local = yellow
+  remote = green
 [color "diff"]
-	meta = yellow bold
-	frag = magenta bold # line info
-	old = red # deletions
-	new = green # additions
+  meta = yellow bold
+  frag = magenta bold # line info
+  old = red # deletions
+  new = green # additions
 [color "status"]
-	added = yellow
-	changed = green
-	untracked = cyan
+  added = yellow
+  changed = green
+  untracked = cyan
 [commit]
   # https://help.github.com/articles/signing-commits-using-gpg/
-	gpgsign = true
+  gpgsign = true
 [diff "bin"]
   # Use `hexdump` to diff binary files
   textconv = hexdump -v -C
@@ -173,14 +173,14 @@
 
   # Make `git push` push relevant annotated tags when pushing branches out
   followTags = true
-	autoSetupRemote = true
+  autoSetupRemote = true
 [pull]
   rebase = false
 [tag]
   forceSignAnnotated = true
 [help]
   # Automatically correct and execute mistyped commands.
-	autocorrect = 1
+  autocorrect = 1
 
 # URL shorthands
 [url "git@github.com:"]
@@ -204,11 +204,11 @@
 [url "git@github.com:solarmonkey/"]
   insteadOf = "gs:"
 [safe]
-	directory = /dotfiles
-	directory = /dotfiles/.nano/nanorc
-	directory = /dotfiles/.nano/nanorc
-	directory = /dotfiles/.zprezto
-	directory = /dotfiles/.nano/nanorc
-	directory = /dotfiles/.zprezto
-	directory = /dotfiles/.nano/nanorc
-	directory = /dotfiles/.zprezto
+  directory = /dotfiles
+  directory = /dotfiles/.nano/nanorc
+  directory = /dotfiles/.nano/nanorc
+  directory = /dotfiles/.zprezto
+  directory = /dotfiles/.nano/nanorc
+  directory = /dotfiles/.zprezto
+  directory = /dotfiles/.nano/nanorc
+  directory = /dotfiles/.zprezto
