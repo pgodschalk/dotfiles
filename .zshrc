@@ -101,9 +101,9 @@ if [[ -s "/usr/local/opt/openjdk/bin" ]]; then
 fi
 
 # Add Google Cloud SDK to $PATH on macOS
-if [[ -s "/usr/local/Caskroom/google-cloud-sdk" ]]; then
-  source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-  source /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc
+if [[ -s "/opt/homebrew/share/google-cloud-sdk/google-cloud-sdk" ]]; then
+  source "/opt/homebrew/share/google-cloud-sdk/path.zsh.inc"
+  source "/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc"
 fi
 
 # Add command-not-found to $PATH on macOS
