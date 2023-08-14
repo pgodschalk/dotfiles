@@ -60,7 +60,7 @@ pretty_git_format() {
   sed --regexp-extended \
     --expression="s/(^[^<]*), [[:digit:]]+ .*months?\)/\1)/" |
   # Line columns up based on } delimiter
-  column --separator '}' --table
+  column -s '}' -t
 }
 
 git_page_maybe() {
