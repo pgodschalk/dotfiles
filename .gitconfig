@@ -201,8 +201,8 @@
   pushInsteadOf = "https://gitlab.com/"
 [url "https://gitlab.com/"]
   insteadOf = "gitlab:"
-[url "git@gitlab.com:MozardBV/"]
-  insteadOf = "gm:"
+[url "git@github.com:solarmonkey/"]
+  insteadOf = "gs:"
 [safe]
 	directory = /dotfiles
 	directory = /dotfiles/.nano/nanorc
