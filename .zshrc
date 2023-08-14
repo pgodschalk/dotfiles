@@ -131,7 +131,7 @@ fi
 
 # asdf version manager
 if command -v brew &> /dev/null; then
-  . /usr/local/opt/asdf/libexec/asdf.sh
+  . $(brew --prefix asdf)/libexec/asdf.sh
 else
   . "$HOME/.asdf/asdf.sh"
 fi
