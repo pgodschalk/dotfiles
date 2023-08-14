@@ -58,3 +58,5 @@ fi
 
 # Workaround for Ansible issue with network lookup
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+# Allow gcloud cli to use site-packages
+export CLOUDSDK_PYTHON_SITEPACKAGES=1
