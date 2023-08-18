@@ -155,3 +155,6 @@ fi
 if command -v ngrok &>/dev/null; then
   eval "$(ngrok completion)"
 fi
+
+# Set up direnv
+eval "$(direnv hook zsh)"
