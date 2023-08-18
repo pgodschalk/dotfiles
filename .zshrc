@@ -150,3 +150,8 @@ fi
 if [[ -f "$HOME/.asdf/plugins/golang/set-env.zsh"]]; then
   . ~/.asdf/plugins/golang/set-env.zsh
 fi
+
+# Set up ngrok completions
+if command -v ngrok &>/dev/null; then
+  eval "$(ngrok completion)"
+fi
