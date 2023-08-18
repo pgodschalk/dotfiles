@@ -124,6 +124,10 @@ if [[ -s "/opt/homebrew/opt/gnu-sed/libexec/gnubin" ]]; then
   export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
 
+# Add postgres to $PATH
+if [[ -s "/opt/homebrew/opt/postgresql@15/bin" ]]; then
+  export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+fi
 
 if [ -z "$SSH_AUTH_SOCK" ]; then
   # Check for a currently running instance of the agent
