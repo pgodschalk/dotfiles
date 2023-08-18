@@ -146,3 +146,7 @@ else
   . "$HOME/.asdf/asdf.sh"
 fi
 
+# Set up golang
+if [[ -f "$HOME/.asdf/plugins/golang/set-env.zsh"]]; then
+  . ~/.asdf/plugins/golang/set-env.zsh
+fi
