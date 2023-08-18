@@ -119,6 +119,12 @@ if [[ -s "${HOME}/Code/for/all/dotfiles/bin" ]]; then
   export PATH="$HOME/Code/for/all/dotfiles/bin:$PATH";
 fi
 
+# Add GNU sed to $PATH
+if [[ -s "/opt/homebrew/opt/gnu-sed/libexec/gnubin" ]]; then
+  export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
+
+
 if [ -z "$SSH_AUTH_SOCK" ]; then
   # Check for a currently running instance of the agent
   RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
