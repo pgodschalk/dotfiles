@@ -136,3 +136,8 @@ fi
 if command -v batcat &> /dev/null; then
   alias bat="batcat"
 fi
+
+# Alias docker-compose to docker compose
+if command -v docker &> /dev/null; then
+  alias docker-compose="docker-compose"
+fi
