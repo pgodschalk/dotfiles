@@ -45,7 +45,8 @@
   ff = merge --ff-only
   noff = merge --no-ff
   po = "!git branch --show-current | xargs -n 1 git push --set-upstream origin"
-  pom = push origin master
+  pom = push origin main
+  poms = push origin master
   st = status
 
   # Divergence (commits we added and commits remote added)
