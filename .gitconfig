@@ -139,11 +139,18 @@
   current = yellow reverse
   local = yellow
   remote = green
+[color "diff-highlight"]
+  oldNormal = red
+  oldHighlight = red "#500000"
+  newNormal = green
+  newHighlight = green "#003000"
 [color "diff"]
-  meta = yellow bold
+  meta = 11
   frag = magenta bold # line info
+  commit = yellow bold
   old = red # deletions
   new = green # additions
+  whitespace = "#ffff00" reverse
 [color "status"]
   added = yellow
   changed = green
