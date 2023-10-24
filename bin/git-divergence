@@ -24,7 +24,7 @@ fi
 
 (
   function branch() {
-    git branch 2>/dev/null | grep --regexp='^*' | tr --delete '\* '
+    git branch 2>/dev/null | grep --regexp='^*' | tr -d '\* '
   }
 
   function ensure_valid_ref() {
