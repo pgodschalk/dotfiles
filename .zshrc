@@ -158,3 +158,8 @@ fi
 
 # Set up direnv
 eval "$(direnv hook zsh)"
+
+# Ensure MacGPG is loaded before brew's gnupg
+if [[ -f "/usr/local/MacGPG2/bin/gpg" ]]; then
+  export PATH=/usr/local/MacGPG2/bin:$PATH
+fi
