@@ -13,19 +13,19 @@ if command -v git &> /dev/null; then
   alias g="git"
 fi
 
-# Use exa as ls and tree
-if command -v exa &> /dev/null; then
-  # There is no good way to check if the version of exa supports --icons so
+# Use eza as ls and tree
+if command -v eza &> /dev/null; then
+  # There is no good way to check if the version of eza supports --icons so
   # assume macOS has it, everything else doesn't.
   if [[ $DISTRO == "macos" ]]; then
-    alias ls="exa --classify --git --icons"
-    alias tree="exa --tree --git --icons"
+    alias ls="eza --classify --git --icons"
+    alias tree="eza --tree --git --icons"
   elif [[ $DISTRO == "debian" ]]; then
-    alias ls="exa --classify"
-    alias tree="exa --tree"
+    alias ls="eza --classify"
+    alias tree="eza --tree"
   else
-    alias ls="exa --classify --git"
-    alias tree="exa --tree --git"
+    alias ls="eza --classify --git"
+    alias tree="eza --tree --git"
   fi
 
   alias la="ll"

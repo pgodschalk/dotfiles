@@ -216,9 +216,9 @@ if ! command -v doggo &> /dev/null; then
   fi
 fi
 
-# exa; ls replacement: https://github.com/ogham/exa
-if ! command -v exa &> /dev/null; then
-  install exa || :
+# eza; ls replacement: https://eza.rocks/
+if ! command -v eza &> /dev/null; then
+  install eza || :
 fi
 
 # git
