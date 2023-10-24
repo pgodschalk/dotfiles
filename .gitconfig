@@ -37,7 +37,7 @@
   amend = commit --amend --reuse-message=HEAD
   ci = commit --verbose
   co = checkout
-  dc = diff-dc
+  dc = diff --find-copies-harder --cached
   dh1 = diff HEAD~1
   di = diff --find-copies-harder
   ds = diff --stat=160,120
