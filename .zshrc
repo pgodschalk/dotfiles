@@ -163,3 +163,8 @@ eval "$(direnv hook zsh)"
 if [[ -f "/usr/local/MacGPG2/bin/gpg" ]]; then
   export PATH=/usr/local/MacGPG2/bin:$PATH
 fi
+
+# Source 1Password plugins
+if [[ -f "$HOME/.config/op/plugins.sh" ]]; then
+  source "$HOME/.config/op/plugins.sh"
+fi
