@@ -1,0 +1,395 @@
+{
+  // This is shared manually, rather than symlinked, since some extensions
+  // store secrets in `settings.json`. It's updated when I remember to. :)
+  "json.schemaDownload.enable": true,
+
+  // Commonly Used
+  "editor.fontSize": 14,
+  "editor.fontFamily": "'FiraCode Nerd Font Mono', 'FiraCode NF', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+  "editor.tabSize": 2,
+
+  // Text Editor
+  "editor.codeLensFontFamily": "'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.linkedEditing": true,
+  "editor.rulers": [80, 120],
+
+  // Text Editor -> Cursor
+  "editor.cursorBlinking": "phase",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorSurroundingLines": 8,
+
+  // Text Editor -> Font
+  "editor.fontLigatures": true,
+
+  // Text Editor -> Formatting
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+
+  // Text Editor -> Diff Editor
+  "diffEditor.codeLens": true,
+
+  // Text Editor -> Minimap
+  "editor.minimap.enabled": false,
+
+  // Text Editor -> Suggestions
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.inlineSuggest.enabled": true,
+
+  // Text Editor -> Files
+  "files.associations": {
+    "*.nomad": "hcl",
+    ".curlrc": "plaintext",
+    ".hushlogin": "plaintext",
+    ".inputrc": "plaintext"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/__pycache__": true,
+    "app/.coverage": true,
+    "frontend/.nyc_output": true,
+    "frontend/.tmp": true,
+    "node_modules/": true,
+    "**/.mypy_cache/": true
+  },
+  "files.hotExit": "off",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+
+  // Workbench
+  "workbench.enableExperiments": false,
+  "workbench.list.smoothScrolling": true,
+  "workbench.startupEditor": "newUntitledFile",
+
+  // Workbench -> Appearance
+  "workbench.colorCustomizations": {
+    "editorHint.foreground": "#00000000",
+    "editorHint.border": "#2aa198",
+  },
+  "workbench.colorTheme": "Solarized Light",
+  "workbench.preferredDarkColorTheme": "Solarized Dark",
+  "workbench.preferredLightColorTheme": "Solarized Light",
+  "workbench.fontAliasing": "auto",
+  "workbench.sideBar.location": "right",
+
+  // Workbench -> Breadcrumbs
+  "breadcrumbs.enabled": false,
+
+  // Workbench -> Editor Management
+  "workbench.editor.defaultBinaryEditor": "hexEditor.hexedit",
+  "workbench.editor.restoreViewState": false,
+  "workbench.editor.tabActionLocation": "left",
+
+  // Workbench -> Settings Editor
+  "workbench.settings.editor": "json",
+
+  // Window
+  "window.autoDetectColorScheme": true,
+  "window.closeWhenEmpty": true,
+  "window.commandCenter": true,
+  "window.restoreFullscreen": true,
+  "window.restoreWindows": "none",
+
+  // Window -> New Window
+  "window.newWindowDimensions": "inherit",
+
+  // Features -> Explorer
+  "explorer.incrementalNaming": "smart",
+  "explorer.openEditors.visible": 1,
+
+  // Features -> Search
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/dist": true
+  },
+  "search.showLineNumbers": true,
+  "search.smartCase": true,
+
+  // Features -> Source Control
+  "scm.diffDecorationsIgnoreTrimWhitespace": "true",
+
+  // Features -> Terminal
+  "terminal.external.osxExec": "/Applications/iTerm2.app",
+  "terminal.external.windowsExec": "%LocalAppData%\\Microsoft\\WindowsApps\\wt.exe",
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorWidth": 2,
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.enableBell": true,
+
+  // Features -> Problems
+  "problems.autoReveal": false,
+
+  // Application -> Telemetry
+  "telemetry.telemetryLevel": "off",
+
+  // Extensions -> .NET Install Tool
+  "dotnetAcquisitionExtension.enableTelemetry": false,
+
+  // Extensions -> Ansible
+  "ansible.python.activationScript": "/Users/patrick/Library/Caches/pypoetry/virtualenvs/ansible-gcp-6OGuQC-l-py3.11/bin/activate",
+  "ansible.lightspeed.enabled": true,
+  "ansible.lightspeed.suggestions.enabled": true,
+
+  // Extensions -> Code Spell Checker -> Languages and Dictionaries
+  "cSpell.language": "en,nl-NL,nl,en-GB,en-US,lorem",
+
+  // Extensions -> Code Spell Checker -> Reporting and Display
+  "cSpell.diagnosticLevel": "Hint",
+
+  // Extensions -> Code Spell Checker -> Files, Folders, and Workspaces
+  "cSpell.enableFiletypes": [
+    "!jsonc",
+    "Log",
+    "ansible",
+    "ansible-jinja",
+    "apacheconf",
+    "browserslist",
+    "crontab",
+    "csv",
+    "diff",
+    "dockercompose",
+    "dockerfile",
+    "dotenv",
+    "editorconfig",
+    "git-rebase",
+    "gitattributes",
+    "gitignore",
+    "haproxy",
+    "hcl",
+    "helm",
+    "ignore",
+    "ini",
+    "jinja",
+    "jsx-tags",
+    "log",
+    "makefile",
+    "markdown-math",
+    "mongodb",
+    "nginx",
+    "oraclesql",
+    "pip-requirements",
+    "postscript",
+    "powershell",
+    "properties",
+    "raw",
+    "search-result",
+    "shellcheck-output",
+    "shellcheckrc",
+    "shellscript",
+    "sql",
+    "ssh_config",
+    "systemd-unit-file",
+    "tailwindcss",
+    "terraform",
+    "terraform-vars",
+    "toml",
+    "vue-directives",
+    "vue-injection-markdown",
+    "vue-interpolations",
+    "vue-sfc-style-variable-injection",
+    "xml",
+    "xsl"
+  ],
+
+  // Extensions -> CodeQL
+  "codeQL.telemetry.enableTelemetry": false,
+
+  // Extensions -> Copilot
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": true,
+    "scminput": false
+  },
+
+  // Extensions -> CSS Language Features -> CSS
+  "css.validate": false,
+
+  // Extensions -> CSS Language Features -> LESS
+  "less.validate": false,
+
+  // Extensions -> CSS Language Features -> SCSS (Sass)
+  "scss.validate": false,
+
+  // Extensions -> CSS Language Features -> Legacy
+  "cSpell.allowCompoundWords": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableCommitSigning": true,
+  "git.suggestSmartCommit": false,
+
+  // Extensions -> Git
+  "git.inputValidationLength": 80,
+
+  // Extensions -> GitHub
+  "github.gitProtocol": "ssh",
+
+  // Extensions -> GitHub Pull Requests
+  "githubPullRequests.pullBranch": "never",
+
+  // Extensions -> GitLens - Git supercharged -> Advanced
+  "gitlens.blame.ignoreWhitespace": true,
+
+  // Extensions -> Gitmoji
+  "gitmoji.showEmojiCode": true,
+
+  // Extensions -> Google Cloud Code
+  "cloudcode.autoDependencies": "off",
+  "cloudcode.duetAI.enable": false,
+  "cloudcode.enableTelemetry": false,
+  "cloudcode.project": "solarmonkey-app",
+
+  // Extensions -> HTML
+  "html.format.indentInnerHtml": true,
+
+  // Extensions -> Import Cost configuration
+  "importCost.largePackageDarkColor": "#d30102",
+  "importCost.largePackageLightColor": "#d30102",
+  "importCost.mediumPackageDarkColor": "#cb4b16",
+  "importCost.mediumPackageLightColor": "#cb4b16",
+  "importCost.smallPackageDarkColor": "#859900",
+  "importCost.smallPackageLightColor": "#859900",
+
+  // Extensions -> isort
+  "isort.args": [
+    "--settings-path=${workspaceFolder}/app/setup.cfg"
+  ],
+
+  // Extensions -> Kubernetes
+  "vs-kubernetes": {
+    "vscode-kubernetes.minikube-path.mac": "/Users/patrick/.vs-kubernetes/tools/minikube/darwin-arm64/minikube"
+  },
+
+  // Extensions -> Markdown
+  "markdown.preview.fontFamily": "'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji",
+
+  // Extensions -> MongoDB
+  "mdb.sendTelemetry": false,
+
+  // Extensions -> Oracle Developer Tools
+  "oracledevtools.bookmarkFileFolder": "/Users/patrick/.oracle/oracle.oracledevtools",
+  "oracledevtools.connectionConfiguration.configFilesFolder": "/Users/patrick/.oracle/network/admin",
+  "oracledevtools.connectionConfiguration.walletFileFolder": "/Users/patrick/.oracle/network/admin",
+  "oracledevtools.download.otherFolder": "/Users/patrick/Downloads",
+
+  // Extensions -> Parallels Desktop
+  "parallels-desktop.brew.path": "/opt/homebrew/bin/brew",
+  "parallels-desktop.extension.path": "/Users/patrick/.parallels-desktop-vscode",
+  "parallels-desktop.extension.refresh.auto": false,
+  "parallels-desktop.git.path": "/opt/homebrew/bin/git",
+  "parallels-desktop.hashicorp.packer.path": "/Users/patrick/.asdf/shims/packer",
+  "parallels-desktop.hashicorp.vagrant.parallels.plugin": true,
+  "parallels-desktop.hashicorp.vagrant.path": "/usr/local/bin/vagrant",
+
+  // Extensions -> Prettier
+  "prettier.htmlWhitespaceSensitivity": "strict",
+  "prettier.jsxSingleQuote": true,
+  "prettier.proseWrap": "never",
+  "prettier.requireConfig": true,
+  "prettier.semi": false,
+
+  // Extensions -> Project Manager -> Git
+  "projectManager.git.baseFolders": ["/Users/patrick/Code"],
+
+  // Extensions -> Red Hat
+  "redhat.telemetry.enabled": false,
+
+  // Extensions -> SCSS
+  "scss.scannerExclude": [
+    "**/.git",
+    "**/node_modules",
+    "**/bower_components",
+    "**/dist"
+  ],
+
+  // Extensions -> Stylelint
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "scss"
+  ],
+
+  // Extensions -> Tailwind CSS IntelliSense
+  "tailwindCSS.emmetCompletions": true,
+
+  // Extensions -> TypeScript
+  "javascript.format.enable": false,
+  "javascript.validate.enable": false,
+
+  // Extensions -> Visual Studio Live Share
+  "liveshare.accessibility.voice": "en-GB-Libby",
+
+  // Extensions -> XML
+  "xml.codeLens.enabled": true,
+
+  // Extensions -> YAML
+  "yaml.customTags": [
+    "!And",
+    "!And sequence",
+    "!If",
+    "!If sequence",
+    "!Not",
+    "!Not sequence",
+    "!Equals",
+    "!Equals sequence",
+    "!Or",
+    "!Or sequence",
+    "!FindInMap",
+    "!FindInMap sequence",
+    "!Base64",
+    "!Join",
+    "!Join sequence",
+    "!Cidr",
+    "!Ref",
+    "!Sub",
+    "!Sub sequence",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!ImportValue sequence",
+    "!Select",
+    "!Select sequence",
+    "!Split",
+    "!Split sequence"
+  ],
+
+  // Language overrides
+  "[javascript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+      89
+    ]
+  },
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.rulers": [
+      88
+    ]
+  },
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+}
