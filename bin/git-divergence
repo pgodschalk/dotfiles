@@ -18,7 +18,7 @@ die() {
   exit "$code"
 }
 
-if ! command -v git 2>/dev/null; then
+if ! command -v git > /dev/null 2>&1; then
   die "Git is not installed"
 fi
 
@@ -46,7 +46,7 @@ fi
       --abbrev-commit \
       --date=relative
     echo
-    git di "$rev^..$rev" | diffstat
+    git diff --find-copies-harder "$rev^..$rev" | diffstat
     echo
   }
 
@@ -74,7 +74,7 @@ fi
   done
 
   echo
-  echo outgoing:
+  msg outgoing:
   echo
   for rev in $(git rev-list "$REMOTE..$LOCAL"); do
     show_rev "$rev"

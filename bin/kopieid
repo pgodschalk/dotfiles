@@ -56,7 +56,7 @@ parse_params() {
   args=("$@")
 
   # check required params and arguments
-  [[ ${#args[@]} -eq 0 ]] && die "Missing script arguments"
+  [[ ${#args[@]} -eq 0 ]] && usage
 
   return 0
 }
@@ -64,7 +64,7 @@ parse_params() {
 parse_params "$@"
 setup_colors
 
-if ! command -v convert; then
+if ! command -v convert > /dev/null 2>&1; then
   die "ImageMagick is required, exiting"
 fi
 

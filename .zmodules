@@ -24,27 +24,27 @@ elif [[ $DISTRO == "arch" ]]; then
   fi
 fi
 
-if command -v dnf &> /dev/null; then
+if command -v dnf &>/dev/null; then
   # Defines dnf aliases.
   pmodload dnf
 fi
 
-if command -v docker &> /dev/null; then
+if command -v docker &>/dev/null; then
   # Defines Docker aliases and functions.
   pmodload docker
 fi
 
-if command -v dpkg &> /dev/null; then
+if command -v dpkg &>/dev/null; then
   # Defines dpkg aliases and functions.
   pmodload dpkg
 fi
 
-if command -v carton &> /dev/null; then
+if command -v carton &>/dev/null; then
   # Enables Emacs dependency management.
   pmodload emacs
 fi
 
-if command -v fasd &> /dev/null; then
+if command -v fasd &>/dev/null; then
   # Fasd is a command-line productivity booster, inspired by tools like
   # autojump, z and v, it offers quick access to files and directories by
   # keeping track of files and directories that were previously accessed.
@@ -57,12 +57,12 @@ if command -v fasd &> /dev/null; then
   pmodload fasd
 fi
 
-if command -v gpg &> /dev/null; then
+if command -v gpg &>/dev/null; then
   # Provides for an easier use of GPG by setting up gpg-agent.
   pmodload gpg
 fi
 
-if command -v cabal &> /dev/null; then
+if command -v cabal &>/dev/null; then
   # Enables local Haskell package installation.
   pmodload haskell
 fi
@@ -71,16 +71,16 @@ fi
 #pmodload helper
 
 # Defines Homebrew specific environment variables and aliases.
-if command -v brew &> /dev/null; then
+if command -v brew &>/dev/null; then
   pmodload homebrew
 fi
 
 # Defines MacPorts aliases and adds MacPorts directories to path variables.
-if command -v port &> /dev/null; then
+if command -v port &>/dev/null; then
   pmodload port
 fi
 
-if command -v opam &> /dev/null; then
+if command -v opam &>/dev/null; then
   # Initializes OCaml package management.
   pmodload opam
 fi
@@ -90,53 +90,53 @@ if [[ $DISTRO == "macos" ]]; then
   pmodload osx
 fi
 
-if command -v pacman &> /dev/null; then
+if command -v pacman &>/dev/null; then
   # Provides aliases and functions for the Pacman package manager and
   # frontends.
   pmodload pacman
 fi
 
-if command -v perl &> /dev/null; then
+if command -v perl &>/dev/null; then
   # Enables local Perl module installation on macOS and defines aliases.
   pmodload perl
 fi
 
-if command -v rails &> /dev/null; then
+if command -v rails &>/dev/null; then
   # Defines Ruby on Rails aliases.
   pmodload rails
 fi
 
-if command -v rsync &> /dev/null; then
+if command -v rsync &>/dev/null; then
   # Defines rsync aliases.
   pmodload rsync
 fi
 
-if command -v ruby &> /dev/null; then
+if command -v ruby &>/dev/null; then
   # Configures Ruby local gem installation, loads version managers, and defines
   # aliases.
   pmodload ruby
 fi
 
-if command -v screen &> /dev/null; then
+if command -v screen &>/dev/null; then
   # Defines GNU Screen aliases and provides for auto launching it at start-up.
   pmodload screen
 fi
 
-if command -v ssh &> /dev/null; then
+if command -v ssh &>/dev/null; then
   # Provides for an easier use of SSH by setting up ssh-agent.
   pmodload ssh
 fi
 
-if command -v tmux &> /dev/null; then
+if command -v tmux &>/dev/null; then
   # Defines tmux aliases and provides for auto launching it at start-up.
   pmodload tmux
 fi
 
-if command -v wakeonlan &> /dev/null; then
+if command -v wakeonlan &>/dev/null; then
   pmodload wakeonlan
 fi
 
-if command -v yum &> /dev/null; then
+if command -v yum &>/dev/null; then
   # Defines yum aliases.
   pmodload yum
 fi
@@ -148,50 +148,50 @@ if [[ -s "${HOME}/.zprezto/contrib" ]]; then
   if [[ $DISTRO == "macos" ]]; then
     pmodload clipboard
   else
-    if command -v xclip &> /dev/null; then
+    if command -v xclip &>/dev/null; then
       pmodload clipboard
-    elif command -v xsel &> /dev/null; then
+    elif command -v xsel &>/dev/null; then
       pmodload clipboard
     fi
   fi
 
-  if command -v direnv &> /dev/null; then
+  if command -v direnv &>/dev/null; then
     pmodload direnv
   fi
 
-  if command -v elixir &> /dev/null; then
+  if command -v elixir &>/dev/null; then
     pmodload elixir
   fi
 
-  if command -v fzy &> /dev/null; then
+  if command -v fzy &>/dev/null; then
     pmodload fzy
   fi
 
-  if command -v gcloud &> /dev/null; then
+  if command -v gcloud &>/dev/null; then
     pmodload gcloud
   fi
 
-  if command -v kubectl &> /dev/null; then
+  if command -v kubectl &>/dev/null; then
     pmodload kubernetes
   fi
 
-  if command -v nvm &> /dev/null; then
+  if command -v nvm &>/dev/null; then
     pmodload nvm-auto-use
   fi
 
-  if command -v mix &> /dev/null; then
+  if command -v mix &>/dev/null; then
     pmodload phoenix
   fi
 
-  if command -v thefuck &> /dev/null; then
+  if command -v thefuck &>/dev/null; then
     pmodload thefuck
   fi
 
-  if command -v tmux &> /dev/null; then
+  if command -v tmux &>/dev/null; then
     pmodload tmux-xpanes
   fi
 
-  if command -v zypper &> /dev/null; then
+  if command -v zypper &>/dev/null; then
     pmodload zypper
   fi
 fi

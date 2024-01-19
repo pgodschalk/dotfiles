@@ -45,7 +45,7 @@ die() {
   exit "$code"
 }
 
-if command -v git 2>/dev/null; then
+if command -v git > /dev/null 2>&1; then
   git log \
       --all \
       --find-renames \

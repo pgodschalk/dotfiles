@@ -28,17 +28,17 @@ if [[ -s "${HOME}/.iterm2_shell_integration.zsh" ]]; then
 fi
 
 # Source Starship
-if command -v starship &> /dev/null; then
+if command -v starship &>/dev/null; then
   eval "$(starship init zsh)"
 fi
 
 # Source Zoxide
-if command -v zoxide &> /dev/null; then
+if command -v zoxide &>/dev/null; then
   eval "$(zoxide init zsh)"
 fi
 
 # Brew completions
-if command -v brew &> /dev/null; then
+if command -v brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
   autoload -Uz compinit
   compinit
@@ -86,7 +86,7 @@ if [[ -s "/usr/local/opt/gnu-sed/libexec/gnubin" ]]; then
 fi
 
 # Add Composer packages to $PATH
-if command -v composer &> /dev/null; then
+if command -v composer &>/dev/null; then
   export PATH="$HOME/.composer/vendor/bin:$PATH"
 fi
 
@@ -129,6 +129,7 @@ if [[ -s "/opt/homebrew/opt/postgresql@15/bin" ]]; then
   export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 fi
 
+# SSH agent
 if [ -z "$SSH_AUTH_SOCK" ]; then
   # Check for a currently running instance of the agent
   RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
@@ -140,7 +141,7 @@ if [ -z "$SSH_AUTH_SOCK" ]; then
 fi
 
 # asdf version manager
-if command -v brew &> /dev/null; then
+if command -v brew &>/dev/null; then
   . $(brew --prefix asdf)/libexec/asdf.sh
 else
   . "$HOME/.asdf/asdf.sh"
