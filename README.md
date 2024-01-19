@@ -73,6 +73,6 @@ Rolling release of the `main` branch.
 
 [SPDX](https://spdx.org/licenses/) license: `MIT`
 
-Copyright (c) 2020-2022 Patrick Godschalk
+Copyright (c) 2020-2024 Patrick Godschalk
 
 See [LICENSE.txt](https://github.com/pgodschalk/dotfiles/blob/main/LICENSE.txt).
