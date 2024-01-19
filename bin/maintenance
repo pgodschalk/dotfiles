@@ -80,13 +80,19 @@ msg "${BLUE}Cleaning Homebrew${NOFORMAT}"
 brew cleanup
 
 msg "${BLUE}Verifying Homebrew integrity${NOFORMAT}"
-brew doctor || true 
+brew doctor || true
 
 msg "${BLUE}Updating gcloud${NOFORMAT}"
 gcloud components update
 
 msg "${BLUE}Updating tldr${NOFORMAT}"
 tldr --update
+
+msg "${BLUE}Updating global pip packages${NOFORMAT}"
+pip install --upgrade numpy pip setuptools
+
+msg "${BLUE}Updating global npm packages${NOFORMAT}"
+npm -g update
 
 msg "${BLUE}Updating dotfile git repositories${NOFORMAT}"
 cd "$HOME/.zprezto" || true
@@ -95,5 +101,6 @@ cd "$HOME" || true
 
 msg "${GREEN}Applications to update manually${NOFORMAT}"
 brew list --cask -1 | xargs brew info --cask | rg auto_updates
-msg "Mozilla Firefox"
+msg "cloud-sql-proxy"
 msg "Wipr (definitions)"
+asdf latest --all | grep --invert-match "installed" | grep --invert-match "redirect"
