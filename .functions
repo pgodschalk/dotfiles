@@ -87,7 +87,6 @@ function getcertnames() {
   fi;
 }
 
-
 # Compare original and gzipped file size
 function gz() {
   local origsize
@@ -116,15 +115,17 @@ if [ ! "$(uname -s)" = 'Darwin' ]; then
   fi
 fi
 
-# Set default window title after SSH closes
-function ssh() {
-  if [[ -s "/usr/local/bin/ssh" ]]; then
-    command /usr/local/bin/ssh "$@"
-  else
-    command /usr/bin/ssh "$@"
-  fi
-  echo -ne "\e]1;\a"
-}
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+  # Set default window title after SSH closes
+  function ssh() {
+   if [[ -s "/usr/local/bin/ssh" ]]; then
+     command /usr/local/bin/ssh "$@"
+   else
+     command /usr/bin/ssh "$@"
+   fi
+   echo -ne "\e]1;\a"
+  }
+fi
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression
 function targz() {

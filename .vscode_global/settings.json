@@ -71,7 +71,7 @@
   // Workbench -> Appearance
   "workbench.colorCustomizations": {
     "editorHint.foreground": "#00000000",
-    "editorHint.border": "#2aa198",
+    "editorHint.border": "#2aa198"
   },
   "workbench.colorTheme": "Solarized Light",
   "workbench.preferredDarkColorTheme": "Solarized Dark",
@@ -118,7 +118,7 @@
   "scm.diffDecorationsIgnoreTrimWhitespace": "true",
 
   // Features -> Terminal
-  "terminal.external.osxExec": "/Applications/iTerm2.app",
+  "terminal.external.osxExec": "/Applications/Warp.app",
   "terminal.external.windowsExec": "%LocalAppData%\\Microsoft\\WindowsApps\\wt.exe",
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.cursorStyle": "line",
@@ -262,9 +262,7 @@
   "importCost.smallPackageLightColor": "#859900",
 
   // Extensions -> isort
-  "isort.args": [
-    "--settings-path=${workspaceFolder}/app/setup.cfg"
-  ],
+  "isort.args": ["--settings-path=${workspaceFolder}/app/setup.cfg"],
 
   // Extensions -> Kubernetes
   "vs-kubernetes": {
@@ -314,12 +312,7 @@
   ],
 
   // Extensions -> Stylelint
-  "stylelint.validate": [
-    "css",
-    "less",
-    "postcss",
-    "scss"
-  ],
+  "stylelint.validate": ["css", "less", "postcss", "scss"],
 
   // Extensions -> Tailwind CSS IntelliSense
   "tailwindCSS.emmetCompletions": true,
@@ -372,9 +365,7 @@
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.rulers": [
-      89
-    ]
+    "editor.rulers": [89]
   },
   "[python]": {
     "editor.codeActionsOnSave": {
@@ -382,14 +373,12 @@
     },
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
-    "editor.rulers": [
-      88
-    ]
+    "editor.rulers": [88]
   },
   "[terraform]": {
     "editor.defaultFormatter": "hashicorp.terraform"
   },
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
-  },
+  }
 }

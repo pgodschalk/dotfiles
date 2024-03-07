@@ -36,14 +36,16 @@ zstyle ':prezto:load' pmodule \
   'history' \
   'directory' \
   'spectrum' \
+  'gnu-utility' \
   'utility' \
+  'archive' \
   'git' \
   'node' \
   'python' \
   'completion' \
-  'archive' \
   'syntax-highlighting' \
-  'history-substring-search'
+  'history-substring-search' \
+  'prompt'
 
 #
 # Autosuggestions
@@ -71,10 +73,10 @@ zstyle ':prezto:load' pmodule \
 zstyle ':prezto:module:editor' key-bindings 'emacs'
 
 # Auto convert .... to ../..
-zstyle ':prezto:module:editor' dot-expansion 'yes'
+# zstyle ':prezto:module:editor' dot-expansion 'yes'
 
 # Allow the zsh prompt context to be shown.
-# zstyle ':prezto:module:editor' ps-context 'yes'
+#zstyle ':prezto:module:editor' ps-context 'yes'
 
 #
 # Git
@@ -89,7 +91,6 @@ zstyle ':prezto:module:editor' dot-expansion 'yes'
 
 # Set the command prefix on non-GNU systems.
 # zstyle ':prezto:module:gnu-utility' prefix 'g'
-
 
 #
 # History
@@ -121,7 +122,7 @@ zstyle ':prezto:module:editor' dot-expansion 'yes'
 # zstyle ':prezto:module:history-substring-search' case-sensitive 'yes'
 
 # Enable search for fuzzy matches.
-# zstyle ':prezto:module:history-substring-search' fuzzy 'yes'
+zstyle ':prezto:module:history-substring-search' fuzzy 'yes'
 
 # Enable search uniqueness.
 # zstyle ':prezto:module:history-substring-search' unique 'yes'
@@ -150,7 +151,6 @@ zstyle ':prezto:module:editor' dot-expansion 'yes'
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-
 if ! command -v starship &>/dev/null; then
   zstyle ':prezto:module:prompt' theme 'spaceship'
 fi
@@ -227,7 +227,7 @@ zstyle ':prezto:module:ssh:load' identities 'id_ed25519' 'id_ecdsa' 'id_rsa'
 #
 
 # Auto set the tab and window titles.
-zstyle ':prezto:module:terminal' auto-title 'yes'
+# zstyle ':prezto:module:terminal' auto-title 'yes'
 
 # Set the window title format.
 # zstyle ':prezto:module:terminal:window-title' format '%n@%m: %s'
@@ -249,7 +249,7 @@ zstyle ':prezto:module:terminal' auto-title 'yes'
 # zstyle ':prezto:module:tmux:auto-start' remote 'yes'
 
 # Integrate with iTerm2.
-zstyle ':prezto:module:tmux:iterm' integrate 'yes'
+# zstyle ':prezto:module:tmux:iterm' integrate 'yes'
 
 # Set the default session name:
 # zstyle ':prezto:module:tmux:session' name 'YOUR DEFAULT SESSION NAME'

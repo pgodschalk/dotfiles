@@ -99,6 +99,9 @@ cd "$HOME/.zprezto" || true
 git pull
 cd "$HOME" || true
 
+msg "${BLUE}Pruning docker${NOFORMAT}"
+docker system prune -a
+
 msg "${GREEN}Applications to update manually${NOFORMAT}"
 brew list --cask -1 | xargs brew info --cask | rg auto_updates
 msg "cloud-sql-proxy"

@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 
+# We use this to determine which OS specific plugins to load
+if [[ $OSTYPE == "linux-gnu"* ]]; then
+  if grep --quiet "debian" /etc/os-release; then
+    export DISTRO="debian"
+  elif grep --quiet "Arch" /etc/os-release; then
+    export DISTRO="arch"
+  elif grep --quiet "rhel" /etc/os-release; then
+    export DISTRO="rhel"
+  fi
+elif [[ $OSTYPE == "darwin"* ]]; then
+  export DISTRO="macos"
+fi
+
 # Set the default editor.
 if command -v nano &>/dev/null; then
   export EDITOR="nano"
@@ -11,19 +24,55 @@ elif command -v vi &>/dev/null; then
   export EDITOR="vi"
 fi
 
-if command -v node &>/dev/null; then
-  # Enable persistent REPL history for `node`.
-  export NODE_REPL_HISTORY=~/.node_history
-  # Allow 32^3 entries; the default is 1000.
-  export NODE_REPL_HISTORY_SIZE='32768'
-  # Use sloppy mode by default, matching web browsers.
-  export NODE_REPL_MODE='sloppy'
+# Add GNU Coreutils to $PATH
+if [[ -s "/usr/local/opt/coreutils/libexec/gnubin" ]]; then
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 fi
 
-if command -v python &>/dev/null || command -v python3 &>/dev/null || command -v python2 &>/dev/null; then
-  # Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
-  export PYTHONIOENCODING='UTF-8'
+# Add GNU sed to $PATH
+if [[ -s "/usr/local/opt/gnu-sed/libexec/gnubin" ]]; then
+  export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
+
+# Add Composer packages to $PATH
+if command -v composer &>/dev/null; then
+  export PATH="$HOME/.composer/vendor/bin:$PATH"
+fi
+
+# Add XDG binaries to $PATH
+if [[ -s "${HOME}/.local/bin" ]]; then
+  export PATH="$HOME/.local/bin:$PATH";
+fi
+
+# Add OpenJDK to $PATH
+if [[ -s "/usr/local/opt/openjdk/bin" ]]; then
+  export PATH="/usr/local/opt/openjdk/bin:$PATH"
+fi
+
+# Add postgres to $PATH
+if [[ -s "/opt/homebrew/opt/postgresql@15/bin" ]]; then
+  export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+fi
+
+# Add dotfiles bin to $PATH
+if [[ -s "${HOME}/Code/for/all/dotfiles/bin" ]]; then
+  export PATH="$HOME/Code/for/all/dotfiles/bin:$PATH";
+fi
+
+# Ensure MacGPG is loaded before brew's gnupg
+if [[ -f "/usr/local/MacGPG2/bin/gpg" ]]; then
+  export PATH=/usr/local/MacGPG2/bin:$PATH
+fi
+
+# Enable persistent REPL history for `node`.
+export NODE_REPL_HISTORY=~/.node_history
+# Allow 32^3 entries; the default is 1000.
+export NODE_REPL_HISTORY_SIZE='32768'
+# Use sloppy mode by default, matching web browsers.
+export NODE_REPL_MODE='sloppy'
+
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
+export PYTHONIOENCODING='UTF-8'
 
 # Prefer US English and use UTF-8.
 export LC_CTYPE="en_US.UTF-8"
@@ -32,29 +81,14 @@ export LC_ALL='en_US.UTF-8'
 # Don’t clear the screen after quitting a manual page.
 export MANPAGER='less --no-init';
 
-if command -v brew &>/dev/null; then
-  # Avoid issues with `gpg` as installed via Homebrew.
-  # https://stackoverflow.com/a/42265848/96656
-  GPG_TTY=$(tty)
-  export GPG_TTY
+export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_INSECURE_REDIRECTS=1
 
-  export HOMEBREW_NO_ENV_HINTS=1
-  export HOMEBREW_NO_INSECURE_REDIRECTS=1
-fi
+export SSH_KEY_PATH="$HOME/.ssh/id_ed25519";
 
-if command -v ssh &>/dev/null; then
-  if [[ -s "${HOME}/.ssh/id_ed25519" ]]; then
-    export SSH_KEY_PATH="$HOME/.ssh/id_ed25519";
-  fi
-fi
+export BAT_THEME="Solarized (light)"
 
-if command -v bat &>/dev/null; then
-  export BAT_THEME="Solarized (light)"
-fi
-
-if command -v docker &>/dev/null; then
-  export COMPOSE_HTTP_TIMEOUT=3600
-fi
+export COMPOSE_HTTP_TIMEOUT=3600
 
 # Workaround for Ansible issue with network lookup
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES

@@ -1,11 +1,32 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2139
 
-# Shortcuts
 if [[ $DISTRO == "macos" ]]; then
+  # Shortcuts
   alias dl="cd ~/Downloads"
   alias dt="cd ~/Desktop"
   alias repos="~/Code"
+
+  # Chrome with debugging port
+  alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222"
+
+  alias localip="ipconfig getifaddr en0"
+  # Show active network interfaces
+  alias ifactive="ifconfig | pcregrep --multiline --only-matching '^[^\t:]+:([^\n]|\n\t)*status: active'"
+  # Flush Directory Service cache
+  alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
+
+  # Empty the Trash on all mounted volumes and the main HDD.
+  # Also, clear Apple’s System Logs to improve shell startup speed.
+  # Finally, clear download history from quarantine.
+  alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash/*; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
+
+  # http://xkcd.com/530/
+  alias stfu="osascript -e 'set volume output muted true'"
+  alias pumpitup="osascript -e 'set volume output volume 100'"
+
+  # Convert svg to png
+  alias svg2png="qlmanage -t -s 1000 -o . $1"
 fi
 
 if command -v git &>/dev/null; then
@@ -14,19 +35,8 @@ fi
 
 # Use eza as ls and tree
 if command -v eza &>/dev/null; then
-  # There is no good way to check if the version of eza supports --icons so
-  # assume macOS has it, everything else doesn't.
-  if [[ $DISTRO == "macos" ]]; then
-    alias ls="eza --classify --git --icons"
-    alias tree="eza --tree --git --icons"
-  elif [[ $DISTRO == "debian" ]]; then
-    alias ls="eza --classify"
-    alias tree="eza --tree"
-  else
-    alias ls="eza --classify --git"
-    alias tree="eza --tree --git"
-  fi
-
+  alias ls="eza --classify --git --icons"
+  alias tree="eza --tree --git --icons"
   alias la="ll"
   alias l="ls -1"
 fi
@@ -41,22 +51,9 @@ if command -v date &>/dev/null; then
   alias week='date +%V'
 fi
 
-# Shortcuts
-if [[ $DISTRO == "macos" ]]; then
-
-  alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --remote-debugging-port=9222"
-fi
-
 # IP addresses
 if command -v dig &>/dev/null; then
   alias ip="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com -4 && dig TXT +short o-o.myaddr.l.google.com @ns1.google.com -6"
-fi
-if [[ $DISTRO == "macos" ]]; then
-  alias localip="ipconfig getifaddr en0"
-  # Show active network interfaces
-  alias ifactive="ifconfig | pcregrep --multiline --only-matching '^[^\t:]+:([^\n]|\n\t)*status: active'"
-  # Flush Directory Service cache
-  alias flush+"dscacheutil -flushcache && killall -HUP mDNSResponder"
 fi
 
 # Canonical hex dump; some systems have this symlinked
@@ -69,27 +66,14 @@ command -v md5sum > /dev/null || alias md5sum="md5"
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
 
 # Trim new lines and copy to clipboard
-if [[ -s "${HOME}/.iterm2_shell_integration.zsh" ]]; then
-  if [ -z ${ITERM_PROFILE+x} ]; then
-    alias c="tr -d '\n' | it2copy"
-  else
-    alias c="tr -d '\n' | pbcopy"
-  fi
+if [[ -s "${HOME}/.iterm2_shell_integration.zsh" && $TERM_PROGRAM == "iTerm.app" ]]; then
+  alias c="tr -d '\n' | it2copy"
 else
   alias c="tr -d '\n' | pbcopy"
 fi
 
 # Recursively delete `.DS_Store` files
-if command -v find &>/dev/null 2>&1; then
-  alias rmds="find . -type f -name '*.DS_Store' -ls -delete"
-fi
-
-# Empty the Trash on all mounted volumes and the main HDD.
-# Also, clear Apple’s System Logs to improve shell startup speed.
-# Finally, clear download history from quarantine.
-if [[ $DISTRO == "macos" ]]; then
-  alias emptytrash="sudo rm -rfv /Volumes/*/.Trashes; sudo rm -rfv ~/.Trash/*; sudo rm -rfv /private/var/log/asl/*.asl; sqlite3 ~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV* 'delete from LSQuarantineEvent'"
-fi
+alias rmds="find . -type f -name '*.DS_Store' -ls -delete"
 
 # URL-encode strings
 if command -v python3 &>/dev/null; then
@@ -102,12 +86,6 @@ fi
 # For example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
 alias map="xargs -n1"
-
-# http://xkcd.com/530/
-if [[ $DISTRO == "macos" ]]; then
-  alias stfu="osascript -e 'set volume output muted true'"
-  alias pumpitup="osascript -e 'set volume output volume 100'"
-fi
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec ${SHELL} -l"
@@ -126,11 +104,6 @@ if command -v nvim &>/dev/null; then
   alias vi="nvim"
 fi
 
-# Convert svg to png on macOS
-if command -v qlmanage &>/dev/null; then
-  alias svg2png="qlmanage -t -s 1000 -o . $1"
-fi
-
 # Alias bat to batcat
 if command -v batcat &>/dev/null; then
   alias bat="batcat"
@@ -138,5 +111,10 @@ fi
 
 # Alias docker-compose to docker compose
 if command -v docker &>/dev/null; then
-  alias docker-compose="docker-compose"
+  alias docker-compose="docker compose"
+fi
+
+# Alias gssh to google compute ssh
+if command -v gcloud &>/dev/null; then
+  alias gssh="gcloud compute ssh"
 fi

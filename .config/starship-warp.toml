@@ -1,0 +1,167 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+[aws]
+symbol = '󰸏 '
+
+[c]
+symbol = ' '
+
+[character]
+format = ''
+
+[crystal]
+format = ' '
+
+[dart]
+format = ' '
+
+[direnv]
+disabled = true # @TODO
+
+[docker_context]
+detect_files = [
+  'compose.yml',
+  'compose.yaml',
+  'docker-compose.yml',
+  'docker-compose.yaml',
+  'Dockerfile'
+]
+
+[dotnet]
+symbol = '󰪮 '
+
+[elixir]
+symbol = ' '
+
+[elm]
+symbol = ' '
+
+[erlang]
+symbol = ' '
+
+[fennel]
+symbol = ' '
+
+[gcloud]
+format = 'on [$symbol$project]($style) '
+symbol = '󱇶 '
+[gcloud.project_aliases]
+solarmonkey-app = 'prod'
+solar-monkey-internal-tools = 'tools'
+solarmonkey-non-production = 'nonprod'
+
+[golang]
+symbol = ' '
+
+[guix_shell]
+symbol = ' '
+
+[gradle]
+symbol = ' '
+
+[haskell]
+symbol = ' '
+
+[haxe]
+symbol = ' '
+
+[java]
+symbol = ' '
+
+[julia]
+symbol = ' '
+
+[kotlin]
+symbol = ' '
+
+[kubernetes]
+symbol = '󱃾 '
+
+[line_break]
+disabled = true
+
+[lua]
+symbol = ' '
+
+[nim]
+symbol = ' '
+
+[nix_shell]
+symbol = '󱄅 '
+
+[nodejs]
+symbol = '󰎙 '
+
+[ocaml]
+symbol = ' '
+
+[os.symbols]
+Alpine = ' '
+Amazon = ' '
+Android = '󰀲 '
+Arch = '󰣇 '
+Artix = ' '
+CentOS = ' '
+Debian = ' '
+EndeavourOS = ' '
+Fedora = ' '
+FreeBSD = ' '
+Garuda = ' '
+Gentoo = '󰣨 '
+Illumos = ' '
+Linux = '󰌽 '
+Macos = ' '
+Manjaro = ' '
+Mint = '󰣭 '
+NetBSD = "🚩 "
+NixOS = " "
+OpenBSD = ' '
+openSUSE = ' '
+Pop = ' '
+Redhat = '󱄛 '
+RedHatEnterprise = '󱄛 '
+Solus = ' '
+Ubuntu = ' '
+Windows =' '
+
+[perl]
+symbol = ' '
+
+[php]
+symbol = ' '
+
+[purescript]
+symbol = ' '
+
+[python]
+symbol = ' '
+
+[rlang]
+symbol = ' '
+
+[ruby]
+symbol = ' '
+
+[rust]
+symbol = ' '
+
+[scala]
+symbol = ' '
+
+[swift]
+symbol = ' '
+
+[terraform]
+format = 'via [$symbol$version]($style) '
+symbol = ' '
+detect_extensions = ['tf', 'tfplan', 'tfstate', 'tfvars']
+detect_files = ['terragrunt.hcl']
+
+[vlang]
+symbol = ' '
+
+[zig]
+symbol = ' '
