@@ -118,12 +118,14 @@ fi
 if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
   # Set default window title after SSH closes
   function ssh() {
-   if [[ -s "/usr/local/bin/ssh" ]]; then
-     command /usr/local/bin/ssh "$@"
-   else
-     command /usr/bin/ssh "$@"
-   fi
-   echo -ne "\e]1;\a"
+    if [[ -s "/mnt/c/Windows/System32/OpenSSH/ssh.exe" ]]; then
+      command ssh.exe "$@"
+    elif  [[ -s "/usr/local/bin/ssh" ]]; then
+      command /usr/local/bin/ssh "$@"
+    else
+      command /usr/bin/ssh "$@"
+    fi
+    echo -ne "\e]1;\a"
   }
 fi
 
