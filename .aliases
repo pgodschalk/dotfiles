@@ -53,7 +53,7 @@ fi
 
 # IP addresses
 if command -v dig &>/dev/null; then
-  alias ip="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com -4 && dig TXT +short o-o.myaddr.l.google.com @ns1.google.com -6"
+  alias myip="dig TXT +short o-o.myaddr.l.google.com @ns1.google.com -4 && dig TXT +short o-o.myaddr.l.google.com @ns1.google.com -6"
 fi
 
 # Canonical hex dump; some systems have this symlinked
