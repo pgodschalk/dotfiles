@@ -64,6 +64,11 @@ if [[ -f "/usr/local/MacGPG2/bin/gpg" ]]; then
   export PATH=/usr/local/MacGPG2/bin:$PATH
 fi
 
+# Add snap to $PATH
+if [[ -s "/snap/bin" ]]; then
+  export PATH="/snap/bin:$PATH"
+fi
+
 # Enable persistent REPL history for `node`.
 export NODE_REPL_HISTORY=~/.node_history
 # Allow 32^3 entries; the default is 1000.
