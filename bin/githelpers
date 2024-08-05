@@ -55,10 +55,10 @@ pretty_git_branch_sorted() {
 
 pretty_git_format() {
   # Replace (2 years ago) with (2 years)
-  sed --regexp-extended --expression="s/(^[^<]*) ago\)/\1)/" |
+  sed -r -e "s/(^[^<]*) ago\)/\1)/" |
   # Replace (2 years, 5 months) with (2 years)
-  sed --regexp-extended \
-    --expression="s/(^[^<]*), [[:digit:]]+ .*months?\)/\1)/" |
+  sed -r \
+    -e "s/(^[^<]*), [[:digit:]]+ .*months?\)/\1)/" |
   # Line columns up based on } delimiter
   column -s '}' -t
 }
