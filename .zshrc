@@ -69,6 +69,12 @@ fi
 if [[ -s "${HOME}/.aliases_private" ]]; then
   source "${HOME}/.aliases_private"
 fi
+if [[ -s "${HOME}/.exports" ]]; then
+  source "${HOME}/.exports"
+fi
+if [[ -s "${HOME}/.exports_private" ]]; then
+  source "${HOME}/.exports_private"
+fi
 if [[ -s "${HOME}/.functions" ]]; then
   source "${HOME}/.functions"
 fi

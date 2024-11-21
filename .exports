@@ -24,9 +24,15 @@ elif command -v vi &>/dev/null; then
   export EDITOR="vi"
 fi
 
-# Add GNU Coreutils to $PATH
-if [[ -s "/usr/local/opt/coreutils/libexec/gnubin" ]]; then
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+# Add uutils to $PATH
+if [[ -s "/opt/homebrew/opt/uutils-coreutils" ]]; then
+  PATH="/opt/homebrew/opt/uutils-coreutils/libexec/uubin:$PATH"
+fi
+if [[ -s "/opt/homebrew/opt/uutils-diffutils" ]]; then
+  PATH="/opt/homebrew/opt/uutils-diffutils/libexec/uubin:$PATH"
+fi
+if [[ -s "/opt/homebrew/opt/uutils-findutils" ]]; then
+  PATH="/opt/homebrew/opt/uutils-findutils/libexec/uubin:$PATH"
 fi
 
 # Add GNU sed to $PATH
