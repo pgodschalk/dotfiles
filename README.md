@@ -59,8 +59,6 @@
 
 ## About the project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 My collection of dotfiles. I mainly use this with
 [Ghostty](https://ghostty.org) as a terminal emulator on macOS, and
 [Windows Terminal](https://github.com/microsoft/terminal) on Windows.
