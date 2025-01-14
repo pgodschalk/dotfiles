@@ -33,8 +33,8 @@ if [[ -s "${HOME}/.local/bin" ]]; then
 fi
 
 # Add dotfiles bin to $PATH
-if [[ -s "${HOME}/Code/for/all/dotfiles/bin" ]]; then
-  export PATH="$HOME/Code/for/all/dotfiles/bin:$PATH";
+if [[ -s "${HOME}/Code//bin" ]]; then
+  export PATH="$HOME/Code/bin:$PATH";
 fi
 
 # Ensure MacGPG is loaded before brew's gnupg
