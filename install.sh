@@ -1,6 +1,7 @@
 #!/bin/sh
 
-git clone https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$HOME}/.zprezto"
+git clone --recurse-submodules https://github.com/belak/prezto-contrib "${ZDOTDIR:-$HOME}/.zprezto/contrib"
 
 rm -f "${ZDOTDIR:-$HOME}"/.zlogin
 rm -f "${ZDOTDIR:-$HOME}"/.zlogout
