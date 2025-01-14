@@ -60,6 +60,7 @@
     "markdown": true,
     "scminput": true
   },
+  "git.autofetch": true,
   "git.confirmSync": false,
   "git.inputValidationLength": 50,
   "github.gitProtocol": "ssh",
