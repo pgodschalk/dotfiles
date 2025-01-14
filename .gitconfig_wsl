@@ -1,0 +1,223 @@
+[user]
+  name = Patrick Godschalk
+  email = patrick@kernelpanics.nl
+  signingkey = 07B1A68011CA609C8AB0F67C4E6C0EAA175F13A2
+[core]
+  hideDotFiles = dotGitOnly
+
+  # Prevent showing files whose names contain non-ASCII symbols as unversioned.
+  # http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html
+  precomposeunicode = false
+
+  # Make `git rebase` safer on macOS.
+  # More info: <http://www.git-tower.com/blog/make-git-rebase-safe-on-osx/>
+  trustctime = false
+
+  # Speed up commands involving untracked files such as `git status`.
+  # https://git-scm.com/docs/git-update-index#_untracked_cache
+  untrackedCache = true
+
+  # Use custom `.gitignore`.
+  excludesfile = ~/.gitignore_global
+
+  # Use custom `.gitattributes`
+  attributesfile = ~/.gitattributes
+
+  editor = nano
+
+  pager = diff-so-fancy | less --tabs=4 -RFX
+
+  # Treat spaces before tabs and all kinds of trailing whitespace as an error.
+  # [default] trailing-space:   looks for spaces at the end of a line
+  # [default] space-before-tab: looks for spaces before tabs at the beginning
+  #                             of a line
+  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+	sshCommand = ssh.exe
+[alias]
+  aa = add --all
+  amend = commit --amend --reuse-message=HEAD
+  ci = commit --verbose
+  co = checkout
+  dc = diff --find-copies-harder --cached
+  dh1 = diff HEAD~1
+  di = diff --find-copies-harder
+  ds = diff --stat=160,120
+  fa = fetch --all
+  ff = merge --ff-only
+  noff = merge --no-ff
+  po = "!git branch --show-current | xargs -n 1 git push --set-upstream origin"
+  pom = push origin main
+  poms = push origin master
+  st = status
+
+  # Divergence (commits we added and commits remote added)
+  div = divergence
+
+  # Goodness (summary of diff lines added/removed/total)
+  gn = goodness
+  gnc = goodness --cached
+
+  # Fancy logging.
+  #   h = head
+  #   hp = head with patch
+  #   r = recent commits, only current branch
+  #   ra = recent commits, all reachable refs
+  #   l = all commits, only current branch
+  #   la = all commits, all reachable refs
+  #   b = all branches
+  #   bs = all branches, sorted by last commit date
+  b = "!. ~/Code/bin/githelpers && pretty_git_branch"
+  bs = "!. ~/Code/bin/githelpers && pretty_git_branch_sorted"
+  cp = cherry-pick
+  h = !git head
+  head = !git r -1
+  hp = "!. ~/Code/bin/githelpers && show_git_head"
+  l = "!. ~/Code/bin/githelpers && pretty_git_log"
+  la = !git l --all
+  pf = push --force-with-lease
+  r = !GIT_NO_PAGER=1 git l -30
+  ra = !git r --all
+  ski = !git stash --keep-index
+
+  # Clone a repository including all submodules
+  c = clone --recursive
+
+  # Commit all changes
+  ca = !git add --all && git commit --all --verbose
+
+  # List contributors with number of commits
+  contributors = shortlog --summary --numbered
+
+  # Credit an author on the latest commit
+  credit = "!f() { git commit --amend --author \"$1 <$2>\" --reuse-message=HEAD; }; f"
+
+  # Remove branches that have already been merged with master
+  # a.k.a. ‘delete merged’
+  dm = "!git branch --merged | grep --invert-match '\\*' | xargs --max-args=1 git branch --delete"
+
+  # Find branches containing commit
+  fb = "!f() { git branch --all --contains $1; }; f"
+
+  # Find commits by source code
+  fc = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short -S$1; }; f"
+
+  # Find tags containing commit
+  ft = "!f() { git describe --always --contains $1; }; f"
+
+  # Find commits by commit message
+  fm = "!f() { git log --pretty=format:'%C(yellow)%h  %Cblue%ad  %Creset%s%Cgreen  [%cn] %Cred%d' --decorate --date=short --grep=$1; }; f"
+
+  # Switch to a branch, creating it if necessary
+  go = "!f() { git checkout -b \"$1\" 2>/dev/null || git checkout \"$1\"; }; f"
+
+  # Interactive rebase with the given number of latest commits
+  reb = "!r() { git rebase --interactive HEAD~$1; }; r"
+
+  # Remove the old tag with this name and tag the latest commit with it.
+  retag = "!r() { git tag --delete $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
+
+  # View the current working tree status using the short format
+  s = status --short
+
+  # Pull in remote changes for the current repository and all its submodules
+  p = pull --recurse-submodules
+
+  # Show verbose output about tags, branches or remotes
+  tags = tag --list
+  branches = branch --all
+  remotes = remote --verbose
+[apply]
+  # Detect whitespace errors when applying a patch
+  whitespace = fix
+[branch]
+  # Show most recently changed branches first.
+  sort = -committerdate
+[checkout]
+  workers = 4
+[color]
+  # Use colors in Git commands that are capable of colored output when
+  # outputting to the terminal. (This is the default setting in Git ≥ 1.8.4.)
+  ui = auto
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff-highlight"]
+  oldNormal = red
+  oldHighlight = red "#500000"
+  newNormal = green
+  newHighlight = green "#003000"
+[color "diff"]
+  meta = 11
+  frag = magenta bold # line info
+  commit = yellow bold
+  old = red # deletions
+  new = green # additions
+  whitespace = "#ffff00" reverse
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[commit]
+  # https://help.github.com/articles/signing-commits-using-gpg/
+  gpgsign = true
+[diff "bin"]
+  # Use `hexdump` to diff binary files
+  textconv = hexdump -v -C
+[diff-so-fancy]
+  # Detect copies as well as renames.
+  renames = copies
+
+  markEmptyLines = false
+  stripLeadingSymbols = false
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  required = true
+  process = git-lfs filter-process
+[help]
+  # Automatically correct and execute mistyped commands.
+  autocorrect = 1
+[init]
+  defaultBranch = main
+[merge]
+  # Include summaries of merged commits in newly created merge commit messages
+  log = true
+[pull]
+  rebase = false
+[push]
+  autoSetupRemote = true
+
+  # https://git-scm.com/docs/git-config#git-config-pushdefault
+  default = simple
+
+  # Make `git push` push relevant annotated tags when pushing branches out
+  followTags = true
+[tag]
+  forceSignAnnotated = true
+  gpgsign = true
+# URL shorthands
+[url "git@github.com:"]
+  insteadOf = "gh:"
+  pushInsteadOf = "github:"
+  pushInsteadOf = "https://github.com/"
+[url "https://github.com/"]
+  insteadOf = "github:"
+[url "git@gist.github.com:"]
+  insteadOf = "gst:"
+  pushInsteadOf = "gist:"
+  pushInsteadOf = "https://gist.github.com/"
+[url "https://gist.github.com/"]
+  insteadOf = "gist:"
+[url "git@gitlab.com:"]
+  insteadOf = "gl:"
+  pushInsteadOf = "gitlab:"
+  pushInsteadOf = "https://gitlab.com/"
+[url "https://gitlab.com/"]
+  insteadOf = "gitlab:"
+[gitbutler]
+  aiOpenAIKeyOption = bringYourOwn
+  aiOpenAIModelName = gpt-4o-mini
+  aiModelProvider = openai
+[advice]
+  addIgnoredFile = false

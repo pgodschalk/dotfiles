@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    "**/windows/windows_terminal.json": "jsonc",
     ".curlrc": "plaintext",
     ".hushlogin": "plaintext",
     ".gitconfig*": "gitconfig",
