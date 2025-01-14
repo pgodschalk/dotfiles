@@ -196,9 +196,9 @@ Project Link: [https://github.com/pgodschalk/dotfiles](https://github.com/pgodsc
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/patrick-godschalk
 [product-screenshot]: images/screenshot.gif
-[bash]: https://img.shields.io/badge/gnubash-#4EAA25?style=for-the-badge&logo=c%2B%2B&logoColor=white
+[bash]: https://img.shields.io/badge/gnubash-4EAA25?style=for-the-badge&logo=c%2B%2B&logoColor=white
 [bash-url]: https://www.gnu.org/software/bash/
-[python]: https://img.shields.io/badge/python-#3776AB?style=for-the-badge&logo=c%2B%2B&logoColor=white
+[python]: https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=c%2B%2B&logoColor=white
 [python-url]: https://www.python.org
-[ruby]: https://img.shields.io/badge/ruby-#CC342D?style=for-the-badge&logo=c%2B%2B&logoColor=white
+[ruby]: https://img.shields.io/badge/ruby-CC342D?style=for-the-badge&logo=c%2B%2B&logoColor=white
 [ruby-url]: https://www.ruby-lang.org/
