@@ -194,6 +194,7 @@
   followTags = true
 [tag]
   forceSignAnnotated = true
+  gpgsign = true
 # URL shorthands
 [url "git@github.com:"]
   insteadOf = "gh:"
@@ -213,3 +214,9 @@
   pushInsteadOf = "https://gitlab.com/"
 [url "https://gitlab.com/"]
   insteadOf = "gitlab:"
+[gitbutler]
+  aiOpenAIKeyOption = bringYourOwn
+  aiOpenAIModelName = gpt-4o-mini
+  aiModelProvider = openai
+[advice]
+  addIgnoredFile = false

@@ -2,6 +2,7 @@
   "files.associations": {
     ".curlrc": "plaintext",
     ".hushlogin": "plaintext",
+    ".gitconfig*": "gitconfig",
     ".inputrc": "plaintext",
     ".nanorc": "plaintext",
     ".screenrc": "plaintext",

@@ -1,6 +1,6 @@
 [user]
-	name = Patrick Godschalk
-	email = patrick@kernelpanics.nl
+  name = Patrick Godschalk
+  email = patrick@kernelpanics.nl
   signingkey = 07B1A68011CA609C8AB0F67C4E6C0EAA175F13A2
 [core]
   hideDotFiles = dotGitOnly
@@ -175,7 +175,7 @@
   required = true
   process = git-lfs filter-process
 [gpg "openpgp"]
-	program = /usr/local/MacGPG2/bin/gpg
+  program = /usr/local/MacGPG2/bin/gpg
 [help]
   # Automatically correct and execute mistyped commands.
   autocorrect = 1
@@ -196,7 +196,7 @@
   followTags = true
 [tag]
   forceSignAnnotated = true
-	gpgsign = true
+  gpgsign = true
 # URL shorthands
 [url "git@github.com:"]
   insteadOf = "gh:"
@@ -216,11 +216,9 @@
   pushInsteadOf = "https://gitlab.com/"
 [url "https://gitlab.com/"]
   insteadOf = "gitlab:"
-[url "git@github.com:solarmonkey/"]
-  insteadOf = "gs:"
 [gitbutler]
-	aiOpenAIKeyOption = bringYourOwn
-	aiOpenAIModelName = gpt-4o-mini
-	aiModelProvider = openai
+  aiOpenAIKeyOption = bringYourOwn
+  aiOpenAIModelName = gpt-4o-mini
+  aiModelProvider = openai
 [advice]
-	addIgnoredFile = false
+  addIgnoredFile = false
