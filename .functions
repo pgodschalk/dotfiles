@@ -3,7 +3,7 @@
 
 # Some people insist on scanned wet signature pdf's...
 function bureaucracy() {
-convert \
+magick \
   -density 150 \
   "$1" \
   -colorspace gray \
@@ -14,16 +14,6 @@ convert \
   -rotate 0.5 \
   -depth 2 \
   "$1"-SCANNED.pdf
-}
-
-# Change working directory to the top-most Finder window location
-function cdf() { # short for `cdfinder`
-  if [[ $DISTRO == "macos" ]]; then
-    /bin/cd \
-      "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
-  else
-    echo "Not on macOS!"
-  fi
 }
 
 # Create a data URI from a file
@@ -37,16 +27,20 @@ function datauri() {
 
 # Determine size of a file or total size of a directory
 function fs() {
-  if du --bytes /dev/null > /dev/null 2>&1; then
+  if /usr/bin/du -b /dev/null > /dev/null 2>&1; then
     local arg=-sbh;
   else
     local arg=-sh;
   fi
   if [[ -n "$@" ]]; then
-    du $arg -- "$@";
+    /usr/bin/du $arg -- "$@";
   else
-    du $arg .[^.]* ./*;
+    /usr/bin/du $arg .[^.]* ./*;
   fi;
+}
+
+function svg2png() {
+  qlmanage -t -s 1000 -o . "$1"
 }
 
 # Show all the names (CNs and SANs) listed in the SSL certificate
@@ -72,13 +66,13 @@ function getcertnames() {
     no_serial, no_sigdump, no_signame, no_validity, no_version");
     echo "Common Name:";
     echo ""; # newline
-    echo "${certText}" | grep "Subject:" | sed --expression="s/^.*CN=//" \
-      | sed --expression="s/\/emailAddress=.*//";
+    echo "${certText}" | grep "Subject:" | gsed --expression="s/^.*CN=//" \
+      | gsed --expression="s/\/emailAddress=.*//";
     echo ""; # newline
     echo "Subject Alternative Name(s):";
     echo ""; # newline
     echo "${certText}" | grep --after-context=1 "Subject Alternative Name:" \
-      | sed --expression="2s/DNS://g" -e "s/ //g" | tr "," "\n" \
+      | gsed --expression="2s/DNS://g" -e "s/ //g" | tr "," "\n" \
       | tail --lines=+2;
     return 0;
   else
@@ -107,26 +101,12 @@ function mkd() {
 # Normalize `open` across Linux, macOS, and Windows.
 # This is needed to make the `o` function cross-platform.
 if [ ! "$(uname -s)" = 'Darwin' ]; then
-  if grep -s Microsoft /proc/version; then
+  if grep -q Microsoft /proc/version; then
     # Ubuntu on Windows using the Linux subsystem
     alias open='explorer.exe';
   else
     alias open='xdg-open';
   fi
-fi
-
-if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
-  # Set default window title after SSH closes
-  function ssh() {
-    if [[ -s "/mnt/c/Windows/System32/OpenSSH/ssh.exe" ]]; then
-      command ssh.exe "$@"
-    elif  [[ -s "/usr/local/bin/ssh" ]]; then
-      command /usr/local/bin/ssh "$@"
-    else
-      command /usr/bin/ssh "$@"
-    fi
-    echo -ne "\e]1;\a"
-  }
 fi
 
 # Create a .tar.gz archive, using `zopfli`, `pigz` or `gzip` for compression

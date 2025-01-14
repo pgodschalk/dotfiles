@@ -91,11 +91,10 @@ tldr --update
 msg "${BLUE}Updating global pip packages${NOFORMAT}"
 pip install --upgrade numpy pip setuptools
 
-msg "${BLUE}Updating global npm packages${NOFORMAT}"
-npm -g update
-
 msg "${BLUE}Updating dotfile git repositories${NOFORMAT}"
 cd "$HOME/.zprezto" || true
+git pull
+cd "$HOME/.zprezto/contrib" || true
 git pull
 cd "$HOME" || true
 
@@ -104,6 +103,5 @@ docker system prune -a
 
 msg "${GREEN}Applications to update manually${NOFORMAT}"
 brew list --cask -1 | xargs brew info --cask | rg auto_updates
-msg "cloud-sql-proxy"
 msg "Wipr (definitions)"
 asdf latest --all | grep --invert-match "installed" | grep --invert-match "redirect"

@@ -1,18 +1,5 @@
 #!/usr/bin/env bash
 
-# We use this to determine which OS specific plugins to load
-if [[ $OSTYPE == "linux-gnu"* ]]; then
-  if grep --quiet "debian" /etc/os-release; then
-    export DISTRO="debian"
-  elif grep --quiet "Arch" /etc/os-release; then
-    export DISTRO="arch"
-  elif grep --quiet "rhel" /etc/os-release; then
-    export DISTRO="rhel"
-  fi
-elif [[ $OSTYPE == "darwin"* ]]; then
-  export DISTRO="macos"
-fi
-
 # Set the default editor.
 if command -v nano &>/dev/null; then
   export EDITOR="nano"
@@ -40,24 +27,9 @@ if [[ -s "/usr/local/opt/gnu-sed/libexec/gnubin" ]]; then
   export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
 
-# Add Composer packages to $PATH
-if command -v composer &>/dev/null; then
-  export PATH="$HOME/.composer/vendor/bin:$PATH"
-fi
-
 # Add XDG binaries to $PATH
 if [[ -s "${HOME}/.local/bin" ]]; then
   export PATH="$HOME/.local/bin:$PATH";
-fi
-
-# Add OpenJDK to $PATH
-if [[ -s "/usr/local/opt/openjdk/bin" ]]; then
-  export PATH="/usr/local/opt/openjdk/bin:$PATH"
-fi
-
-# Add postgres to $PATH
-if [[ -s "/opt/homebrew/opt/postgresql@15/bin" ]]; then
-  export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
 fi
 
 # Add dotfiles bin to $PATH
@@ -75,13 +47,6 @@ if [[ -s "/snap/bin" ]]; then
   export PATH="/snap/bin:$PATH"
 fi
 
-# Enable persistent REPL history for `node`.
-export NODE_REPL_HISTORY=~/.node_history
-# Allow 32^3 entries; the default is 1000.
-export NODE_REPL_HISTORY_SIZE='32768'
-# Use sloppy mode by default, matching web browsers.
-export NODE_REPL_MODE='sloppy'
-
 # Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
 export PYTHONIOENCODING='UTF-8'
 
@@ -92,17 +57,14 @@ export LC_ALL='en_US.UTF-8'
 # Don’t clear the screen after quitting a manual page.
 export MANPAGER='less --no-init';
 
+# Hide Homebrew hints
 export HOMEBREW_NO_ENV_HINTS=1
+
+# Don't use insecure redirects
 export HOMEBREW_NO_INSECURE_REDIRECTS=1
 
-export SSH_KEY_PATH="$HOME/.ssh/id_ed25519";
-
+# Should work for both light and dark
 export BAT_THEME="Solarized (light)"
-
-export COMPOSE_HTTP_TIMEOUT=3600
-
-# Workaround for Ansible issue with network lookup
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 
 # Allow gcloud cli to use site-packages
 export CLOUDSDK_PYTHON_SITEPACKAGES=1

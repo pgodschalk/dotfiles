@@ -22,7 +22,7 @@ detect_files = [
   'compose.yaml',
   'docker-compose.yml',
   'docker-compose.yaml',
-  'Dockerfile'
+  'Dockerfile',
 ]
 
 [dotnet]
@@ -117,7 +117,7 @@ Redhat = '󱄛 '
 RedHatEnterprise = '󱄛 '
 Solus = ' '
 Ubuntu = ' '
-Windows =' '
+Windows = ' '
 
 [perl]
 symbol = ' '

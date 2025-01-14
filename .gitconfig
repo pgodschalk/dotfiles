@@ -213,5 +213,3 @@
   pushInsteadOf = "https://gitlab.com/"
 [url "https://gitlab.com/"]
   insteadOf = "gitlab:"
-[url "git@github.com:solarmonkey/"]
-  insteadOf = "gs:"

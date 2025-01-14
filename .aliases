@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2139
 
 if [[ $DISTRO == "macos" ]]; then
   # Shortcuts
@@ -13,8 +12,6 @@ if [[ $DISTRO == "macos" ]]; then
   alias localip="ipconfig getifaddr en0"
   # Show active network interfaces
   alias ifactive="ifconfig | pcregrep --multiline --only-matching '^[^\t:]+:([^\n]|\n\t)*status: active'"
-  # Flush Directory Service cache
-  alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
 
   # Empty the Trash on all mounted volumes and the main HDD.
   # Also, clear Apple’s System Logs to improve shell startup speed.
@@ -24,13 +21,6 @@ if [[ $DISTRO == "macos" ]]; then
   # http://xkcd.com/530/
   alias stfu="osascript -e 'set volume output muted true'"
   alias pumpitup="osascript -e 'set volume output volume 100'"
-
-  # Convert svg to png
-  alias svg2png="qlmanage -t -s 1000 -o . $1"
-fi
-
-if command -v git &>/dev/null; then
-  alias g="git"
 fi
 
 # Use eza as ls and tree
@@ -66,14 +56,7 @@ command -v md5sum > /dev/null || alias md5sum="md5"
 command -v sha1sum > /dev/null || alias sha1sum="shasum"
 
 # Trim new lines and copy to clipboard
-if [[ -s "${HOME}/.iterm2_shell_integration.zsh" && $TERM_PROGRAM == "iTerm.app" ]]; then
-  alias c="tr -d '\n' | it2copy"
-else
-  alias c="tr -d '\n' | pbcopy"
-fi
-
-# Recursively delete `.DS_Store` files
-alias rmds="find . -type f -name '*.DS_Store' -ls -delete"
+alias c="tr -d '\n' | pbcopy"
 
 # URL-encode strings
 if command -v python3 &>/dev/null; then
@@ -85,10 +68,10 @@ fi
 # Intuitive map function
 # For example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
-alias map="xargs -n1"
+alias map="xargs -n 1"
 
 # Reload the shell (i.e. invoke as a login shell)
-alias reload="exec ${SHELL} -l"
+alias reload='exec ${SHELL} -l'
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
@@ -96,12 +79,6 @@ alias path='echo -e ${PATH//:/\\n}'
 # Fall back to diff if diff-so-fancy is not available
 if ! command -v diff-so-fancy &>/dev/null; then
   alias diff-so-fancy="diff"
-fi
-
-# Use nvim as vim
-if command -v nvim &>/dev/null; then
-  alias vim="nvim"
-  alias vi="nvim"
 fi
 
 # Alias bat to batcat
@@ -112,9 +89,4 @@ fi
 # Alias docker-compose to docker compose
 if command -v docker &>/dev/null; then
   alias docker-compose="docker compose"
-fi
-
-# Alias gssh to google compute ssh
-if command -v gcloud &>/dev/null; then
-  alias gssh="gcloud compute ssh"
 fi

@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
+# This class identifies contributors responsible for code lines matching a
+# given pattern.
 class WhoDoneIt
   PATTERN = ARGV.fetch(0)
 
@@ -11,7 +14,7 @@ class WhoDoneIt
 
   def lines
     blame_and_code.map do |blame, code|
-      blame += " " * (longest_blame_line - blame.length)
+      blame += ' ' * (longest_blame_line - blame.length)
       "#{blame} #{code}"
     end
   end
@@ -19,13 +22,13 @@ class WhoDoneIt
   def blame_and_code
     @blame_and_code ||= blame_lines.map do |line|
       blame, code = line.split(')', 2)
-      blame += ")"
+      blame += ')'
       [blame, code]
     end
   end
 
   def longest_blame_line
-    @longest_blame_line ||= blame_and_code.map do |blame, code|
+    @longest_blame_line ||= blame_and_code.map do |blame, _code|
       blame.length
     end.max
   end
@@ -33,9 +36,11 @@ class WhoDoneIt
   def blame_lines
     @blame_lines ||= matching_files.map do |filename|
       `git blame -f -- #{filename} | grep #{PATTERN}`
-    end.map do |line|
+    end
+    .map do |line|
       line.split("\n")
-    end.flatten
+    end
+    .flatten
   end
 
   def matching_files

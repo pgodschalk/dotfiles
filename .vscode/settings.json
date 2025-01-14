@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+    ".curlrc": "plaintext",
+    ".hushlogin": "plaintext",
+    ".inputrc": "plaintext",
+    ".nanorc": "plaintext",
+    ".screenrc": "plaintext",
+    ".sources": "shellscript",
+    ".wgetrc": "plaintext",
+    ".zpreztorc": "shellscript"
+  }
+}

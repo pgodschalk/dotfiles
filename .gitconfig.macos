@@ -1,6 +1,6 @@
 [user]
-  name = Patrick Godschalk
-  email = patrick@kernelpanics.nl
+	name = Patrick Godschalk
+	email = patrick@kernelpanics.nl
   signingkey = 07B1A68011CA609C8AB0F67C4E6C0EAA175F13A2
 [core]
   hideDotFiles = dotGitOnly
@@ -196,6 +196,7 @@
   followTags = true
 [tag]
   forceSignAnnotated = true
+	gpgsign = true
 # URL shorthands
 [url "git@github.com:"]
   insteadOf = "gh:"
@@ -217,3 +218,9 @@
   insteadOf = "gitlab:"
 [url "git@github.com:solarmonkey/"]
   insteadOf = "gs:"
+[gitbutler]
+	aiOpenAIKeyOption = bringYourOwn
+	aiOpenAIModelName = gpt-4o-mini
+	aiModelProvider = openai
+[advice]
+	addIgnoredFile = false
