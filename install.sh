@@ -35,3 +35,7 @@ cp .wgetrc "$HOME/.wgetrc"
 cp .zmodules "$HOME/.zmodules"
 cp .zpreztorc "$HOME/.zpreztorc"
 cp .zshrc "$HOME/.zshrc"
+
+if command -v zsh > /dev/null 2>&1; then
+  sudo chsh "$(id -un)" --shell "$(which zsh)"
+fi
