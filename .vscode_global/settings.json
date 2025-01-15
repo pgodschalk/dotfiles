@@ -6,7 +6,9 @@
   "editor.tabSize": 2,
   "editor.codeLensFontFamily": "'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji",
   "editor.linkedEditing": true,
-  "editor.rulers": [80],
+  "editor.rulers": [
+    80
+  ],
   "editor.cursorBlinking": "phase",
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.fontLigatures": "on",
