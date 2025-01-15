@@ -3,6 +3,7 @@
 1password.op-vscode
 castwide.solargraph
 charliermarsh.ruff
+coolbear.systemd-unit-file
 davidanson.vscode-markdownlint
 deerawan.vscode-dash
 eamodio.gitlens
@@ -14,6 +15,9 @@ github.vscode-github-actions
 github.vscode-pull-request-github
 google.geminicodeassist
 googlecloudtools.cloudcode
+grafana.grafana-alloy
+hashicorp.terraform
+irongeek.vscode-env
 ms-azuretools.vscode-docker
 ms-python.debugpy
 ms-python.python
@@ -26,9 +30,13 @@ ms-vscode-remote.vscode-remote-extensionpack
 ms-vscode.cmake-tools
 ms-vscode.cpptools
 ms-vscode.cpptools-extension-pack
+ms-vscode.cpptools-themes
 ms-vscode.remote-explorer
 ms-vscode.remote-server
 ms-vsliveshare.vsliveshare
+redhat.ansible
+redhat.vscode-yaml
 sidneys1.gitconfig
 timonwong.shellcheck
 twxs.cmake
+william-voyek.vscode-nginx
