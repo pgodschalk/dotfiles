@@ -76,6 +76,23 @@ time, because it supports most database engines I use.bash
 client, but I also use [GitButler](https://github.com/gitbutlerapp/gitbutler)'s
 virtual branch feature regularly when working on larger projects.
 
+Other than that,
+
+- [Dash](https://kapeli.com/dash) is my go-to documentation browser.
+- [DevPod](https://devpod.io) is running development environments when I need
+  more juice than my MacBook Pro can provide. Sometimes I run said environment
+  on my Windows machine. Though I'll also use plain old Codespaces every now
+  and then.
+- [GitHub Desktop](https://desktop.github.com) is basically there to provide
+  `gh`.
+- [OrbStack](https://orbstack.dev) runs my Docker containers, since Docker
+  Desktop is just slow, and gets in my way a lot. Though Docker Desktop is
+  still around on Windows.
+- [satyrn](https://satyrn.app) runs Jupyter notebooks. I'm eagerly waiting for
+  them to add remote execution support, so I can run them on my DevPods.
+- [SnippetsLab](https://www.renfei.org/snippets-lab/) is where I keep my code
+  snippets.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built with
