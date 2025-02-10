@@ -16,7 +16,7 @@ if [[ "$DISTRO" == "macos" ]]; then
   fi
 elif [[ $DISTRO == "debian" ]]; then
   if dpkg --status command-not-found 2>&1 | grep -q "ok installed"; then
-    echo "aa"
+    pmodload command-not-found
   fi
 elif [[ $DISTRO == "arch" ]]; then
   if pacman --query --info command-not-found | grep -q installed; then
