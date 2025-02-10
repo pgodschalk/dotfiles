@@ -62,7 +62,7 @@ parse_params "$@"
 setup_colors
 
 msg "${BLUE}Updating Mac App Store${NOFORMAT}"
-mas upgrade
+mas upgrade || true
 
 msg "${BLUE}Updating Homebrew${NOFORMAT}"
 brew update
