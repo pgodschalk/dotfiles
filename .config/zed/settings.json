@@ -15,9 +15,7 @@
   "buffer_font_family": "FiraCode Nerd Font",
   "buffer_font_size": 16,
   "restore_on_startup": "none",
-  "wrap_guides": [
-    80
-  ],
+  "wrap_guides": [80],
   "redact_private_values": true,
   "project_panel": {
     "dock": "right"
@@ -35,7 +33,7 @@
     "version": "2",
     "default_model": {
       "provider": "copilot_chat",
-      "model": "o1-mini"
+      "model": "claude-3-5-sonnet"
     }
   },
   "features": {
