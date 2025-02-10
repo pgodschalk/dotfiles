@@ -34,16 +34,14 @@ if command -v brew &>/dev/null; then
   export GPG_TTY
 fi
 
-# asdf version manager
-if command -v brew &>/dev/null; then
-  . "$(brew --prefix asdf)/libexec/asdf.sh"
-elif [[ -s "$HOME/.asdf/asdf.sh" ]]; then
-  . "$HOME/.asdf/asdf.sh"
-fi
-
 # Source 1Password plugins
 if [[ -f "$HOME/.config/op/plugins.sh" ]]; then
   source "$HOME/.config/op/plugins.sh"
+fi
+
+# asdf version manager
+if [[ -s "$HOME/.asdf/asdf.sh" ]]; then
+  . "$HOME/.asdf/asdf.sh"
 fi
 
 # Custom
