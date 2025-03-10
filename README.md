@@ -83,6 +83,8 @@ Other than that,
   more juice than my MacBook Pro can provide. Sometimes I run said environment
   on my Windows machine. Though I'll also use plain old Codespaces every now
   and then.
+- [GitButler](https://github.com/gitbutlerapp/gitbutler) is used mainly for
+  its virtual branch feature.
 - [GitHub Desktop](https://desktop.github.com) is basically there to provide
   `gh`.
 - [OrbStack](https://orbstack.dev) runs my Docker containers, since Docker
@@ -92,6 +94,8 @@ Other than that,
   them to add remote execution support, so I can run them on my DevPods.
 - [SnippetsLab](https://www.renfei.org/snippets-lab/) is where I keep my code
   snippets.
+- [Yaak](https://github.com/yaak-org/yaak) is used for playing with API's, if
+  [httpie](https://httpie.io) isn't enough.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
