@@ -7,10 +7,11 @@ usage() {
   cat <<EOF
 Usage: $(basename "${BASH_SOURCE[0]}") [-h] [-v]
 
-Uses macOS "say" to say the word beep three times.
+Uses llm <https://llm.datasette.io> to generate a CLI command.
 
 Available options:
 
+-e, --explain   Explain what the output does
 -h, --help      Print this help and exit
 -v, --verbose   Print script debug info
 EOF
@@ -44,6 +45,7 @@ die() {
 parse_params() {
   while :; do
     case "${1-}" in
+    -e | --explain) EXPLAIN=1 ;;
     -h | --help) usage ;;
     -v | --verbose) set -x ;;
     --no-color) NO_COLOR=1 ;;
@@ -61,11 +63,19 @@ parse_params() {
 parse_params "$@"
 setup_colors
 
-if [ "$DISTRO" == "macos" ]; then
-  say 'beep, beep, beep'
-else
-  die "Can only beep on macOS"
-fi
+# shellcheck disable=SC2068
+if command -v llm &>/dev/null; then
+  if [[ -n "${EXPLAIN-}" ]]; then
+    EXPLAIN_TEXT="Also, provide a detailed description of how the command works."
+    FORMAT_TEXT="Description: <insert_description_here>\nThe description should be in English."
+  else
+    EXPLAIN_TEXT=""
+    FORMAT_TEXT="Don't enclose the command with extra quotes or backticks."
+  fi
 
-msg "${RED}Read parameters:${NOFORMAT}"
-msg "- arguments: ${args[*]-}"
+  # shellcheck disable=SC2116
+  llm --system "You're a command line tool that generates CLI commands for the user." \
+    "Instructions: Write a CLI command that does the following: $(echo ${args[@]}). Make sure the command is correct and works on ${DISTRO} using ${SHELL}. ${EXPLAIN_TEXT}\n\Format: ${FORMAT_TEXT}\n\Make sure you use the format exactly as it is shown above. Never output any markdown, code blocks or code fences. Do output line breaks."
+else
+  die "llm is required but not installed. Aborting."
+fi

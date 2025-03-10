@@ -5,9 +5,9 @@ trap cleanup SIGINT SIGTERM ERR EXIT
 
 usage() {
   cat <<EOF
-Usage: $(basename "${BASH_SOURCE[0]}") [-h] [-v] path_to_file
+Usage: $(basename "${BASH_SOURCE[0]}") [-h] [-v]
 
-Adds watermark to identification papers to prevent abuse.
+Uses macOS "say" to say the word beep three times.
 
 Available options:
 
@@ -19,7 +19,6 @@ EOF
 
 cleanup() {
   trap - SIGINT SIGTERM ERR EXIT
-  # script cleanup here
 }
 
 setup_colors() {
@@ -48,6 +47,7 @@ parse_params() {
     -h | --help) usage ;;
     -v | --verbose) set -x ;;
     --no-color) NO_COLOR=1 ;;
+    -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac
     shift
@@ -55,25 +55,14 @@ parse_params() {
 
   args=("$@")
 
-  # check required params and arguments
-  [[ ${#args[@]} -eq 0 ]] && usage
-
   return 0
 }
 
 parse_params "$@"
 setup_colors
 
-if ! command -v convert > /dev/null 2>&1; then
-  die "ImageMagick is required, exiting"
+if [ "$DISTRO" == "macos" ]; then
+  say 'beep, beep, beep'
+else
+  die "Can only beep on macOS"
 fi
-
-msg "Name of organisation?"
-read -r ORG
-msg "For what purpose can this organisation use this document?"
-read -r PURPOSE
-
-convert "$1" \
-\( -background none -pointsize 48 -fill "rgba(10,20,30,0.30)" label:"Copy for $ORG\nPurpose: $PURPOSE\nDate: $(date +'%Y-%m-%d')" -font Skia -rotate 20 -write mpr:tile +delete \) \
-\( +clone -tile mpr:tile -draw "color 0,0 reset" \) \
--compose over -composite -strip -interlace Plane -gaussian-blur 0.05 -quality 70% "$1.watermarked.jpg"

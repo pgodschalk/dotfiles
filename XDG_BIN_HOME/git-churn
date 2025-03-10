@@ -45,14 +45,14 @@ die() {
   exit "$code"
 }
 
-if command -v git > /dev/null 2>&1; then
+if command -v git >/dev/null 2>&1; then
   git log \
-      --all \
-      --find-renames \
-      --find-copies \
-      --name-only \
-      --format='format:' "$@" \
-      | sort | grep --invert-match '^$' | uniq -c | sort --numeric-sort
+    --all \
+    --find-renames \
+    --find-copies \
+    --name-only \
+    --format='format:' "$@" |
+    sort | grep --invert-match '^$' | uniq --count | sort --numeric-sort
 else
   die "Git is not installed"
 fi

@@ -18,10 +18,10 @@
   untrackedCache = true
 
   # Use custom `.gitignore`.
-  excludesfile = ~/.gitignore_global
+  excludesfile = ~/.config/git/ignore
 
   # Use custom `.gitattributes`
-  attributesfile = ~/.gitattributes
+  attributesfile = ~/.config/git/attributes
 
   editor = nano
 
@@ -32,6 +32,7 @@
   # [default] space-before-tab: looks for spaces before tabs at the beginning
   #                             of a line
   whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+	sshCommand = ssh.exe
 [alias]
   aa = add --all
   amend = commit --amend --reuse-message=HEAD
@@ -174,8 +175,6 @@
   smudge = git-lfs smudge -- %f
   required = true
   process = git-lfs filter-process
-[gpg "openpgp"]
-  program = /usr/local/MacGPG2/bin/gpg
 [help]
   # Automatically correct and execute mistyped commands.
   autocorrect = 1

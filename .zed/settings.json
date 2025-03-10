@@ -4,38 +4,31 @@
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
   "file_types": {
-    "Git Ignore": [
-      ".gitignore_global"
-    ],
-    "ini": [
-      ".editorconfig"
-    ],
+    "Git Ignore": [".gitignore_global"],
+    "ini": [".editorconfig"],
     "JSONC": [
-      "**.vscode",
-      "**/.vscode_global/*.json"
+      "**/.vscode",
+      "**/.vscode_global/*.json",
+      "**/LOCALAPPDATA/**/windows_terminal.json"
     ],
     "Plain Text": [
       "**/.gnupg/*.conf",
       "**/.ssh/*",
-      "**/ghostty/config",
-      ".curlrc",
-      ".hushlogin",
-      ".inputrc",
-      ".nanorc",
-      ".screenrc",
-      ".wgetrc"
+      "HOME/.hushlogin",
+      "XDG_CONFIG_HOME/.curlrc",
+      "XDG_CONFIG_HOME/com.mitchellh.ghostty/config",
+      "XDG_CONFIG_HOME/ghostty/config",
+      "XDG_CONFIG_HOME/gnupg/*.conf",
+      "XDG_CONFIG_HOME/nano/nanorc",
+      "XDG_CONFIG_HOME/readline/inputrc",
+      "XDG_CONFIG_HOME/screen/screenrc",
+      "XDG_CONFIG_HOME/wgetrc"
     ],
-    "Shell Script": [
-      ".sources",
-      ".zpreztorc"
-    ]
+    "Shell Script": ["ZDOTDIR/.sources", "ZDOTDIR/.zpreztorc"]
   },
   "languages": {
     "Python": {
-      "language_servers": [
-        "pyright",
-        "ruff"
-      ],
+      "language_servers": ["pyright", "ruff"],
       "format_on_save": "on",
       "formatter": [
         {

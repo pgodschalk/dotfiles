@@ -65,6 +65,8 @@ zstyle ':prezto:load' pmodule \
 # zstyle ':prezto:module:completion:*:hosts' etc-host-ignores \
 #   '0.0.0.0' '127.0.0.1'
 
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
+
 #
 # Editor
 #
@@ -100,7 +102,7 @@ zstyle ':prezto:module:editor' key-bindings 'emacs'
 #
 
 # Set the file to save the history in when an interactive shell exits.
-# zstyle ':prezto:module:history' histfile "${ZDOTDIR:-$HOME}/.zsh_history"
+zstyle ':prezto:module:history' histfile "${XDG_STATE_HOME}/zsh/history"
 
 # Set the maximum  number  of  events  stored  in  the  internal history list.
 # zstyle ':prezto:module:history' histsize 10000

@@ -88,13 +88,10 @@ gcloud components update
 msg "${BLUE}Updating tldr${NOFORMAT}"
 tldr --update
 
-msg "${BLUE}Updating global pip packages${NOFORMAT}"
-pip install --upgrade numpy pip setuptools
-
 msg "${BLUE}Updating dotfile git repositories${NOFORMAT}"
-cd "$HOME/.zprezto" || true
+cd "$ZDOTDIR/.zprezto" || true
 git pull
-cd "$HOME/.zprezto/contrib" || true
+cd "$ZDOTDIR/.zprezto/contrib" || true
 git pull
 cd "$HOME" || true
 
@@ -105,3 +102,5 @@ msg "${GREEN}Applications to update manually${NOFORMAT}"
 brew list --cask -1 | xargs brew info --cask | rg auto_updates
 msg "Wipr (definitions)"
 asdf latest --all | grep --invert-match "installed" | grep --invert-match "redirect"
+
+gh extension upgrade gh-copilot

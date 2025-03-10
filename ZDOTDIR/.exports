@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+
+# Set the default editor.
+if command -v nano &>/dev/null; then
+  export EDITOR="nano"
+elif command -v nvim &>/dev/null; then
+  export EDITOR="nvim"
+elif command -v vim &>/dev/null; then
+  export EDITOR="vim"
+elif command -v vi &>/dev/null; then
+  export EDITOR="vi"
+fi
+
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr.
+export PYTHONIOENCODING='UTF-8'
+
+# Prefer US English and use UTF-8.
+export LC_CTYPE="en_US.UTF-8"
+export LC_ALL='en_US.UTF-8'
+
+# Don’t clear the screen after quitting a manual page.
+export MANPAGER='less --no-init'
+
+# Hide Homebrew hints
+export HOMEBREW_NO_ENV_HINTS=1
+
+# Don't use insecure redirects
+export HOMEBREW_NO_INSECURE_REDIRECTS=1
+
+# Should work for both light and dark
+export BAT_THEME="Solarized (light)"
+
+# Allow gcloud cli to use site-packages
+export CLOUDSDK_PYTHON_SITEPACKAGES=1
+
+# Allow 1Password biometric unlock
+export OP_BIOMETRIC_UNLOCK_ENABLED=true
+
+# Add uutils to $PATH
+if [[ -s "/opt/homebrew/opt/uutils-coreutils" ]]; then
+  PATH="/opt/homebrew/opt/uutils-coreutils/libexec/uubin:$PATH"
+fi
+if [[ -s "/opt/homebrew/opt/uutils-diffutils" ]]; then
+  PATH="/opt/homebrew/opt/uutils-diffutils/libexec/uubin:$PATH"
+fi
+if [[ -s "/opt/homebrew/opt/uutils-findutils" ]]; then
+  PATH="/opt/homebrew/opt/uutils-findutils/libexec/uubin:$PATH"
+fi
+
+# Add GNU sed to $PATH
+if [[ -s "/usr/local/opt/gnu-sed/libexec/gnubin" ]]; then
+  export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
+
+# Add XDG binaries to $PATH
+if [[ -s "${HOME}/.local/bin" ]]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# Add snap to $PATH
+if [[ -s "/snap/bin" ]]; then
+  export PATH="/snap/bin:$PATH"
+fi
+
+# Add LM Studio to $PATH
+if [[ -s "${HOME}/.lmstudio/bin" ]]; then
+  export PATH="$HOME/.lmstudio/bin:$PATH"
+fi
+
+# Ensure MacGPG is loaded before brew's gnupg
+if [[ -f "/usr/local/MacGPG2/bin/gpg" ]]; then
+  export PATH=/usr/local/MacGPG2/bin:$PATH
+fi
+
+# Add asdf to $PATH
+if [[ -f "${ASDF_DATA_DIR:-$HOME/.asdf}/bin/asdf" ]]; then
+  export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/bin:$PATH"
+fi
+
+# Add bun global packages to $PATH
+if [[ -s "${XDG_CACHE_DIR}/.bun/bin" ]]; then
+  export PATH="$XDG_CACHE_DIR/.bun/bin:$PATH"
+fi
+
+# Set up XDG directories
+if [[ $DISTRO == "macos" ]]; then
+  export XDG_CACHE_HOME="$HOME/Library/Caches"
+  export XDG_CONFIG_DIRS="$HOME/Library/Preferences:/Library/Application Support:/Library/Preferences:$HOME/.config"
+  export XDG_CONFIG_HOME="$HOME/Library/Application Support"
+  export XDG_DATA_DIRS="/Library/Application Support:$HOME/.local/share"
+  export XDG_DATA_HOME="$HOME/Library/Application Support"
+  export XDG_STATE_HOME="$HOME/Library/Application Support"
+  export XDG_RUNTIME_DIR="$HOME/Library/Application Support"
+else
+  export XDG_CACHE_HOME="$HOME/.cache"
+  export XDG_CONFIG_DIRS="/etc/xdg"
+  export XDG_CONFIG_HOME="$HOME/.config"
+  export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+  export XDG_DATA_HOME="$HOME/.local/share"
+  if [[ -z $XDG_RUNTIME_DIR ]]; then
+    export XDG_RUNTIME_DIR="/run/user/$UID"
+  fi
+  export XDG_STATE_HOME="$HOME/.local/state"
+fi
+export XDG_BIN_HOME="$HOME/.local/bin"
+
+export XDG_DESKTOP_DIR="$HOME/Desktop"
+export XDG_DOCUMENTS_DIR="$HOME/Documents"
+export XDG_DOWNLOAD_DIR="$HOME/Downloads"
+export XDG_MOVIES_DIR="$HOME/Movies"
+export XDG_MUSIC_DIR="$HOME/Music"
+export XDG_PICTURES_DIR="$HOME/Pictures"
+export XDG_PUBLICSHARE_DIR="$HOME/Public"
+export XDG_TEMPLATES_DIR="$HOME/Templates"
+
+# Ensure XDG directories are used
+export ANSIBLE_HOME="$XDG_DATA_HOME/ansible"
+export ASDF_DATA_DIR="$HOME/.local/share/asdf" # Work around bug with spaces in file paths
+export ASDF_GEM_DEFAULT_PACKAGES_FILE="$XDG_CONFIG_HOME/gem/default-gems"
+export ASDF_NPM_DEFAULT_PACKAGES_FILE="$XDG_CONFIG_HOME/npm/default-npm-packages"
+export ASDF_PYTHON_DEFAULT_PACKAGES_FILE="$XDG_CONFIG_HOME/pip/default-python-packages"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export CLOUDSDK_CONFIG="$XDG_CONFIG_HOME/gcloud"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export ENHANCD_DIR="$XDG_DATA_HOME/enhancd"
+export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
+export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export LESSHISTFILE="$XDG_STATE_HOME/less/history"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export SCREENRC="$XDG_CONFIG_HOME/screen/screenrc"
+export STARSHIP_CACHE="$XDG_CACHE_HOME/starship"
+export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
+export TERMINFO="$XDG_DATA_HOME/terminfo"
+export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+export WAKATIME_HOME="$XDG_CONFIG_HOME/wakatime"
+export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+
+if [[ $DISTRO == "macos" ]]; then
+  export GNUPGHOME="$HOME/.gnupg"
+else
+  export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+fi

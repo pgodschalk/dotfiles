@@ -11,8 +11,8 @@ elif [[ $OSTYPE == "darwin"* ]]; then
   export DISTRO="macos"
 fi
 
-if [[ -s "${HOME}/.sources" ]]; then
-  source "${HOME}/.sources"
+if [[ -s "${ZDOTDIR:-$HOME}/.sources" ]]; then
+  source "${ZDOTDIR:-$HOME}/.sources"
 fi
 
 # SSH agent

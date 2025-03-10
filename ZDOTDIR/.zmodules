@@ -141,7 +141,7 @@ if command -v yum &>/dev/null; then
   pmodload yum
 fi
 
-if [[ -s "${HOME}/.zprezto/contrib" ]]; then
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/contrib" ]]; then
   pmodload alias-tips
   pmodload direnv
   pmodload enhancd

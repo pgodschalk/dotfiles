@@ -1,0 +1,63 @@
+# shellcheck disable=SC2148
+
+# Custom
+if [[ -s "${ZDOTDIR:-$HOME}/.exports" ]]; then
+  source "${ZDOTDIR:-$HOME}/.exports"
+fi
+if [[ -s "${ZDOTDIR:-$HOME}/.exports_private" ]]; then
+  source "${ZDOTDIR:-$HOME}/.exports_private"
+fi
+if [[ -s "${ZDOTDIR:-$HOME}/.aliases" ]]; then
+  source "${ZDOTDIR:-$HOME}/.aliases"
+fi
+if [[ -s "${ZDOTDIR:-$HOME}/.aliases_private" ]]; then
+  source "${ZDOTDIR:-$HOME}/.aliases_private"
+fi
+if [[ -s "${ZDOTDIR:-$HOME}/.functions" ]]; then
+  source "${ZDOTDIR:-$HOME}/.functions"
+fi
+if [[ -s "${ZDOTDIR:-$HOME}/.functions_private" ]]; then
+  source "${ZDOTDIR:-$HOME}/.functions_private"
+fi
+if [[ -s "${ZDOTDIR:-$HOME}/.sources_private" ]]; then
+  source "${ZDOTDIR:-$HOME}/.sources_private"
+fi
+
+# Source Prezto
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Source Starship
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+fi
+
+# Brew completions
+if command -v brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+  autoload -Uz compinit
+  compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
+fi
+
+# Set up ngrok completions
+if command -v ngrok &>/dev/null; then
+  eval "$(ngrok completion)"
+fi
+
+# Source Prezto modules depending on current environment
+if [[ -s "${ZDOTDIR:-$HOME}/.zmodules" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zmodules"
+fi
+
+if command -v brew &>/dev/null; then
+  # Avoid issues with `gpg` as installed via Homebrew.
+  # https://stackoverflow.com/a/42265848/96656
+  GPG_TTY=$(tty)
+  export GPG_TTY
+fi
+
+# Source 1Password plugins
+if [[ -f "$XDG_CONFIG_HOME/.config/op/plugins.sh" ]]; then
+  source "$XDG_CONFIG_HOME/.config/op/plugins.sh"
+fi
