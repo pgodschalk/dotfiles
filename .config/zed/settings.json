@@ -9,8 +9,11 @@
 {
   "theme": {
     "mode": "system",
-    "light": "Solarized Light",
-    "dark": "Solarized Dark"
+    "light": "Zed Legacy: Solarized Light",
+    "dark": "Zed Legacy: Solarized Dark"
+  },
+  "features": {
+    "edit_prediction_provider": "zed"
   },
   "buffer_font_family": "FiraCode Nerd Font",
   "buffer_font_size": 16,
@@ -26,18 +29,18 @@
   "collaboration_panel": {
     "dock": "right"
   },
+  "git_panel": {
+    "dock": "right"
+  },
   "message_editor": {
     "auto_replace_emoji_shortcode": false
   },
   "assistant": {
     "version": "2",
     "default_model": {
-      "provider": "copilot_chat",
-      "model": "claude-3-5-sonnet"
+      "provider": "anthropic",
+      "model": "claude-3-7-sonnet-latest"
     }
-  },
-  "features": {
-    "inline_completion_provider": "copilot"
   },
   "tabs": {
     "close_position": "left"
@@ -47,6 +50,7 @@
     "diagnostics": false,
     "metrics": false
   },
+  "language_servers": ["!biome", "..."],
   "languages": {
     "C++": {
       "format_on_save": "on",
@@ -77,6 +81,4 @@
       }
     }
   }
-  // node {}
-  // jupyter {}
 }
