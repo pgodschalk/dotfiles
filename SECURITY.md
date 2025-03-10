@@ -2,9 +2,10 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| *       | :x:                |
+| Version  | Supported |
+| -------- | --------- |
+| `HEAD`   | :check:   |
+| < `HEAD` | :x:       |
 
 ## Reporting a Vulnerability
 
