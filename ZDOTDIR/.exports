@@ -78,8 +78,8 @@ if [[ -f "${ASDF_DATA_DIR:-$HOME/.asdf}/bin/asdf" ]]; then
 fi
 
 # Add bun global packages to $PATH
-if [[ -s "${XDG_CACHE_DIR}/.bun/bin" ]]; then
-  export PATH="$XDG_CACHE_DIR/.bun/bin:$PATH"
+if [[ -s "${XDG_CACHE_HOME}/.bun/bin" ]]; then
+  export PATH="$XDG_CACHE_HOME/.bun/bin:$PATH"
 fi
 
 # Set up XDG directories
