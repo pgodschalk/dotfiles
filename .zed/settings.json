@@ -22,7 +22,8 @@
       "XDG_CONFIG_HOME/nano/nanorc",
       "XDG_CONFIG_HOME/readline/inputrc",
       "XDG_CONFIG_HOME/screen/screenrc",
-      "XDG_CONFIG_HOME/wgetrc"
+      "XDG_CONFIG_HOME/wgetrc",
+      "XDG_DATA_HOME/gnupg/*.conf"
     ],
     "Shell Script": ["ZDOTDIR/.sources", "ZDOTDIR/.zpreztorc"]
   },

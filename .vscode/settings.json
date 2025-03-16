@@ -1,14 +1,14 @@
 {
   "files.associations": {
-    "**/windows/windows_terminal.json": "jsonc",
-    ".curlrc": "plaintext",
-    ".hushlogin": "plaintext",
-    ".gitconfig*": "gitconfig",
-    ".inputrc": "plaintext",
-    ".nanorc": "plaintext",
-    ".screenrc": "plaintext",
-    ".sources": "shellscript",
-    ".wgetrc": "plaintext",
-    ".zpreztorc": "shellscript"
+    "**/.curlrc": "plaintext",
+    "**/.hushlogin": "plaintext",
+    "**/.zpreztorc": "shellscript",
+    "**/git/config*": "gitconfig",
+    "**/inputrc": "plaintext",
+    "**/nanorc": "plaintext",
+    "**/screenrc": "plaintext",
+    "**/sources": "shellscript",
+    "**/wgetrc": "plaintext",
+    "**/windows/windows_terminal.json": "jsonc"
   }
 }
