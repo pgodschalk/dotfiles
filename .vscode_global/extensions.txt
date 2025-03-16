@@ -1,6 +1,7 @@
 # Manually generated with `code --list-extensions`
 
 1password.op-vscode
+biomejs.biome
 castwide.solargraph
 charliermarsh.ruff
 coolbear.systemd-unit-file
@@ -43,5 +44,7 @@ redhat.ansible
 redhat.vscode-yaml
 sidneys1.gitconfig
 timonwong.shellcheck
+tommorris.mako
 twxs.cmake
+wakatime.vscode-wakatime
 william-voyek.vscode-nginx
