@@ -36,52 +36,6 @@ export CLOUDSDK_PYTHON_SITEPACKAGES=1
 # Allow 1Password biometric unlock
 export OP_BIOMETRIC_UNLOCK_ENABLED=true
 
-# Add uutils to $PATH
-if [[ -s "/opt/homebrew/opt/uutils-coreutils" ]]; then
-  PATH="/opt/homebrew/opt/uutils-coreutils/libexec/uubin:$PATH"
-fi
-if [[ -s "/opt/homebrew/opt/uutils-diffutils" ]]; then
-  PATH="/opt/homebrew/opt/uutils-diffutils/libexec/uubin:$PATH"
-fi
-if [[ -s "/opt/homebrew/opt/uutils-findutils" ]]; then
-  PATH="/opt/homebrew/opt/uutils-findutils/libexec/uubin:$PATH"
-fi
-
-# Add GNU sed to $PATH
-if [[ -s "/usr/local/opt/gnu-sed/libexec/gnubin" ]]; then
-  export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-fi
-
-# Add XDG binaries to $PATH
-if [[ -s "${HOME}/.local/bin" ]]; then
-  export PATH="$HOME/.local/bin:$PATH"
-fi
-
-# Add snap to $PATH
-if [[ -s "/snap/bin" ]]; then
-  export PATH="/snap/bin:$PATH"
-fi
-
-# Add LM Studio to $PATH
-if [[ -s "${HOME}/.lmstudio/bin" ]]; then
-  export PATH="$HOME/.lmstudio/bin:$PATH"
-fi
-
-# Ensure MacGPG is loaded before brew's gnupg
-if [[ -f "/usr/local/MacGPG2/bin/gpg" ]]; then
-  export PATH=/usr/local/MacGPG2/bin:$PATH
-fi
-
-# Add asdf to $PATH
-if [[ -f "${ASDF_DATA_DIR:-$HOME/.asdf}/bin/asdf" ]]; then
-  export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/bin:$PATH"
-fi
-
-# Add bun global packages to $PATH
-if [[ -s "${XDG_CACHE_HOME}/.bun/bin" ]]; then
-  export PATH="$XDG_CACHE_HOME/.bun/bin:$PATH"
-fi
-
 # Set up XDG directories
 if [[ $DISTRO == "macos" ]]; then
   export XDG_CACHE_HOME="$HOME/Library/Caches"
@@ -128,6 +82,7 @@ export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export PRE_COMMIT_HOME="$XDG_CACHE_HOME/pre-commit"
 export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export SCREENRC="$XDG_CONFIG_HOME/screen/screenrc"
@@ -142,4 +97,50 @@ if [[ $DISTRO == "macos" ]]; then
   export GNUPGHOME="$HOME/.gnupg"
 else
   export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+fi
+
+# Add uutils to $PATH
+if [[ -s "/opt/homebrew/opt/uutils-coreutils" ]]; then
+  PATH="/opt/homebrew/opt/uutils-coreutils/libexec/uubin:$PATH"
+fi
+if [[ -s "/opt/homebrew/opt/uutils-diffutils" ]]; then
+  PATH="/opt/homebrew/opt/uutils-diffutils/libexec/uubin:$PATH"
+fi
+if [[ -s "/opt/homebrew/opt/uutils-findutils" ]]; then
+  PATH="/opt/homebrew/opt/uutils-findutils/libexec/uubin:$PATH"
+fi
+
+# Add GNU sed to $PATH
+if [[ -s "/usr/local/opt/gnu-sed/libexec/gnubin" ]]; then
+  export PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
+
+# Add XDG binaries to $PATH
+if [[ -s "${HOME}/.local/bin" ]]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# Add snap to $PATH
+if [[ -s "/snap/bin" ]]; then
+  export PATH="/snap/bin:$PATH"
+fi
+
+# Add LM Studio to $PATH
+if [[ -s "${HOME}/.lmstudio/bin" ]]; then
+  export PATH="$HOME/.lmstudio/bin:$PATH"
+fi
+
+# Ensure MacGPG is loaded before brew's gnupg
+if [[ -f "/usr/local/MacGPG2/bin/gpg" ]]; then
+  export PATH=/usr/local/MacGPG2/bin:$PATH
+fi
+
+# Add asdf to $PATH
+if [[ -s "${ASDF_DATA_DIR:-$HOME/.asdf}/shims" ]]; then
+  export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+fi
+
+# Add bun global packages to $PATH
+if [[ -s "${XDG_CACHE_HOME}/.bun/bin" ]]; then
+  export PATH="$XDG_CACHE_HOME/.bun/bin:$PATH"
 fi
