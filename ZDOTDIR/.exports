@@ -77,6 +77,7 @@ export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
 export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME/aws/credentials"
 export AZURE_CONFIG_DIR="$XDG_DATA_HOME/azure"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
 export CLOUDSDK_CONFIG="$XDG_CONFIG_HOME/gcloud"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export DOTNET_CLI_HOME="$XDG_DATA_HOME/dotnet"
@@ -84,6 +85,7 @@ export ENHANCD_DIR="$XDG_DATA_HOME/enhancd"
 export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export KUBECONFIG="$XDG_CONFIG_HOME/kube/config"
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 export PRE_COMMIT_HOME="$XDG_CACHE_HOME/pre-commit"
@@ -150,4 +152,14 @@ fi
 # Add bun global packages to $PATH
 if [[ -s "${XDG_CACHE_HOME}/.bun/bin" ]]; then
   export PATH="$XDG_CACHE_HOME/.bun/bin:$PATH"
+fi
+
+# Add LLVM to $PATH
+if [[ -s "/opt/homebrew/opt/llvm/bin" ]]; then
+  export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+fi
+
+# Add npm global packages to $PATH
+if [[ -s "${XDG_CACHE_HOME}/.bun/bin" ]]; then
+  export PATH="$XDG_CONFIG_HOME/npm/bin:$PATH"
 fi

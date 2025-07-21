@@ -49,10 +49,7 @@
   "terminal.integrated.fontSize": 16,
   "problems.autoReveal": false,
   "telemetry.telemetryLevel": "off",
-  "ansible.python.interpreterPath": "/Users/patrick/.asdf/shims/python3",
   "codeQL.telemetry.logTelemetry": false,
-  "cloudcode.project": "kernelpanics-431110",
-  "geminicodeassist.enable": false,
   "github.copilot.enable": {
     "*": true,
     "plaintext": true,
@@ -63,15 +60,14 @@
   "git.confirmSync": false,
   "git.inputValidationLength": 50,
   "github.gitProtocol": "ssh",
-  "gitlens.blame.ignoreWhitespace": true,
-  "cloudcode.enableTelemetry": false,
-  "cmake.pinnedCommands": [
-    "workbench.action.tasks.configureTaskRunner",
-    "workbench.action.tasks.runTask"
-  ],
   "html.format.indentInnerHtml": true,
   "json.schemaDownload.enable": true,
   "markdown.preview.fontFamily": "'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji",
   "remote.tunnels.alwaysUpdateCLI": true,
-  "solargraph.formatting": true
+  "remote.defaultExtensionsIfInstalledLocally": [
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "GitHub.vscode-pull-request-github"
+  ],
+  "biome.suggestInstallingGlobally": false
 }

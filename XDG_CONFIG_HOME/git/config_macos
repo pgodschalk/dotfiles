@@ -222,3 +222,5 @@
   aiModelProvider = openai
 [advice]
   addIgnoredFile = false
+[includeIf "gitdir:~/Developer/for/ubiops/"]
+  path = ~/Developer/for/ubiops/.gitconfig

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 set -Eeuo pipefail
 trap cleanup SIGINT SIGTERM ERR EXIT
@@ -74,8 +74,19 @@ if command -v llm &>/dev/null; then
   fi
 
   # shellcheck disable=SC2116
-  llm --system "You're a command line tool that generates CLI commands for the user." \
-    "Instructions: Write a CLI command that does the following: $(echo ${args[@]}). Make sure the command is correct and works on ${DISTRO} using ${SHELL}. ${EXPLAIN_TEXT}\n\Format: ${FORMAT_TEXT}\n\Make sure you use the format exactly as it is shown above. Never output any markdown, code blocks or code fences. Do output line breaks."
+  OUTPUT=$(llm --system "You're a command line tool that generates CLI commands for the user." \
+    "Instructions: Write a CLI command that does the following: $(echo ${args[@]}). Make sure the command is correct and works on ${DISTRO} using ${SHELL}. ${EXPLAIN_TEXT}\n\Format: ${FORMAT_TEXT}\n\Make sure you use the format exactly as it is shown above. Never output any markdown, code blocks or code fences. Do output line breaks.")
+
+  if [[ -n "${EXPLAIN-}" ]]; then
+    msg $OUTPUT
+  else
+    if [[ -n "${ZLE_VERSION-}" ]]; then
+      LBUFFER="$OUTPUT"
+      zle redisplay
+    else
+      echo -n "$OUTPUT"
+    fi
+  fi
 else
   die "llm is required but not installed. Aborting."
 fi

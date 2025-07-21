@@ -18,7 +18,7 @@ die() {
   exit "$code"
 }
 
-if ! command -v git > /dev/null 2>&1; then
+if ! command -v git >/dev/null 2>&1; then
   die "Git is not installed"
 fi
 

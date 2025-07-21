@@ -18,7 +18,7 @@ die() {
   exit "$code"
 }
 
-if ! command -v git > /dev/null 2>&1; then
+if ! command -v git >/dev/null 2>&1; then
   die "Git is not installed"
 fi
 
@@ -30,7 +30,7 @@ fi
   function ensure_valid_ref() {
     ref=$1
     (
-      git show-ref "$ref" > /dev/null
+      git show-ref "$ref" >/dev/null
       if [[ $? == 1 ]]; then
         die "$0: bad ref: $ref"
       fi

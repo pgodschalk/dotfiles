@@ -209,9 +209,6 @@ dotinstall "XDG_CONFIG_HOME/starship/starship.toml" "$XDG_CONFIG_HOME/starship/s
 mkdir -p "$XDG_CONFIG_HOME/vim"
 dotinstall "XDG_CONFIG_HOME/vim/vimrc" "$XDG_CONFIG_HOME/vim/vimrc"
 
-# wakatime
-mkdir -p "$XDG_CONFIG_HOME/wakatime"
-
 # wget
 dotinstall "XDG_CONFIG_HOME/wgetrc" "$XDG_CONFIG_HOME/wgetrc"
 

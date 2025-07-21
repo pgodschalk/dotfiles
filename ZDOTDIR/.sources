@@ -1,4 +1,4 @@
-# shellcheck disable=SC2148
+# shellcheck disable=SC1091,SC2148
 
 # Custom
 if [[ -s "${ZDOTDIR:-$HOME}/.exports" ]]; then

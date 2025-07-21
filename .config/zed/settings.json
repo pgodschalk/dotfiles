@@ -18,7 +18,7 @@
   "buffer_font_family": "FiraCode Nerd Font",
   "buffer_font_size": 16,
   "restore_on_startup": "none",
-  "wrap_guides": [80],
+  "wrap_guides": [50, 72, 79, 120],
   "redact_private_values": true,
   "project_panel": {
     "dock": "right"
@@ -35,11 +35,11 @@
   "message_editor": {
     "auto_replace_emoji_shortcode": false
   },
-  "assistant": {
-    "version": "2",
+  "agent": {
+    "default_profile": "ask",
     "default_model": {
-      "provider": "anthropic",
-      "model": "claude-3-7-sonnet-latest"
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
     }
   },
   "tabs": {
@@ -50,7 +50,21 @@
     "diagnostics": false,
     "metrics": false
   },
-  "language_servers": ["!biome", "..."],
+  "terminal": {
+    "env": {
+      "EDITOR": "zed --wait"
+    }
+  },
+  "file_types": {
+    "Dockerfile": ["Dockerfile.*"],
+    "JSONC": [
+      "**/.zed/**/*.json",
+      "**/zed/**/*.json",
+      "**/Zed/**/*.json",
+      "**/.vscode/**/*.json"
+    ],
+    "Shell Script": [".env.*"]
+  },
   "languages": {
     "C++": {
       "format_on_save": "on",
@@ -61,6 +75,12 @@
     }
   },
   "lsp": {
+    "solargraph": {
+      "initialization_options": {
+        "diagnostics": true,
+        "formatting": true
+      }
+    },
     "yaml-language-server": {
       "settings": {
         "yaml": {
