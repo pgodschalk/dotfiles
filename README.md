@@ -65,12 +65,7 @@ My collection of dotfiles. I mainly use this with
 
 [Zed](https://zed.dev) is my main editor, though I do keep
 [Visual Studio Code](https://code.visualstudio.com) around mainly for Windows
-support, Codespaces and remote development. And a debugger every now and then.
-Though I'll likely use Zed instead when those features land there.
-
-[DataGrip](https://www.jetbrains.com/datagrip/) is also around on my system,
-which is technically an IDE. I just use it as a database browser most of the
-time, because it supports most database engines I use.bash
+support.
 
 [SourceGit](https://github.com/sourcegit-scm/sourcegit) is my default Git
 client, but I also use [GitButler](https://github.com/gitbutlerapp/gitbutler)'s
@@ -78,24 +73,25 @@ virtual branch feature regularly when working on larger projects.
 
 Other than that,
 
+- [Aptakube](https://aptakube.com) is my Kubernetes IDE.
 - [Dash](https://kapeli.com/dash) is my go-to documentation browser.
 - [DevPod](https://devpod.io) is running development environments when I need
   more juice than my MacBook Pro can provide. Sometimes I run said environment
   on my Windows machine. Though I'll also use plain old Codespaces every now
   and then.
-- [GitButler](https://github.com/gitbutlerapp/gitbutler) is used mainly for
-  its virtual branch feature.
+- [DevUtils](https://devutils.com) is a bunch of useful stuff.
 - [GitHub Desktop](https://desktop.github.com) is basically there to provide
   `gh`.
 - [OrbStack](https://orbstack.dev) runs my Docker containers, since Docker
   Desktop is just slow, and gets in my way a lot. Though Docker Desktop is
   still around on Windows.
+- [RapidAPI](https://rapidapi.com) is used for playing with API's, if
+  [httpie](https://httpie.io) isn't enough.
 - [satyrn](https://satyrn.app) runs Jupyter notebooks. I'm eagerly waiting for
   them to add remote execution support, so I can run them on my DevPods.
 - [SnippetsLab](https://www.renfei.org/snippets-lab/) is where I keep my code
   snippets.
-- [Yaak](https://github.com/yaak-org/yaak) is used for playing with API's, if
-  [httpie](https://httpie.io) isn't enough.
+- [TablePlus](https://tableplus.com) is my database browser.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
