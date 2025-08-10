@@ -163,3 +163,14 @@ fi
 if [[ -s "${XDG_CACHE_HOME}/.bun/bin" ]]; then
   export PATH="$XDG_CONFIG_HOME/npm/bin:$PATH"
 fi
+
+# Add libpq to $PATH
+if [[ -s "/opt/homebrew/opt/libpq/bin" ]]; then
+  export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+fi
+
+# Add openssl to $LDFLAGS and $CPPFLAGS
+if [[ -s "/opt/homebrew/opt/openssl" ]]; then
+  export LDFLAGS="-L/opt/homebrew/opt/openssl/lib"
+  export CPPFLAGS="-I/opt/homebrew/opt/openssl/include"
+fi
