@@ -53,7 +53,7 @@ jobs:
 
       - name: Lint Python
         run: |
-          basedpyright **/*.py **/XDG_BIN_HOME/gn **/pythonrc
+          uvx run basedpyright **/*.py **/XDG_BIN_HOME/gn **/pythonrc
           ruff check **/*.py **/XDG_BIN_HOME/gn **/pythonrc
           ruff format --check **/*.py **/XDG_BIN_HOME/gn **/pythonrc
 
