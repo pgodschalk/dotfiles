@@ -53,12 +53,14 @@ jobs:
 
       - name: Lint Python
         run: |
+          shopt -s globstar nullglob
           uvx basedpyright **/*.py **/XDG_BIN_HOME/gn **/pythonrc
           ruff check **/*.py **/XDG_BIN_HOME/gn **/pythonrc
           ruff format --check **/*.py **/XDG_BIN_HOME/gn **/pythonrc
 
       - name: Lint and format check TOML
         run: |
+          shopt -s globstar nullglob
           bunx @taplo/cli format --check **/*.toml
           bunx @taplo/cli lint **/*.toml
 
@@ -84,5 +86,6 @@ jobs:
 
       - name: Format check yaml
         run: |
+          shopt -s globstar nullglob
           bunx prettier --check \
             **/*.{yml,yaml}
