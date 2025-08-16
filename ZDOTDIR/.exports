@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # Set the default editor.
 if command -v nano &>/dev/null; then
@@ -173,4 +173,9 @@ fi
 if [[ -s "/opt/homebrew/opt/openssl" ]]; then
   export LDFLAGS="-L/opt/homebrew/opt/openssl/lib"
   export CPPFLAGS="-I/opt/homebrew/opt/openssl/include"
+fi
+
+# Add rustup to $PATH
+if [[ -s "/opt/homebrew/opt/rustup/bin" ]]; then
+  export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 fi

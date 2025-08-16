@@ -51,8 +51,8 @@ if command -v git >/dev/null 2>&1; then
     --find-renames \
     --find-copies \
     --name-only \
-    --format='format:' "$@" |
-    sort | grep --invert-match '^$' | uniq --count | sort --numeric-sort
+    --format='format:' "$@" \
+    | sort | grep --invert-match '^$' | uniq --count | sort --numeric-sort
 else
   die "Git is not installed"
 fi

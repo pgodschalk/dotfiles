@@ -3,59 +3,23 @@
 // For a full list of overridable settings, and general information on folder-specific settings,
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
-  "file_types": {
-    "Git Ignore": [".gitignore_global"],
-    "ini": [".editorconfig"],
-    "JSONC": [
-      "**/.vscode",
-      "**/.vscode_global/*.json",
-      "**/LOCALAPPDATA/**/windows_terminal.json"
-    ],
-    "Plain Text": [
-      "**/.gnupg/*.conf",
-      "**/.ssh/*",
-      "HOME/.hushlogin",
-      "XDG_CONFIG_HOME/.curlrc",
-      "XDG_CONFIG_HOME/com.mitchellh.ghostty/config",
-      "XDG_CONFIG_HOME/ghostty/config",
-      "XDG_CONFIG_HOME/gnupg/*.conf",
-      "XDG_CONFIG_HOME/nano/nanorc",
-      "XDG_CONFIG_HOME/readline/inputrc",
-      "XDG_CONFIG_HOME/screen/screenrc",
-      "XDG_CONFIG_HOME/wgetrc",
-      "XDG_DATA_HOME/gnupg/*.conf"
-    ],
-    "Shell Script": ["ZDOTDIR/.sources", "ZDOTDIR/.zpreztorc"]
-  },
-  "languages": {
-    "Python": {
-      "language_servers": ["pyright", "ruff"],
-      "format_on_save": "on",
-      "formatter": [
-        {
-          "language_server": {
-            "name": "ruff"
-          }
-        }
-      ]
-    }
-  },
-  "lsp": {
-    "ruff": {
-      "initialization_options": {
-        "settings": {
-          "lineLength": 80
-        }
-      }
-    },
-    "solargraph": {
-      "initialization_options": {
-        "diagnostics": true,
-        "formatting": true
-      },
-      "settings": {
-        "use_bundler": false
-      }
-    }
-  }
+	"file_types": {
+		"Git Attributes": ["**/git/attributes"],
+		"Git Config": ["**/git/config*"],
+		"Git Ignore": ["**/git/ignore"],
+		"ini": ["**/wgetrc"],
+		"JSONC": [
+			"**/.vscode_global/**/*.json",
+			"**/LOCALAPPDATA/**/windows_terminal.json"
+		],
+		"Plain Text": [
+			"**/HOME/.gnupg/*.conf",
+			"**/HOME/.hushlogin",
+			"**/HOME/.ssh/*",
+			"**/XDG_CONFIG_HOME/com.mitchellh.ghostty/config",
+			"**/XDG_CONFIG_HOME/ghostty/config",
+			"**/XDG_DATA_HOME/gnug/gpg-agent.conf"
+		],
+		"Shell Script": ["**/ZDOTDIR/.sources", "**/ZDOTDIR/.zpreztorc"]
+	}
 }

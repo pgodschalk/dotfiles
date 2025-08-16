@@ -19,7 +19,7 @@ import fileinput
 import re
 
 
-def get_lines(diff_lines):
+def get_lines(diff_lines: list[str]) -> tuple[list[str], list[str]]:
     # Added lines start with '+' (but not '+++', because that marks a new
     # file).  The same goes for removed lines, except '-' instead of '+'.
     added_lines = [
@@ -35,8 +35,10 @@ def get_lines(diff_lines):
     return added_lines, removed_lines
 
 
-def get_words(added_lines, removed_lines):
-    def word_count(lines):
+def get_words(
+    added_lines: list[str], removed_lines: list[str]
+) -> tuple[list[str], list[str]]:
+    def word_count(lines: list[str]) -> list[str]:
         return [
             word for line in lines for word in line.split() if re.match(r"^\w+", word)
         ]

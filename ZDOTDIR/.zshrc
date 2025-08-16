@@ -1,3 +1,6 @@
+#!/usr/bin/env zsh
+# shellcheck disable=SC1091
+
 # We use this to determine which OS specific plugins to load
 if [[ $OSTYPE == "linux-gnu"* ]]; then
   if grep --quiet "debian" /etc/os-release; then

@@ -1,11 +1,28 @@
-# Get editor completions based on the config schema
+# References:
+# - https://starship.rs/presets/nerd-font
+
 "$schema" = 'https://starship.rs/config-schema.json'
 
 [aws]
 symbol = '󰸏 '
 
+[buf]
+symbol = " "
+
+[bun]
+symbol = " "
+
 [c]
 symbol = ' '
+
+[cpp]
+symbol = " "
+
+[cmake]
+symbol = " "
+
+[conda]
+symbol = " "
 
 [crystal]
 format = ' '
@@ -13,8 +30,14 @@ format = ' '
 [dart]
 format = ' '
 
+[deno]
+symbol = " "
+
+[directory]
+read_only = " 󰌾"
+
 [direnv]
-disabled = true # @TODO
+disabled = false
 
 [docker_context]
 detect_files = [
@@ -22,8 +45,10 @@ detect_files = [
   'compose.yaml',
   'docker-compose.yml',
   'docker-compose.yaml',
+  'Containerfile',
   'Dockerfile',
 ]
+symbol = " "
 
 [dotnet]
 symbol = '󰪮 '
@@ -40,13 +65,18 @@ symbol = ' '
 [fennel]
 symbol = ' '
 
+[fossil_branch]
+symbol = " "
+
 [gcloud]
 format = 'on [$symbol$project]($style) '
 symbol = '󱇶 '
-[gcloud.project_aliases]
-solarmonkey-app = 'prod'
-solar-monkey-internal-tools = 'tools'
-solarmonkey-non-production = 'nonprod'
+
+[git_branch]
+symbol = " "
+
+[git_commit]
+tag_symbol = '  '
 
 [golang]
 symbol = ' '
@@ -63,6 +93,12 @@ symbol = ' '
 [haxe]
 symbol = ' '
 
+[hg_branch]
+symbol = " "
+
+[hostname]
+ssh_symbol = " "
+
 [java]
 symbol = ' '
 
@@ -78,6 +114,9 @@ symbol = '󱃾 '
 [lua]
 symbol = ' '
 
+[memory_usage]
+symbol = "󰍛 "
+
 [nim]
 symbol = ' '
 
@@ -91,39 +130,66 @@ symbol = '󰎙 '
 symbol = ' '
 
 [os.symbols]
+Alpaquita = " "
 Alpine = ' '
+AlmaLinux = " "
 Amazon = ' '
 Android = '󰀲 '
 Arch = '󰣇 '
 Artix = ' '
+CachyOS = " "
 CentOS = ' '
 Debian = ' '
+DragonFly = " "
+Emscripten = " "
 EndeavourOS = ' '
 Fedora = ' '
 FreeBSD = ' '
 Garuda = ' '
 Gentoo = '󰣨 '
+HardenedBSD = "󰞌 "
 Illumos = ' '
+Kali = " "
 Linux = '󰌽 '
+Mabox = " "
 Macos = ' '
 Manjaro = ' '
+Mariner = " "
+MidnightBSD = " "
 Mint = '󰣭 '
 NetBSD = "🚩 "
 NixOS = " "
+Nobara = " "
 OpenBSD = ' '
 openSUSE = ' '
+OracleLinux = "󰌷 "
 Pop = ' '
+Raspbian = " "
 Redhat = '󱄛 '
 RedHatEnterprise = '󱄛 '
+RockyLinux = " "
+Redox = "󰀘 "
 Solus = ' '
+SUSE = " "
 Ubuntu = ' '
-Windows = ' '
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
+
+[package]
+symbol = "󰏗 "
 
 [perl]
 symbol = ' '
 
 [php]
 symbol = ' '
+
+[pijul_channel]
+symbol = " "
+
+[pixi]
+symbol = "󰏗 "
 
 [purescript]
 symbol = ' '

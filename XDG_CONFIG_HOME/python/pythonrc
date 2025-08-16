@@ -3,11 +3,9 @@
 
 def is_vanilla() -> bool:
     import sys
+    import builtins
 
-    return (
-        not hasattr(__builtins__, "__IPYTHON__")
-        and "bpython" not in sys.argv[0]
-    )
+    return not hasattr(builtins, "__IPYTHON__") and "bpython" not in sys.argv[0]
 
 
 def setup_history():
@@ -24,7 +22,7 @@ def setup_history():
     history: Path = state_home / "python_history"
 
     readline.read_history_file(str(history))
-    atexit.register(readline.write_history_file, str(history))
+    _ = atexit.register(readline.write_history_file, str(history))
 
 
 if is_vanilla():

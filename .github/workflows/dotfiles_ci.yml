@@ -20,21 +20,74 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up bun
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
+
       - name: Set up Biome CLI
         uses: biomejs/setup-biome@454fa0d884737805f48d7dc236c1761a0ac3cc13 # v2.6.0
 
       - name: Set up ruff
         uses: astral-sh/ruff-action@0c50076f12c38c3d0115b7b519b54a91cb9cf0ad # v3.5.0
 
-      - name: Run Biome
+      - name: Set up uv
+        uses: astral-s[h/setup-uv@d9e0f98d3fc6adb07d1e3d37f3043649ddad06a1 # v6.5.0
+
+      - name: Lint and format check with Biome
         run: biome ci
 
-      - name: Run markdownlint
+      - name: Lint and format check Markdown
         uses: DavidAnson/markdownlint-cli2-action@992badcdf24e3b8eb7e87ff9287fe931bcb00c6e # v20.0.0
         with:
-          globs: "**/*.md"
+          globs: |
+            **/.github/PULL_REQUEST_TEMPLATE
+            **/*.md
 
-      - name: Run ruff
+      - name: Format check ini
         run: |
-          ruff check .
-          ruff format --check .
+          bun install \
+            prettier
+            prettier-plugin-ini
+          prettier --check --parser ini --plugin=prettier-plugin-ini \
+            **/wgetrc
+
+      - name: Lint Python
+        run: |
+          basedpyright **/*.py **/XDG_BIN_HOME/gn **/pythonrc
+          ruff check **/*.py **/XDG_BIN_HOME/gn **/pythonrc
+          ruff format --check **/*.py **/XDG_BIN_HOME/gn **/pythonrc
+
+      - name: Lint Ruby
+        run: |
+          solargraph typecheck XDG_BIN_HOME/git-whodoneit
+
+      - name: Lint and format check TOML
+        run: |
+          bunx @taplo/cli format --check **/*.toml
+          bunx @taplo/cli lint **/*.toml
+
+      - name: Lint and format check Shell Script
+        run: |
+          apt-get update && apt-get install --no-install-recommends -y \
+            shellcheck \
+            shfmt
+
+          find XDG_BIN_HOME -type f -name "*" \
+            ! -name "git-whodoneit" \
+            ! -name "gn" \
+            ! -name "gn.py" \
+            -exec shellcheck --shell=bash {} + && \
+            shellcheck --shell=bash ZDOTDIR/.*
+          find XDG_BIN_HOME -type f -name "*" \
+            ! -name "git-whodoneit" \
+            ! -name "gn" \
+            ! -name "gn.py" \
+            -exec shfmt --diff --indent 2 --case-indent --binary-next-line {} + && \
+            shfmt --diff --indent 2 --case-indent --binary-next-line \
+            ZDOTDIR/.*
+
+      - name: Format check yaml
+        run: |
+          bun install \
+            prettier
+          prettier --check \
+            **/*.{yml,yaml}

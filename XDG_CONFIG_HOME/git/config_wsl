@@ -33,6 +33,8 @@
   #                             of a line
   whitespace = space-before-tab,-indent-with-non-tab,trailing-space
 	sshCommand = ssh.exe
+[advice]
+addIgnoredFile = false
 [alias]
   aa = add --all
   amend = commit --amend --reuse-message=HEAD
@@ -215,11 +217,5 @@
   pushInsteadOf = "https://gitlab.com/"
 [url "https://gitlab.com/"]
   insteadOf = "gitlab:"
-[gitbutler]
-  aiOpenAIKeyOption = bringYourOwn
-  aiOpenAIModelName = gpt-4o-mini
-  aiModelProvider = openai
-[advice]
-  addIgnoredFile = false
 [includeIf "gitdir:~/Developer/for/ubiops/"]
   path = ~/Developer/for/ubiops/.gitconfig

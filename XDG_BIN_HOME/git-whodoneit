@@ -34,10 +34,11 @@ class WhoDoneIt
   end
 
   def blame_lines
-    @blame_lines ||= matching_files.map do |filename|
+    blame_output = matching_files.map do |filename|
       `git blame -f -- #{filename} | grep #{PATTERN}`
     end
-    .map do |line|
+    @blame_lines ||= blame_output
+                     .map do |line|
       line.split("\n")
     end
     .flatten

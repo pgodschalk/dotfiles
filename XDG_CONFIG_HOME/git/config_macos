@@ -32,6 +32,8 @@
   # [default] space-before-tab: looks for spaces before tabs at the beginning
   #                             of a line
   whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+[advice]
+  addIgnoredFile = false
 [alias]
   aa = add --all
   amend = commit --amend --reuse-message=HEAD
@@ -216,7 +218,5 @@
   pushInsteadOf = "https://gitlab.com/"
 [url "https://gitlab.com/"]
   insteadOf = "gitlab:"
-[advice]
-  addIgnoredFile = false
 [includeIf "gitdir:~/Developer/for/ubiops/"]
   path = ~/Developer/for/ubiops/.gitconfig
