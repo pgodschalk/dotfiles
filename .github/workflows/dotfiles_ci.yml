@@ -66,9 +66,10 @@ jobs:
 
       - name: Lint and format check Shell Script
         run: |
+          shopt -s globstar nullglob
+
           sudo apt-get update && \
           sudo apt-get install --no-install-recommends -y \
-            shellcheck \
             shfmt
 
           find XDG_BIN_HOME -type f -name "*" \
@@ -76,17 +77,19 @@ jobs:
             ! -name "gn" \
             ! -name "gn.py" \
             -exec shellcheck --shell=bash {} + && \
-            shellcheck --shell=bash ZDOTDIR/.*
+            shellcheck --shell=bash \
+            ZDOTDIR/.* \
+            **/*.sh
           find XDG_BIN_HOME -type f -name "*" \
             ! -name "git-whodoneit" \
             ! -name "gn" \
             ! -name "gn.py" \
             -exec shfmt --diff --indent 2 --case-indent --binary-next-line {} + && \
             shfmt --diff --indent 2 --case-indent --binary-next-line \
-            ZDOTDIR/.*
+            ZDOTDIR/.* \
+            **/*.sh
 
       - name: Format check yaml
         run: |
-          shopt -s globstar nullglob
           bunx prettier --check \
-            **/*.{yml,yaml}
+            "**/*.{yml,yaml}"
