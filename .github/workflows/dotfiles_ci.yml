@@ -45,7 +45,7 @@ jobs:
       - name: Format check ini
         run: |
           bun install \
-            prettier
+            prettier \
             prettier-plugin-ini
           prettier --check --parser ini --plugin=prettier-plugin-ini \
             **/wgetrc
