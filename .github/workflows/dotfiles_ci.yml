@@ -44,7 +44,7 @@ jobs:
 
       - name: Format check ini
         run: |
-          bun install \
+          bun install --global \
             prettier \
             prettier-plugin-ini
           prettier --check --parser ini --plugin=prettier-plugin-ini \
@@ -87,7 +87,7 @@ jobs:
 
       - name: Format check yaml
         run: |
-          bun install \
+          bun install --global \
             prettier
           prettier --check \
             **/*.{yml,yaml}
