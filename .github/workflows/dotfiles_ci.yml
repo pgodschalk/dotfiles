@@ -84,7 +84,5 @@ jobs:
 
       - name: Format check yaml
         run: |
-          bun install --global \
-            prettier
-          prettier --check \
+          bunx prettier --check \
             **/*.{yml,yaml}
