@@ -48,7 +48,7 @@ jobs:
             prettier \
             prettier-plugin-ini
           prettier --check --parser ini \
-            --plugin=~/.bun/install/global/node_modules/prettier-plugin-ini/src/plugin.js \
+            --plugin=$HOME/.bun/install/global/node_modules/prettier-plugin-ini/src/plugin.js \
             **/wgetrc
 
       - name: Lint Python
