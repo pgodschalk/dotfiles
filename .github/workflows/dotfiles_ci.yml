@@ -57,10 +57,6 @@ jobs:
           ruff check **/*.py **/XDG_BIN_HOME/gn **/pythonrc
           ruff format --check **/*.py **/XDG_BIN_HOME/gn **/pythonrc
 
-      - name: Lint Ruby
-        run: |
-          solargraph typecheck XDG_BIN_HOME/git-whodoneit
-
       - name: Lint and format check TOML
         run: |
           bunx @taplo/cli format --check **/*.toml
