@@ -30,7 +30,7 @@ jobs:
         uses: astral-sh/ruff-action@0c50076f12c38c3d0115b7b519b54a91cb9cf0ad # v3.5.0
 
       - name: Set up uv
-        uses: astral-s[h/setup-uv@d9e0f98d3fc6adb07d1e3d37f3043649ddad06a1 # v6.5.0
+        uses: astral-sh/setup-uv@d9e0f98d3fc6adb07d1e3d37f3043649ddad06a1 # v6.5.0
 
       - name: Lint and format check with Biome
         run: biome ci
