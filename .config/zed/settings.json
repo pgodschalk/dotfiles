@@ -7,98 +7,422 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "theme": {
-    "mode": "system",
-    "light": "Zed Legacy: Solarized Light",
-    "dark": "Zed Legacy: Solarized Dark"
-  },
-  "features": {
-    "edit_prediction_provider": "zed"
-  },
-  "buffer_font_family": "FiraCode Nerd Font",
-  "buffer_font_size": 16,
-  "restore_on_startup": "none",
-  "wrap_guides": [50, 72, 79, 120],
-  "redact_private_values": true,
-  "project_panel": {
-    "dock": "right"
-  },
-  "outline_panel": {
-    "dock": "right"
-  },
-  "collaboration_panel": {
-    "dock": "right"
-  },
-  "git_panel": {
-    "dock": "right"
-  },
-  "message_editor": {
-    "auto_replace_emoji_shortcode": false
-  },
-  "agent": {
-    "default_profile": "ask",
-    "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-sonnet-4"
-    }
-  },
-  "tabs": {
-    "close_position": "left"
-  },
-  "tab_size": 2,
-  "telemetry": {
-    "diagnostics": false,
-    "metrics": false
-  },
-  "terminal": {
-    "env": {
-      "EDITOR": "zed --wait"
-    }
-  },
-  "file_types": {
-    "Dockerfile": ["Dockerfile.*"],
-    "JSONC": [
-      "**/.zed/**/*.json",
-      "**/zed/**/*.json",
-      "**/Zed/**/*.json",
-      "**/.vscode/**/*.json"
-    ],
-    "Shell Script": [".env.*"]
-  },
-  "languages": {
-    "C++": {
-      "format_on_save": "on",
-      "tab_size": 2
-    },
-    "Markdown": {
-      "format_on_save": "on"
-    }
-  },
-  "lsp": {
-    "solargraph": {
-      "initialization_options": {
-        "diagnostics": true,
-        "formatting": true
-      }
-    },
-    "yaml-language-server": {
-      "settings": {
-        "yaml": {
-          "format": {
-            "enable": true,
-            "singleQuote": false,
-            "bracketSpacing": false,
-            "proseWrap": "always",
-            "printWidth": 80
-          },
-          "validate": true,
-          "hover": true,
-          "completion": true,
-          "schemaStore": {
-            "enable": true
-          }
-        }
-      }
-    }
-  }
+	"theme": {
+		"mode": "system",
+		"light": "Zed Legacy: Solarized Light",
+		"dark": "Zed Legacy: Solarized Dark"
+	},
+	"features": {
+		"edit_prediction_provider": "zed"
+	},
+	"buffer_font_family": "FiraCode Nerd Font",
+	"buffer_font_size": 16,
+	"restore_on_startup": "none",
+	"restore_on_file_reopen": false,
+	"wrap_guides": [79, 120],
+	"project_panel": {
+		"dock": "right"
+	},
+	"outline_panel": {
+		"dock": "right"
+	},
+	"collaboration_panel": {
+		"dock": "right"
+	},
+	"git_panel": {
+		"dock": "right"
+	},
+	"message_editor": {
+		"auto_replace_emoji_shortcode": false
+	},
+	"agent": {
+		"inline_assistant_model": {
+			"provider": "anthropic",
+			"model": "claude-sonnet-4-thinking-latest"
+		},
+		"default_profile": "ask",
+		"default_model": {
+			"provider": "anthropic",
+			"model": "claude-sonnet-4-thinking-latest"
+		}
+	},
+	"tabs": {
+		"close_position": "left"
+	},
+	"tab_size": 2,
+	"telemetry": {
+		"diagnostics": false,
+		"metrics": false
+	},
+	"file_scan_exclusions": [
+		"**/.git",
+		"**/.svn",
+		"**/.hg",
+		"**/.jj",
+		"**/.repo",
+		"**/CVS",
+		"**/.DS_Store",
+		"**/Thumbs.db",
+		"**/.classpath",
+		"**/.settings",
+		"**/.ansible",
+		"**/.mypy_cache",
+		"**/.ropeproject",
+		"**/.ruff_cache",
+		"**/.venv",
+		"**/__pycache__"
+	],
+	"git_hosting_providers": [
+		{
+			"provider": "gitlab",
+			"name": "Dutch Analytics GitLab",
+			"base_url": "https://git.dutchanalytics.net"
+		}
+	],
+	"terminal": {
+		"env": {
+			"EDITOR": "zed --wait",
+			"GIT_EDITOR": "zed --wait"
+		}
+	},
+	"file_types": {
+		"Ansible": [
+			"**.ansible.yml",
+			"**.ansible.yaml",
+			"**/defaults/*.yml",
+			"**/defaults/*.yaml",
+			"**/meta/*.yml",
+			"**/meta/*.yaml",
+			"**/tasks/*.yml",
+			"**/tasks/*.yaml",
+			"**/handlers/*.yml",
+			"**/handlers/*.yaml",
+			"**/group_vars/*.yml",
+			"**/group_vars/*.yaml",
+			"**/playbooks/*.yaml",
+			"**/playbooks/*.yml",
+			"**playbook*.yaml",
+			"**playbook*.yml"
+		],
+		"Dockerfile": ["Dockerfile.*"],
+		"env": [".env.*"],
+		"Git Attributes": ["{git,.git,.git/info}/attributes"],
+		"Git Config": ["{git,.git/modules,.git/modules/*}/config"],
+		"Git Ignore": ["{git,.git}/ignore", ".git/info/exclude"],
+		"Helm": [
+			"**/templates/**/*.tpl",
+			"**/templates/**/*.yaml",
+			"**/templates/**/*.yml",
+			"**/helmfile.d/**/*.yaml",
+			"**/helmfile.d/**/*.yml",
+			"**/values*.yaml"
+		],
+		"Jinja2": ["**/*.j2"],
+		"JSON": ["**/*.webmanifest"],
+		"JSONC": [
+			"**/.zed/**/*.json",
+			"**/zed/**/*.json",
+			"**/Zed/**/*.json",
+			"**/.devcontainer.json",
+			"**/devcontainer.json",
+			"**/.vscode/**/*.json"
+		],
+		"Markdown": ["**/.github/PULL_REQUEST_TEMPLATE"]
+	},
+	"languages": {
+		"Astro": {
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": ["--stdin-filepath", "{buffer_path}"]
+				}
+			},
+			"code_actions_on_format": {
+				"source.fixAll.eslint": true,
+				"source.fixAll.stylelint": true
+			},
+			"language_servers": ["eslint", "stylelint", "!biome", "..."]
+		},
+		"C": {
+			"format_on_save": "on",
+			"tab_size": 2
+		},
+		"C++": {
+			"format_on_save": "on",
+			"tab_size": 2
+		},
+		"CMake": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "uvx",
+					"arguments": ["--from", "cmakelang", "cmake-format", "{buffer_path}"]
+				}
+			}
+		},
+		"CSS": {
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			},
+			"language_servers": ["!stylelint-lsp", "biome", "..."],
+			"prettier": {
+				"allowed": false
+			}
+		},
+		"env": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "shfmt",
+					"arguments": [
+						"--filename",
+						"{buffer_path}",
+						"--indent",
+						"2",
+						"--case-indent",
+						"--binary-next-line"
+					]
+				}
+			}
+		},
+		"Gherkin": {
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"gherkin",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-gherkin/dist/index.js",
+						"--stdin-filepath",
+						"{buffer_path}"
+					]
+				}
+			}
+		},
+		"Git Commit": {
+			"wrap_guides": [50, 72],
+			"preferred_line_length": 72
+		},
+		"JavaScript": {
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			},
+			"code_actions_on_format": {
+				"source.fixAll.biome": true,
+				"source.organizeImports.biome": true
+			},
+			"language_servers": ["!eslint", "biome", "..."]
+		},
+		"HTML-Jinja": {
+			"formatter": {
+				"external": {
+					"command": "uvx",
+					"arguments": ["run", "djhtml", "{buffer_path}"]
+				}
+			}
+		},
+		"ini": {
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"ini",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-ini/src/plugin.js",
+						"--stdin-filepath",
+						"{buffer_path}"
+					]
+				}
+			}
+		},
+		"JSON": {
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			}
+		},
+		"JSONC": {
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			}
+		},
+		"Lua": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "stylua",
+					"arguments": [
+						"--syntax=Lua54",
+						"--respect-ignores",
+						"--stdin-filepath",
+						"{buffer_path}",
+						"-"
+					]
+				}
+			},
+			"inlay_hints": {
+				"enabled": true,
+				"show_type_hints": true,
+				"show_parameter_hints": true,
+				"show_other_hints": true
+			}
+		},
+		"Markdown": {
+			"format_on_save": "on"
+		},
+		"Nginx": {
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"nginx",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-nginx/dist/index.js",
+						"--stdin-filepath",
+						"{buffer_path}"
+					]
+				}
+			}
+		},
+		"PowerShell": {
+			"formatter": {
+				"external": {
+					"command": "pwsh",
+					"arguments": [
+						"-NoProfile",
+						"-Command",
+						"(Get-Content '{buffer_path}' -Raw | Invoke-Formatter) -replace '\\r?\\n$', ''"
+					]
+				}
+			}
+		},
+		"Python": {
+			"format_on_save": "on",
+			"formatter": [
+				{
+					"language_server": {
+						"name": "ruff"
+					}
+				}
+			],
+			"language_servers": ["basedpyright", "ruff", "!pyright", "!pylsp", "..."]
+		},
+		"SCSS": {
+			"code_actions_on_format": {
+				"source.fixAll.stylelint": true
+			}
+		},
+		"Shell Script": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "shfmt",
+					"arguments": [
+						"--filename",
+						"{buffer_path}",
+						"--indent",
+						"2",
+						"--case-indent",
+						"--binary-next-line"
+					]
+				}
+			}
+		},
+		"SQL": {
+			"formatter": {
+				"external": {
+					"command": "sql-formatter"
+				}
+			}
+		},
+		"Swift": {
+			"formatter": {
+				"external": {
+					"command": "swift",
+					"arguments": ["format", "--parallel", "{buffer_path}"]
+				}
+			},
+			"language_servers": ["sourcekit-lsp", "package-swift-lsp", "..."]
+		},
+		"TSX": {
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			},
+			"code_actions_on_format": {
+				"source.fixAll.biome": true,
+				"source.organizeImports.biome": true
+			},
+			"language_servers": [
+				"!eslint",
+				"biome",
+				"!typescript-language-server",
+				"tsgo",
+				"vstls",
+				"..."
+			],
+			"prettier": {
+				"allowed": false
+			}
+		},
+		"TypeScript": {
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			},
+			"code_actions_on_format": {
+				"source.fixAll.biome": true,
+				"source.organizeImports.biome": true
+			},
+			"language_servers": [
+				"!eslint",
+				"biome",
+				"!typescript-language-server",
+				"tsgo",
+				"vstls",
+				"..."
+			],
+			"prettier": {
+				"allowed": false
+			}
+		},
+		"XML": {
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"xml",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/@prettier/plugin-xml/src/plugin.js",
+						"--stdin-filepath",
+						"{buffer_path}"
+					]
+				}
+			}
+		}
+	},
+	"lsp": {
+		"solargraph": {
+			"initialization_options": {
+				"diagnostics": true,
+				"formatting": true
+			}
+		},
+		"vscode-css-language-server": {
+			"settings": {
+				"css": {
+					"validate": false
+				}
+			}
+		}
+	}
 }
