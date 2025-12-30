@@ -167,7 +167,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
       - name: Lint with shellcheck
         run: |
-          shopt -s globstar nullglob
+          shopt -s globstar nullglob extglob
 
           bash_files=(
             **/*.env*
