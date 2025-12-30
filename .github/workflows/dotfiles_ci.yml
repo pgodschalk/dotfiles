@@ -49,7 +49,12 @@ jobs:
       - name: Set up Biome
         uses: biomejs/setup-biome@454fa0d884737805f48d7dc236c1761a0ac3cc13 # v2.6.0
       - name: Lint and format check with Biome
-        run: biome ci "**/*.json" "**/*.jsonc"
+        run: |
+          shopt -s globstar nullglob
+          files=(**/*.json **/*.jsonc)
+          if [[ ${#files[@]} -gt 0 ]]; then
+            biome ci "${files[@]}"
+          fi
   lint-kdl:
     name: Lint KDL
     permissions:
@@ -62,7 +67,12 @@ jobs:
       - name: Set up kdlfmt
         uses: hougesen/kdlfmt@64bd1a4ea2fec30ad2a21e273bcb254994ec78c2 # v0.1.5
       - name: Format check with kdlfmt
-        run: kdlfmt --check "**/*.kdl"
+        run: |
+          shopt -s globstar nullglob
+          files=(**/*.kdl)
+          if [[ ${#files[@]} -gt 0 ]]; then
+            kdlfmt check "${files[@]}"
+          fi
   lint-markdown:
     name: Lint Markdown
     permissions:
@@ -131,6 +141,7 @@ jobs:
         uses: ruby/setup-ruby@ae195bbe749a7cef685ac729197124a48305c1cb # v1.276.0
         with:
           bundler-cache: true
+          ruby-version: "4.0"
       - name: Install tools
         run: gem install ruby-lsp steep
       - name: Lint with RuboCop
@@ -167,6 +178,7 @@ jobs:
             shellcheck --shell=bash "${bash_files[@]}"
           fi
 
+          # shellcheck doesn't support zsh, lint as bash as a best-effort check
           zsh_files=(
             XDG_BIN_HOME/ai-generate
             XDG_BIN_HOME/dark-notify-hook
@@ -182,7 +194,7 @@ jobs:
             ZDOTDIR/.zshrc
           )
           if [[ ${#zsh_files[@]} -gt 0 ]]; then
-            shellcheck --shell=zsh "${zsh_files[@]}"
+            shellcheck --shell=bash "${zsh_files[@]}"
           fi
       - name: Format check with shfmt
         run: |
