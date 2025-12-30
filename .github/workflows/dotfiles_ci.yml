@@ -50,7 +50,7 @@ jobs:
         uses: biomejs/setup-biome@454fa0d884737805f48d7dc236c1761a0ac3cc13 # v2.6.0
       - name: Lint and format check with Biome
         run: |
-          shopt -s globstar nullglob
+          shopt -s globstar nullglob dotglob
           files=(**/*.json **/*.jsonc)
           if [[ ${#files[@]} -gt 0 ]]; then
             biome ci "${files[@]}"
@@ -178,24 +178,7 @@ jobs:
             shellcheck --shell=bash "${bash_files[@]}"
           fi
 
-          # shellcheck doesn't support zsh, lint as bash as a best-effort check
-          zsh_files=(
-            XDG_BIN_HOME/ai-generate
-            XDG_BIN_HOME/dark-notify-hook
-            XDG_BIN_HOME/launchctl-env
-            ZDOTDIR/.aliases
-            ZDOTDIR/.completions
-            ZDOTDIR/.exports
-            ZDOTDIR/.functions
-            ZDOTDIR/.sources
-            ZDOTDIR/.theme-sync
-            ZDOTDIR/.zmodules
-            ZDOTDIR/.zpreztorc
-            ZDOTDIR/.zshrc
-          )
-          if [[ ${#zsh_files[@]} -gt 0 ]]; then
-            shellcheck --shell=bash "${zsh_files[@]}"
-          fi
+          # shellcheck doesn't support zsh, skip zsh files
       - name: Format check with shfmt
         run: |
           shopt -s globstar nullglob extglob
