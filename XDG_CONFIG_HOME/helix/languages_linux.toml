@@ -1,0 +1,308 @@
+[language-server]
+biome = { command = "biome", args = ["lsp-proxy"] }
+
+[language-server.astro-ls]
+config = { typescript = { tsdk = "~/.local/share/npm/lib/node_modules/typescript/lib" }, environment = "node" }
+
+[language-server.intelephense]
+command = "intelephense"
+args = ["--stdio"]
+config = { globalStoragePath = "~/.local/share/intelephense" }
+
+[language-server.powershell-editor-services]
+command = "pwsh"
+args = [
+  "-NoLogo",
+  "-NoProfile",
+  "-Command",
+  "~/.local/share/powershell-editor-services/PowerShellEditorServices/Start-EditorServices.ps1 -Stdio"
+]
+
+[language-server.tailwindcss-ls]
+command = "tailwindcss-language-server"
+args = ["--stdio"]
+
+[language-server.ruff]
+config = { settings = { lineLength = 79 } }
+
+[language-server.yaml-language-server.config.yaml]
+format = { enable = false }
+validation = true
+
+[language-server.yaml-language-server.config.yaml.schemas]
+"https://json.schemastore.org/github-workflow.json" = ".github/workflows/*.{yml,yaml}"
+"https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible-tasks.json" = "roles/{tasks,handlers}/*.{yml,yaml}"
+
+[[language]]
+name = "ansible"
+scope = "source.yaml"
+injection-regex = "ansible"
+file-types = [
+  { glob = "defaults/*.yaml" },
+  { glob = "defaults/*.yml" },
+  { glob = "group_vars/*.yaml" },
+  { glob = "group_vars/*.yml" },
+  { glob = "handlers/*.yaml" },
+  { glob = "handlers/*.yml" },
+  { glob = "host_vars/*.yaml" },
+  { glob = "host_vars/*.yml" },
+  { glob = "meta/*.yaml" },
+  { glob = "meta/*.yml" },
+  { glob = "playbooks/*.yaml" },
+  { glob = "playbooks/*.yml" },
+  { glob = "roles/{tasks,handlers}/*.yaml" },
+  { glob = "roles/{tasks,handlers}/*.yml" },
+  { glob = "tasks/*.yaml" },
+  { glob = "tasks/*.yml" },
+  { glob = "vars/*.yaml" },
+  { glob = "vars/*.yml" },
+]
+shebangs = ["ansible-playbook"]
+auto-format = true
+comment-token = "#"
+indent = { tab-width = 2, unit = "  " }
+language-servers = ["ansible-language-server"]
+grammar = "yaml"
+formatter = { command = "yamlfmt", args = ["-in"] }
+
+[[language]]
+name = "astro"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--parser",
+  "astro",
+  "--plugin=~/.local/share/npm/lib/node_modules/prettier-plugin-astro/dist/index.js",
+] }
+
+[[language]]
+name = "bash"
+auto-format = true
+formatter = { command = "shfmt", args = [
+  "--indent",
+  "2",
+  "--case-indent",
+  "--binary-next-line"
+] }
+
+[[language]]
+name = "c"
+auto-format = true
+
+[[language]]
+name = "cpp"
+auto-format = true
+
+[[language]]
+name = "css"
+auto-format = true
+language-servers = [
+  { name = "vscode-html-language-server", except-features = ["format"] },
+  "biome",
+  "tailwindcss-ls"
+]
+formatter = { command = "biome", args = [
+  "format",
+  "--stdin-file-path",
+  "file.css"
+] }
+
+[[language]]
+name = "env"
+auto-format = true
+formatter = { command = "shfmt", args = [
+  "--indent",
+  "2",
+  "--case-indent",
+  "--binary-next-line"
+] }
+
+[[language]]
+name = "erb"
+auto-format = true
+formatter = { command = "erb-formatter", args = ["--stdin"] }
+
+[[language]]
+name = "gherkin"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--parser",
+  "gherkin",
+  "--plugin=~/.local/share/npm/lib/node_modules/prettier-plugin-gherkin/dist/index.js"
+] }
+
+[[language]]
+name = "gotmpl"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--parser",
+  "go-template",
+  "--plugin=~/.local/share/npm/lib/node_modules/prettier-plugin-go-template/lib/index.js"
+] }
+
+[[language]]
+name = "hcl"
+auto-format = true
+formatter = { command = "terraform", args = ["fmt", "-"] }
+
+[[language]]
+name = "html"
+language-servers = ["vscode-html-language-server", "tailwindcss-ls"]
+
+[[language]]
+name = "htmldjango"
+file-types = [
+  { glob = "**/templates/**/*.html" },
+]
+auto-format = true
+formatter = { command = "djlint", args = [
+  "--reformat",
+  "--profile",
+  "jinja",
+  "-"
+] }
+
+[[language]]
+name = "ini"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--parser",
+  "ini",
+  "--plugin=~/.local/share/npm/lib/node_modules/prettier-plugin-ini/src/plugin.js"
+] }
+
+[[language]]
+name = "javascript"
+auto-format = true
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "biome"
+]
+
+[[language]]
+name = "jinja"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--parser",
+  "jinja-template",
+  "--plugin=~/.local/share/npm/lib/node_modules/prettier-plugin-jinja-template/lib/index.js"
+] }
+
+[[language]]
+name = "json"
+auto-format = true
+language-servers = [
+  { name = "vscode-json-language-server", except-features = ["format"] },
+  "biome"
+]
+
+[[language]]
+name = "jsonc"
+auto-format = true
+language-servers = [
+  { name = "vscode-json-language-server", except-features = ["format"] },
+  "biome"
+]
+
+[[language]]
+name = "jsx"
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "biome",
+  "tailwindcss-ls"
+]
+auto-format = true
+
+[[language]]
+name = "kdl"
+auto-format = true
+
+[[language]]
+name = "markdown"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--parser",
+  "markdown",
+  "--prose-wrap",
+  "always",
+  "--print-width",
+  "80"
+] }
+
+[[language]]
+name = "nginx"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--parser",
+  "nginx",
+  "--plugin=~/.local/share/npm/lib/node_modules/prettier-plugin-nginx/dist/index.js"
+] }
+
+[[language]]
+name = "php"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--parser",
+  "php",
+  "--plugin=~/.local/share/npm/lib/node_modules/@prettier/plugin-php/src/index.mjs"
+] }
+
+[[language]]
+name = "powershell"
+auto-format = true
+formatter = { command = "pwsh", args = [
+  "-NoProfile",
+  "-Command",
+  "($input | Out-String | Invoke-Formatter) -replace '\\r?\\n$', ''"
+] }
+language-servers = ["powershell-editor-services"]
+
+[[language]]
+name = "python"
+auto-format = true
+language-servers = ["ruff", "ty"]
+
+[[language]]
+name = "ruby"
+auto-format = true
+language-servers = ["ruby-lsp"]
+
+[[language]]
+name = "sql"
+auto-format = true
+formatter = { command = "sql-formatter" }
+
+[[language]]
+name = "toml"
+auto-format = true
+language-servers = ["tombi"]
+
+[[language]]
+name = "tsx"
+auto-format = true
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "biome",
+  "tailwindcss-ls"
+]
+
+[[language]]
+name = "typescript"
+auto-format = true
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "biome"
+]
+
+[[language]]
+name = "xml"
+auto-format = true
+formatter = { command = "prettier", args = [
+  "--parser",
+  "xml",
+  "--plugin=~/.local/share/npm/lib/node_modules/@prettier/plugin-xml/src/plugin.js"
+] }
+
+[[language]]
+name = "yaml"
+auto-format = true
+formatter = { command = "yamlfmt", args = ["-in"] }

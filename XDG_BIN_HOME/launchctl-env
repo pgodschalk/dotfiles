@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+#
+# Set environment variables via launchctl for GUI apps
+# Run once at login via LaunchAgent
+
+# Capture environment before sourcing
+typeset -A env_before
+while IFS='=' read -r key value; do
+  env_before[$key]=1
+done < <(env)
+
+# Source the exports file to get computed values
+export ZDOTDIR="${HOME}/Library/Application Support/zsh"
+source "${ZDOTDIR}/.exports"
+
+# Export all new/changed variables to launchctl
+while IFS='=' read -r key value; do
+  # Skip if existed before (unchanged system vars)
+  [[ -n "${env_before[$key]}" ]] && continue
+  # Skip empty values
+  [[ -z "$value" ]] && continue
+  # Skip internal/private variables
+  [[ "$key" == _* ]] && continue
+
+  launchctl setenv "$key" "$value"
+done < <(env)

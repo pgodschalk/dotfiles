@@ -1,0 +1,240 @@
+[advice]
+  addIgnoredFile = false
+[alias]
+  aa = add --all
+  amend = commit --amend --reuse-message=HEAD
+  ci = commit --verbose
+  cp = cherry-pick
+  co = checkout
+  dc = diff --find-copies-harder --cached
+  dh1 = diff HEAD~1
+  di = diff --find-copies-harder
+  ds = diff --stat=160,120
+  fa = fetch --all
+  ff = merge --ff-only
+  noff = merge --no-ff
+  pf = push --force-with-lease
+  po = "!git branch --show-current | xargs -n 11 git push --set-upstream origin"
+  pom = push origin main
+  poms = push origin master
+  root = rev-parse --show-toplevel
+  ski = !git stash --keep-index
+  st = status
+
+  # Divergence (commits we added and commits remote added)
+  div = divergence
+
+  # Goodness (summary of diff lines added/removed/total)
+  gn = goodness
+  gnc = goodness --cached
+
+  # Fancy logging.
+  #   b = all branches
+  #   bs = all branches, sorted by last commit date
+  #   h = head
+  #   hp = head with patch
+  #   l = all commits, only current branch
+  #   la = all commits, all reachable refs
+  #   r = recent commits, only current branch
+  #   ra = recent commits, all reachable refs
+  b = "!. $XDG_BIN_HOME/githelpers && pretty_git_branch"
+  h = !git head
+  head = !git r --max-count=1
+  hp = "!. $XDG_BIN_HOME/githelpers && show_git_head"
+  l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(r) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  la = !git l --all
+  r = !GIT_NO_PAGER=1 git l --max-count=30
+  ra = !git r --all
+
+  # Clone a repository including all submodules
+  c = clone --recursive
+
+  # Commit all changes
+  ca = !git add --all && git commit --all --verbose
+
+  # List contributors with number of commits
+  contributors = shortlog --summary --numbered
+
+  # Credit an author on the latest commit
+  credit = "!f() { git commit --amend --author \"$1 <$2>\" --reuse-message=HEAD; }; f"
+
+  # Remove branches that have already been merged with master
+  # a.k.a. ‘delete merged’
+  dm = "!git branch --merged | grep  --invert-match '\\*\\|main\\|master\\|develop' | xargs -n 1 --no-run-if-empty git branch --delete"
+
+  # Find branches containing commit
+  fb = "!f() { git branch --all --contains $1; }; f"
+
+  # Find commits by source code
+  fc = "!f() { git l --decorate --date=short -S$1; }; f"
+
+  # Find tags containing commit
+  ft = "!f() { git describe --always --contains $1; }; f"
+
+  # Find commits by commit message
+  fm = "!f() { git l --decorate --date=short --grep=$1; }; f"
+
+  # Switch to a branch, creating it if necessary
+  go = "!f() { git checkout -b \"$1\" 2>/dev/null || git checkout \"$1\"; }; f"
+
+  # Interactive rebase with the given number of latest commits
+  reb = "!r() { git rebase --interactive HEAD~$1; }; r"
+
+  # Remove the old tag with this name and tag the latest commit with it.
+  retag = "!r() { git tag --delete $1 && git push origin :refs/tags/$1 && git tag $1; }; r"
+
+  # View the current working tree status using the short format
+  s = status --short
+
+  # Pull in remote changes for the current repository and all its submodules
+  p = pull --recurse-submodules
+
+  # Show verbose output about branches, remotes or tags
+  branches = branch --all
+  remotes = remote --verbose
+  tags = tag --list
+[apply]
+	# Detect whitespace errors when applying a patch
+	whitespace = fix
+[branch]
+  autoSetupRebase = always
+
+	# Show most recently changed branches first
+	sort = -committerdate
+[checkout]
+  workers = 0
+[column]
+  ui = auto
+[commit]
+  gpgSign = true
+
+  verbose = true
+[core]
+	hideDotFiles = dotGitOnly
+
+  # Prevent showing files whose names contain non-ASCII symbols as unversioned.
+  precomposeUnicode = false
+
+  fsmonitor = true
+
+  # Make `git rebase` safer on macOS.
+  trustctime = false
+
+  # Speed up commands involving untracked files such as `git status`.
+  untrackedCache = true
+
+  pager = delta
+
+  # Treat spaces before tabs and all kinds of trailing whitespace as an error.
+  # [default] trailing-space:   looks for spaces at the end of a line
+  # [default] space-before-tab: looks for spaces before tabs at the beginning
+  #                             of a line
+  whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+	excludesfile = ~/.gitignore_global
+[diff]
+  context = 10
+  external = difft
+  mnemonicPrefix = true
+  renames = true
+  submodule = log
+  algorithm = histogram
+  colorMoved = plain
+  tool = difftastic
+[diff "bin"]
+  # Use `hexdump` to diff binary files
+  textconv = hexdump -v -C
+[difftool]
+	# Run the difftool immediately, don't ask 'are you sure' each time.
+  prompt = false
+[difftool "difftastic"]
+  # See `man git-difftool` for a description of MERGED, LOCAL and REMOTE.
+  cmd = difft "$MERGED" "$LOCAL" "abcdef1" "100644" "$REMOTE" "abcdef2" "100644"
+[fetch]
+  fsckObjects = true
+  prune = true
+  pruneTags = true
+  all = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[gpg]
+  format = ssh
+[help]
+	# Automatically correct and execute mistyped commands.
+	autocorrect = 1
+[init]
+  defaultBranch = main
+[interactive]
+  diffFilter = delta --color-only
+[log]
+  date = iso
+[merge]
+  conflictStyle = "zdiff3"
+
+  # Include summaries of merged commits in newly created merge commit messages
+  log = true
+[pager]
+  # Use a pager if the difftool output is larger than one screenful,
+  # consistent with the behaviour of `git diff`.
+  difftool = true
+[pull]
+  rebase = true
+[push]
+  autoSetupRemote = true
+  default = upstream
+  followTags = true
+[rebase]
+  autoSquash = true
+  autoStash = true
+  updateRefs = true
+  missingCommitsCheck = error
+[receive]
+  fsckObjects = true
+[rerere]
+  autoUpdate = true
+  enabled = true
+[status]
+  submoduleSummary = true
+[submodule]
+  recurse = true
+[tag]
+  sort = version:refname
+  forceSignAnnotated = true
+  gpgSign = true
+[transfer]
+  fsckObjects = true
+[url "git@github.com:"]
+  insteadOf = "gh:"
+  pushInsteadOf = "github:"
+  pushInsteadOf = "https://github.com/"
+[url "https://github.com/"]
+  insteadOf = "github:"
+[url "git@gist.github.com:"]
+  insteadOf = "gst:"
+  pushInsteadOf = "gist:"
+  pushInsteadOf = "https://gist.github.com/"
+[url "https://gist.github.com/"]
+  insteadOf = "gist:"
+[url "git@gitlab.com:"]
+  insteadOf = "gl:"
+  pushInsteadOf = "gitlab:"
+  pushInsteadOf = "https://gitlab.com/"
+[url "https://gitlab.com/"]
+  insteadOf = "gitlab:"
+[user]
+  name = Patrick Godschalk
+  email = "patrick@kernelpanics.nl"
+[delta]
+  line-numbers = true
+  navigate = true
+[github]
+  user = pgodschalk
+[include]
+  path = config.local
+  path = config.theme
+  path = ~/Developer/for/me/dracula-pro-extras/themes/delta/alucard.gitconfig
+  path = ~/Developer/for/me/dracula-pro-extras/themes/delta/pro.gitconfig
+[includeIf "gitdir:~/Developer/for/ubiops/"]
+  path = ~/Developer/for/ubiops/.config/git/config

@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This class identifies contributors responsible for code lines matching a
+# given pattern.
+class WhoDoneIt
+  PATTERN = ARGV.fetch(0)
+
+  def print
+    lines.each do |line|
+      puts line
+    end
+  end
+
+  def lines
+    blame_and_code.map do |blame, code|
+      blame += ' ' * (longest_blame_line - blame.length)
+      "#{blame} #{code}"
+    end
+  end
+
+  def blame_and_code
+    @blame_and_code ||= blame_lines.map do |line|
+      blame, code = line.split(')', 2)
+      blame += ')'
+      [blame, code]
+    end
+  end
+
+  def longest_blame_line
+    @longest_blame_line ||= blame_and_code.map do |blame, _code|
+      blame.length
+    end.max
+  end
+
+  def blame_lines
+    blame_output = matching_files.map do |filename|
+      `git blame --show-name -- #{filename} | grep #{PATTERN}`
+    end
+    @blame_lines ||= blame_output
+                     .map do |line|
+                       line.split("\n")
+    end
+    .flatten
+  end
+
+  def matching_files
+    @matching_files ||= `git grep -I --name-only #{PATTERN}`.split("\n")
+  end
+end
+
+WhoDoneIt.new.print

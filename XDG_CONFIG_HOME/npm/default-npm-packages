@@ -1,0 +1,10 @@
+prettier
+@prettier/plugin-php
+@prettier/plugin-xml
+prettier-plugin-astro
+prettier-plugin-gherkin
+prettier-plugin-go-template
+prettier-plugin-ini
+prettier-plugin-jinja-template
+prettier-plugin-nginx
+prettier-plugin-tailwindcss

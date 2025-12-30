@@ -1,0 +1,74 @@
+theme = "dracula-pro"
+
+[editor]
+# Enable mouse mode
+mouse = true
+# Line number display: absolute simply shows each line's number, while relative
+# shows the distance from the current line. When unfocused or in insert mode,
+# relative will still show absolute line numbers
+line-number = "relative"
+# Highlight all lines with a cursor
+cursorline = true
+# List of column positions at which to display the rulers. Can be overridden by
+# language specific rulers in languages.toml file
+rulers = [80, 120]
+
+# Allows configuring the statusline at the bottom of the editor.
+[editor.statusline]
+# A list of elements aligned to the left of the statusline
+left = ["mode", "spinner", "file-name", "file-modification-indicator"]
+# A list of elements aligned to the right of the statusline
+right = [
+  "diagnostics",
+  "selections",
+  "position",
+  "file-encoding",
+  "file-line-ending",
+  "file-type"
+]
+
+[editor.lsp]
+# Display inlay hints
+display-inlay-hints = true
+
+# Defines the shape of cursor in each mode. Valid values for these options are
+# block, bar, underline, or hidden.
+[editor.cursor-shape]
+# Cursor shape in insert mode
+insert = "bar"
+# Cursor shape in select mode
+select = "underline"
+
+# Set options for file picker and global search. Ignoring a file means it is
+# not visible in the Helix file picker and global search.
+#
+# All git related options are only enabled in a git repository.
+[editor.file-picker]
+# Enables ignoring hidden files
+hidden = false
+
+# Options for rendering whitespace with visible characters. Use
+# :set whitespace.render all to temporarily enable visible whitespace.
+[editor.whitespace]
+# Whether to render whitespace. May either be all or none, or a table with
+# sub-keys space, nbsp, nnbsp, tab, and newline
+[editor.whitespace.render]
+space = "none"
+nbsp = "all"
+tab = "all"
+
+# Literal characters to use when rendering whitespace. Sub-keys may be any of
+# tab, space, nbsp, nnbsp, newline or tabpad
+[editor.whitespace.characters]
+tab = "▸"
+nbsp = "⍽"
+newline = "¬"
+
+# Options for rendering vertical indent guides.
+[editor.indent-guides]
+# Whether to render indent guides
+render = true
+
+[keys.normal]
+C-s = ":write"
+C-q = ":quit"

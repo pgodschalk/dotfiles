@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# Wrapper to use BSD readlink for gcloud (uutils readlink has incompatible
+# error output)
+
+export PATH="/usr/bin:$PATH"
+exec /opt/homebrew/bin/gcloud "$@"

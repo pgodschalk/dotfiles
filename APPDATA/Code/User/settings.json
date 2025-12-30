@@ -1,0 +1,272 @@
+{
+	// This is shared manually, rather than symlinked, since some extensions
+	// store secrets in `settings.json`. It's updated when I remember to. :)
+
+	// Defines a default formatter which takes precedence over all other
+	// formatter settings. Must be the identifier of an extension contributing a
+	// formatter.
+	"editor.defaultFormatter": "biomejs.biome",
+
+	// Render vertical rulers after a certain number of monospace characters. Use
+	// multiple values for multiple rulers. No rulers are drawn if array is empty.
+	"editor.rulers": [80, 120],
+
+	// The number of spaces a tab is equal to. This setting is overridden based
+	// on the file contents when #editor.detectIndentation# is on.
+	"editor.tabSize": 2,
+
+	// Control the cursor animation style.
+	"editor.cursorBlinking": "solid",
+
+	// Controls the cursor style in insert input mode.
+	"editor.cursorStyle": "block",
+
+	// Controls the font family.
+	"editor.fontFamily": "'JetBrainsMono Nerd Font Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
+
+	// Enables/Disables font ligatures ('calt' and 'liga' font features). Change
+	// this to a string for fine-grained control of the 'font-feature-settings'
+	// CSS property.
+	"editor.fontLigatures": true,
+
+	// Controls the font size in pixels.
+	"editor.fontSize": 16,
+
+	// Format a file on save. A formatter must be available and the editor must
+	// not be shutting down. When #files.autoSave# is set to afterDelay, the file
+	// will only be formatted when saved explicitly.
+	"editor.formatOnSave": true,
+
+	// Controls whether the editor shows CodeLens.
+	"diffEditor.codeLens": true,
+
+	// Controls whether the minimap is shown.
+	"editor.minimap.enabled": false,
+
+	// Hot Exit controls whether unsaved files are remembered between sessions,
+	// allowing the save prompt when exiting the editor to be skipped.
+	"files.hotExit": "off",
+
+	// When enabled, insert a final new line at the end of the file when saving
+	// it.
+	"files.insertFinalNewline": true,
+
+	// When enabled, will trim all new lines after the final new line at the end
+	// of the file when saving it.
+	"files.trimFinalNewlines": true,
+
+	// When enabled, will trim trailing whitespace when saving a file.
+	"files.trimTrailingWhitespace": true,
+
+	// Controls whether lists and trees have smooth scrolling.
+	"workbench.list.smoothScrolling": true,
+
+	// Controls which editor is shown at startup, if none are restored from the
+	// previous session.
+	"workbench.startupEditor": "newUntitledFile",
+
+	// Specifies the color theme used in the workbench when
+	// #window.autoDetectColorScheme# is not enabled
+	"workbench.colorTheme": "Dracula Pro",
+
+	// Specifies the color theme when system color mode is dark and
+	// #window.autoDetectColorScheme# is enabled.
+	"workbench.preferredDarkColorTheme": "Dracula Pro",
+
+	// Specifies the color theme when system color mode is light and
+	// #window.autoDetectColorScheme# is enabled.
+	"workbench.preferredLightColorTheme": "Dracula Pro (Alucard)",
+
+	// Controls the location of the primary side bar and activity bar. They can
+	// either show on the left or right of theworkbench. The secondary side bar
+	// will show on the opposite side of the workbench.
+	"workbench.sideBar.location": "right",
+
+	// If enabled, will automatically select a color theme based on the system
+	// color mode. If the system color mode is dark,
+	// #workbench.preferredDarkColorTheme# is used, else
+	// #workbench.preferredLightColorTheme#.
+	"window.autoDetectColorScheme": true,
+
+	// Controls how windows and editors within are being restored when opening.
+	"window.restoreWindows": "none",
+
+	// Controls which naming strategy to use when giving a new name to a
+	// duplicated Explorer item on paste.
+	"explorer.incrementalNaming": "smart",
+
+	// The initial maximum number of editors shown in the Open Editors pane.
+	// Exceeding this limit will show a scroll bar and allow resizing the pane to
+	// display more items.
+	"explorer.openEditors.visible": 1,
+
+	// Controls whether to show line numbers for search results.
+	"search.showLineNumbers": true,
+
+	// Search case-insensitively if the pattern is all lowercase, otherwise,
+	// search case-sensitively.
+	"search.smartCase": true,
+
+	// Controls whether to use your global gitignore file (for example, from
+	// $HOME/.config/git/ignore) when searching for files. Requires
+	// #search.useIgnoreFiles# to be enabled.
+	"search.useGlobalIgnoreFiles": true,
+
+	// Controls whether leading and trailing whitespace is ignored in Source
+	// Control diff gutter decorations.
+	"scm.diffDecorationsIgnoreTrimWhitespace": "true",
+
+	// Customizes which terminal to run on Windows.
+	"terminal.external.windowsExec": "%LocalAppData%\\Microsoft\\WindowsApps\\wt.exe",
+
+	// Object with environment variables that will be added to the VS Code
+	// process to be used by the terminal on Windows. Set to null to delete the
+	// environment variable.
+	"terminal.integrated.env.windows": {
+		"EDITOR": "code --wait",
+		"GIT_EDITOR": "code --wait",
+		"VISUAL": "code --wait"
+	},
+
+	// Controls whether font ligatures are enabled in the terminal. Ligatures\
+	// will only work if the configured #terminal.integrated.fontFamily# supports
+	// them.
+	"terminal.integrated.fontLigatures.enabled": true,
+
+	// Controls the font size in pixels of the terminal.
+	"terminal.integrated.fontSize": 16,
+
+	// Enable feedback mechanisms such as the issue reporter, surveys, and other
+	// feedback options.
+	"telemetry.feedback.enabled": false,
+
+	// Controls Visual Studio Code telemetry, first-party extension telemetry,
+	// and participating third-party extension telemetry. Some third party
+	// extensions might not respect this setting. Consult the specific
+	// extension's documentation to be sure. Telemetry helps us better understand
+	// how Visual Studio Code is performing, where improvements need to be made,
+	// and how features are being used. Read more about the data we collect and
+	// our privacy statement. A full restart of the application is necessary for
+	// crash reporting changes to take effect.
+	"telemetry.telemetryLevel": "off",
+
+	// When a global installation of Biome is required but not found in the PATH,
+	// the extension will suggest installing it.
+	//
+	// This setting controls whether that suggestion popup is shown.
+	"biome.suggestInstallingGlobally": false,
+
+	// Specifies whether or not to write telemetry events to the extension log.
+	"codeQL.telemetry.logTelemetry": false,
+
+	// Enables or disables all validations.
+	"css.validate": false,
+
+	// When set to true, commits will automatically be fetched from the default
+	// remote of the current Git repository. Setting to all will fetch from all
+	// remotes.
+	"git.autofetch": true,
+
+	// Confirm before synchronizing Git repositories.
+	"git.confirmSync": false,
+
+	// Enables commit signing with GPG, X.509, or SSH.
+	"git.enableCommitSigning": true,
+
+	// Controls whether to show commit message input validation diagnostics.
+	"git.inputValidation": true,
+
+	// Controls the commit message length threshold for showing a warning.
+	"git.inputValidationLength": 72,
+
+	// Open the merge editor for files that are currently under conflict.
+	"git.mergeEditor": true,
+
+	// Force Git to use rebase when running the sync command.
+	"git.rebaseWhenSync": true,
+
+	//  Enable verbose output when #git.useEditorAsCommitInput# is enabled.
+	"git.verboseCommit": true,
+
+	// Enable or disable auto triggering of Copilot completions for specified
+	// languages. You can still trigger suggestions manually using Alt + \
+	"github.copilot.enable": {
+		"*": true,
+		"plaintext": true,
+		"markdown": true,
+		"scminput": true
+	},
+
+	// Controls which protocol is used to clone a GitHub repository
+	"github.gitProtocol": "ssh",
+
+	// Controls whether the built-in HTML language support validates embedded
+	// scripts.
+	"html.validate.scripts": false,
+
+	// Controls whether the built-in HTML language support validates embedded styles.
+	"html.validate.styles": false,
+
+	// Enable/disable JSON validation.
+	"json.validate.enable": false,
+
+	// Replaces aliases with their aliased name.
+	"powershell.codeFormatting.autoCorrectAliases": true,
+
+	// Sets the code formatting options to follow the given indent style in a way
+	// that is compatible with PowerShell syntax. Any setting other than Custom
+	// will configure (and override) the setting
+	"powershell.codeFormatting.preset": "OTBS",
+
+	// Trims extraneous whitespace (more than one character) before and after the
+	// pipeline operator (|).
+	"powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+
+	// Use correct casing for cmdlets.
+	"powershell.codeFormatting.useCorrectCasing": true,
+
+	// Fit code within this line limit.
+	"prettier.printWidth": 80,
+
+	// (Markdown) wrap prose over multiple lines.
+	"prettier.proseWrap": "always",
+
+	// Always update the VS Code CLI if there is an update available. Set to 'never' to disable CLI updates.
+	"remote.tunnels.alwaysUpdateCLI": true,
+
+	"[git-commit]": {
+		// Render vertical rulers after a certain number of monospace characters.
+		// Use multiple values for multiple rulers. No rulers are drawn if array is
+		// empty.
+		"editor.rulers": [50, 72],
+
+		// Controls the wrapping column of the editor when #editor.wordWrap# is
+		// wordWrapColumn or bounded.
+		"editor.wordWrapColumn": 72
+	},
+	"[markdown]": {
+		// Defines a default formatter which takes precedence over all other
+		// formatter settings. Must be the identifier of an extension contributing
+		// a formatter.
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+
+		// Controls how lines should wrap.
+		"editor.wordWrap": "wordWrapColumn",
+
+		// Controls the wrapping column of the editor when #editor.wordWrap# is
+		// wordWrapColumn or bounded.
+		"editor.wordWrapColumn": 80
+	},
+	"[powershell]": {
+		// Defines a default formatter which takes precedence over all other
+		// formatter settings. Must be the identifier of an extension contributing
+		// a formatter.
+		"editor.defaultFormatter": "ms-vscode.powershell"
+	},
+	"[yaml]": {
+		// Defines a default formatter which takes precedence over all other
+		// formatter settings. Must be the identifier of an extension contributing
+		// a formatter.
+		"editor.defaultFormatter": "redhat.vscode-yaml"
+	}
+}

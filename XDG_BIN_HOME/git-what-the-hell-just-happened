@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+trap cleanup SIGINT SIGTERM ERR EXIT
+
+msg() {
+  echo >&2 -e "${1-}"
+}
+
+ref=${1:-"HEAD"}
+
+old="${ref}@{1}"
+new="${ref}"
+
+log() {
+  git log --graph --pretty=short --max-count=1 "${1}"
+}
+
+msg "Old revision:"
+log "${old}"
+echo
+msg "New revision:"
+log "${new}"
+echo
+msg "Changes:"
+git diff --stat --summary "${new}" "${old}"

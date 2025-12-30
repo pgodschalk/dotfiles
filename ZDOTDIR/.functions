@@ -1,0 +1,305 @@
+# shellcheck shell=zsh
+
+#######################################
+# Create a new directory and enter it.
+# Arguments:
+#   $@ - Directory path(s) to create
+#######################################
+function mkd() {
+  mkdir -p "${@}" && cd "${_}" || return
+}
+
+#######################################
+# Determine size of a file or total size of a directory.
+# Arguments:
+#   $@ - Files/directories to measure (optional, defaults to current dir)
+# Outputs:
+#   Writes human-readable sizes to stdout
+#######################################
+function fs() {
+  if command du -b /dev/null >/dev/null 2>&1; then
+    local arg=-sbh
+  else
+    local arg=-sh
+  fi
+  if [[ -n "${*}" ]]; then
+    command du "${arg}" -- "${@}"
+  else
+    command du "${arg}" .[^.]* ./*
+  fi
+}
+
+#######################################
+# Create a data URL from a file
+# Arguments:
+#   $1 - Path to the file
+# Outputs:
+#   Writes data URI to stdout
+#######################################
+function datauri() {
+  (( $+commands[base64] )) || { echo "base64 not found" >&2; return 1; }
+  local mimetype
+  local content
+  mimetype=$(file --brief --no-pad --mime-type "${1}")
+  content=$(base64 <"${1}")
+  echo "data:${mimetype};base64,${content}"
+}
+
+#######################################
+# Compare original and gzipped file size.
+# Arguments:
+#   $1 - Path to the file
+# Outputs:
+#   Writes original size, gzipped size, and ratio to stdout
+#######################################
+function gz() {
+  (( $+commands[gzip] )) || { echo "gzip not found" >&2; return 1; }
+  (( $+commands[bc] )) || { echo "bc not found" >&2; return 1; }
+  local origsize
+  local gzipsize
+  local ratio
+  origsize=$(wc -c <"${1}")
+  gzipsize=$(gzip --to-stdout "${1}" | wc -c)
+  ratio=$(echo "${gzipsize} * 100 / ${origsize}" | bc --mathlib)
+  printf "orig: %d bytes\n" "${origsize}"
+  printf "gzip: %d bytes (%2.2f%%)\n" "${gzipsize}" "${ratio}"
+}
+
+#######################################
+# Show all the names (CNs and SANs) listed in the SSL certificate for a given
+# domain
+# Arguments:
+#   $1 - Domain name to check
+# Outputs:
+#   Writes Common Name and Subject Alternative Names to stdout
+# Returns:
+#   1 if no domain specified or certificate not found
+#######################################
+function getcertnames() {
+  (( $+commands[openssl] )) || { echo "openssl not found" >&2; return 1; }
+  (( $+commands[gsed] )) || { echo "gsed not found" >&2; return 1; }
+  if [[ -z "${1}" ]]; then
+    echo "ERROR: No domain specified."
+    return 1
+  fi
+
+  local domain="${1}"
+  echo "Testing ${domain}…"
+  echo "" # newline
+
+  local tmp
+  tmp=$(echo -e "GET / HTTP/1.0\nEOT" \
+    | openssl s_client -connect "${domain}:443" -servername "${domain}" 2>&1)
+
+  if [[ "${tmp}" == *"-----BEGIN CERTIFICATE-----"* ]]; then
+    local certText
+    certText=$(echo "${tmp}" \
+      | openssl x509 -text -certopt "no_aux, no_header, no_issuer, no_pubkey, \
+    no_serial, no_sigdump, no_signame, no_validity, no_version")
+    echo "Common Name:"
+    echo "" # newline
+    echo "${certText}" | grep "Subject:" | gsed --expression="s/^.*CN=//" \
+      | gsed --expression="s/\/emailAddress=.*//"
+    echo "" # newline
+    echo "Subject Alternative Name(s):"
+    echo "" # newline
+    echo "${certText}" | grep --after-context=1 "Subject Alternative Name:" \
+      | gsed --expression="2s/DNS://g" -e "s/ //g" | tr "," "\n" \
+      | tail --lines=+2
+    return 0
+  else
+    echo "ERROR: Certificate not found."
+    return 1
+  fi
+}
+
+#######################################
+# Generate a CLI command with an LLM and place it in the zsh buffer
+# Arguments:
+#   $@ - Description of the command to generate
+#######################################
+function ai() {
+  local cmd
+  cmd=$("${XDG_BIN_HOME:-${HOME}/.local/bin}/ai-generate" "$@")
+  if [[ -n "${cmd}" ]]; then
+    print -z "${cmd}"
+  fi
+}
+
+#######################################
+# asciinema wrapper that injects install-id from 1Password
+#######################################
+function asciinema() {
+  (( $+commands[asciinema] )) || { echo "asciinema not found" >&2; return 1; }
+  (( $+commands[op] )) || { echo "op not found" >&2; return 1; }
+  local state_dir="${XDG_STATE_HOME:-${HOME}/.local/state}/asciinema"
+  local id_file="${state_dir}/install-id"
+  mkdir -p "${state_dir}"
+  chmod 700 "${state_dir}"
+  (umask 077 && op read 'op://Private/asciinema/credential' >"${id_file}")
+  command asciinema "${@}"
+  rm -f "${id_file}"
+}
+
+#######################################
+# Make a PDF look like it was scanned (for bureaucratic requirements)
+# Arguments:
+#   $1 - Path to the PDF file
+# Outputs:
+#   Creates a new file with "-SCANNED.pdf" suffix
+#######################################
+function bureaucracy() {
+  (( $+commands[magick] )) || { echo "magick not found" >&2; return 1; }
+  magick \
+    -density 150 \
+    "${1}" \
+    -colorspace gray \
+    -linear-stretch 3.5%x10% \
+    -blur 0x0.5 \
+    -attenuate 0.25 \
+    +noise Gaussian \
+    -rotate 0.5 \
+    -depth 2 \
+    ${1%.pdf}-SCANNED.pdf
+}
+
+#######################################
+# Claude Code wrapper that sets BAT_THEME to built-in themes and injects
+# MCP secrets from 1Password.
+# Claude can't read custom bat themes, so we override with built-ins.
+#######################################
+function claude() {
+  (( $+commands[claude] )) || { echo "claude not found" >&2; return 1; }
+  (( $+commands[op] )) || { echo "op not found" >&2; return 1; }
+
+  local theme_file="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/dark-mode"
+  local bat_theme="Dracula"
+  if [[ -r "${theme_file}" && "$(<"${theme_file}")" != "dark" ]]; then
+    bat_theme="base16"
+  fi
+
+  local secrets_file="${XDG_CONFIG_HOME}/secrets/mcp"
+  local -a env_vars=()
+  if [[ -r "${secrets_file}" ]]; then
+    local line name ref
+    while IFS= read -r line || [[ -n "${line}" ]]; do
+      [[ -z "${line}" || "${line}" == \#* ]] && continue
+      name="${line%%=*}"
+      ref="${line#*=}"
+      ref="${ref%\"}"
+      ref="${ref#\"}"
+      env_vars+=("${name}=$(op read "${ref}")")
+    done < "${secrets_file}"
+  fi
+
+  env BAT_THEME="${bat_theme}" "${env_vars[@]}" claude "${@}"
+}
+
+#######################################
+# Convert a DER-encoded certificate to PEM format
+# Arguments:
+#   $1 - Path to the DER certificate
+# Outputs:
+#   Creates a new file with ".pem" suffix
+#######################################
+function der2pem() {
+  (( $+commands[openssl] )) || { echo "openssl not found" >&2; return 1; }
+  openssl x509 -inform der -in "${1}" -out "${1}.pem"
+}
+
+#######################################
+# Find files with fd and display with bat.
+# Use --raw as first argument to bypass and get normal fd output.
+# Arguments:
+#   $@ - Arguments passed to fd
+#######################################
+function fd() {
+  (( $+commands[fd] )) || { echo "fd not found" >&2; return 1; }
+  (( $+commands[bat] )) || { echo "bat not found" >&2; return 1; }
+  if [[ "${1}" == "--raw" ]]; then
+    shift
+    command fd "${@}"
+  else
+    command fd "${@}" --exec-batch bat
+  fi
+}
+
+#######################################
+# Find files and display with bat.
+# Use --raw as first argument to bypass and get normal find output.
+# Arguments:
+#   $@ - Arguments passed to find
+#######################################
+function find() {
+  if [[ "${1}" == "--raw" ]]; then
+    shift
+    command find "${@}"
+  elif (( $+commands[bat] )); then
+    command find "${@}" -type f -exec bat {} +
+  else
+    command find "${@}"
+  fi
+}
+
+#######################################
+# Git wrapper that pipes `git show ref:path` output through bat.
+# Use --raw as first argument to bypass and get normal git output.
+# Arguments:
+#   $@ - Arguments passed to git
+#######################################
+function git() {
+  (( $+commands[git] )) || { echo "git not found" >&2; return 1; }
+  (( $+commands[bat] )) || { echo "bat not found" >&2; return 1; }
+  if [[ "${1}" == "--raw" ]]; then
+    shift
+    command git "${@}"
+  elif [[ "${1}" == "show" && "${2}" == *:* ]]; then
+    local file="${2#*:}"
+    command git "${@}" | bat --file-name "${file}"
+  else
+    command git "${@}"
+  fi
+}
+
+#######################################
+# Tail files and pipe through tspin for log highlighting.
+# Use --raw as first argument to bypass and get normal tail output.
+# Arguments:
+#   $@ - Arguments passed to tail
+#######################################
+function tail() {
+  (( $+commands[tspin] )) || { echo "tspin not found" >&2; return 1; }
+  if [[ "${1}" == "--raw" ]]; then
+    shift
+    command tail "${@}"
+  else
+    command tail "${@}" | tspin
+  fi
+}
+
+#######################################
+# Convert a PFX/PKCS12 certificate to PEM format.
+# Extracts both the certificate and private key.
+# Arguments:
+#   $1 - Path to the PFX file
+# Outputs:
+#   Creates .encrypted.key.pem, .cert.pem, and .decrypted.key.pem files
+#######################################
+function pfx2pem() {
+  (( $+commands[openssl] )) || { echo "openssl not found" >&2; return 1; }
+  openssl pkcs12 -in "${1}" -nocerts -out "${1}.encrypted.key.pem"
+  openssl pkcs12 -in "${1}" -nokeys -out "${1}.cert.pem"
+  openssl rsa -in "${1}.encrypted.key.pem" -out "${1}.decrypted.key.pem"
+}
+
+#######################################
+# Convert an SVG file to PNG using macOS Quick Look.
+# Arguments:
+#   $1 - Path to the SVG file
+# Outputs:
+#   Creates a 1000px PNG in the current directory
+#######################################
+function svg2png() {
+  (( $+commands[qlmanage] )) || { echo "qlmanage not found" >&2; return 1; }
+  qlmanage -t -s 1000 -o . "${1}"
+}

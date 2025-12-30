@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+#
+# Called by dark-notify when macOS appearance changes.
+# Writes theme to file; .theme-sync handles config updates on prompt.
+
+echo "${1}" >"${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/dark-mode"

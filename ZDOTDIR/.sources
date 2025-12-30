@@ -1,0 +1,144 @@
+# shellcheck shell=zsh
+
+_zdir="${ZDOTDIR:-${HOME}}"
+
+# Exports (must be first)
+if [[ -s "${_zdir}/.exports" ]]; then
+  source "${_zdir}/.exports"
+fi
+if [[ -s "${_zdir}/.exports_private" ]]; then
+  source "${_zdir}/.exports_private"
+fi
+
+# Theme sync (must be before prezto)
+if [[ -s "${_zdir}/.theme-sync" ]]; then
+  source "${_zdir}/.theme-sync"
+fi
+
+# Cache directory
+_cache="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh"
+[[ -d "${_cache}" ]] || mkdir -p "${_cache}"
+
+# zsh-defer
+if [[ -s "${ZDOTDIR}/.zsh-defer/zsh-defer.plugin.zsh" ]]; then
+  source "${ZDOTDIR}/.zsh-defer/zsh-defer.plugin.zsh"
+fi
+
+# Mise (cached by binary mtime)
+if (( $+commands[mise] )); then
+  _mise_cache="${_cache}/mise.zsh"
+  _mise_bin="${commands[mise]}"
+
+  if [[ ! -f "${_mise_cache}" ]] \
+      || [[ "${_mise_bin}" -nt "${_mise_cache}" ]]; then
+    mise activate zsh >| "${_mise_cache}"
+    zcompile "${_mise_cache}"
+  fi
+
+  if (( $+functions[zsh-defer] )); then
+    zsh-defer source "${_mise_cache}"
+  else
+    source "${_mise_cache}"
+  fi
+
+  unset _mise_cache _mise_bin
+fi
+
+# Prezto
+if [[ -s "${_zdir}/.zprezto/init.zsh" ]]; then
+  source "${_zdir}/.zprezto/init.zsh"
+fi
+
+# Prezto modules
+if [[ -s "${_zdir}/.zmodules" ]]; then
+  source "${_zdir}/.zmodules"
+fi
+
+# Completions (must be after prezto)
+if [[ -s "${_zdir}/.completions" ]]; then
+  source "${_zdir}/.completions"
+fi
+
+# Aliases
+[[ -s "${_zdir}/.aliases" ]] && source "${_zdir}/.aliases"
+[[ -s "${_zdir}/.aliases_private" ]] && source "${_zdir}/.aliases_private"
+
+# Functions
+[[ -s "${_zdir}/.functions" ]] && source "${_zdir}/.functions"
+[[ -s "${_zdir}/.functions_private" ]] && source "${_zdir}/.functions_private"
+
+# Sources
+if [[ -s "${_zdir}/.sources_private" ]]; then
+  source "${_zdir}/.sources_private"
+fi
+
+# Prompt (cached by binary mtime)
+if (( $+commands[starship] )); then
+  _starship_cache="${_cache}/starship.zsh"
+  _starship_bin="${commands[starship]}"
+  if [[ ! -f "${_starship_cache}" ]] \
+      || [[ "${_starship_bin}" -nt "${_starship_cache}" ]]; then
+    starship init zsh >| "${_starship_cache}"
+    zcompile "${_starship_cache}"
+  fi
+  source "${_starship_cache}"
+  unset _starship_cache _starship_bin
+fi
+
+# 1Password
+if [[ -s "${XDG_CONFIG_HOME}/op/plugins.sh" ]]; then
+  _load_op_plugins() {
+    source "${XDG_CONFIG_HOME}/op/plugins.sh"
+
+    # Replace aliases with functions (aliases break completion)
+    if (( $+aliases[brew] )) && (( $+functions[_brew] )); then
+      unalias brew
+      brew() { op plugin run -- brew "${@}" }
+      compdef _brew brew
+    fi
+
+    if (( $+aliases[gh] )) && (( $+functions[_gh] )); then
+      unalias gh
+      gh() { op plugin run -- gh "${@}" }
+      compdef _gh gh
+    fi
+
+    # Replace glab alias with function (bypass op plugin when GITLAB_TOKEN is
+    # set via mise)
+    if (( $+aliases[glab] )); then
+      unalias glab
+      glab() {
+        if [[ -n "${GITLAB_TOKEN}" ]]; then
+          command glab "${@}"
+        else
+          op plugin run -- glab "${@}"
+        fi
+      }
+    fi
+  }
+  _load_op_plugins
+  unfunction _load_op_plugins
+fi
+
+# fzf key-bindings and fuzzy completion (cached by binary mtime)
+if (( $+commands[fzf] )); then
+  _fzf_cache="${_cache}/fzf.zsh"
+  _fzf_bin="${commands[fzf]}"
+
+  if [[ ! -f "${_fzf_cache}" ]] \
+      || [[ "${_fzf_bin}" -nt "${_fzf_cache}" ]]; then
+    fzf --zsh >| "${_fzf_cache}"
+    zcompile "${_fzf_cache}"
+  fi
+
+  source "${_fzf_cache}"
+  unset _fzf_cache _fzf_bin
+fi
+
+# Wrap fzf widgets
+_wrap_fzf_widgets
+
+# Enable live theme sync
+precmd_functions+=(_dark_notify_sync)
+
+unset _t _src_start _zdir _cache

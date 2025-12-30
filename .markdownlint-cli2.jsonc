@@ -1,0 +1,5 @@
+{
+	"$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/markdownlint-cli2-config-schema.json",
+	"gitignore": true,
+	"globs": ["**/*.md", ".github/PULL_REQUEST_TEMPLATE"]
+}

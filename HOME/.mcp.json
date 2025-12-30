@@ -1,0 +1,57 @@
+{
+	"mcpServers": {
+		"context7": {
+			"type": "http",
+			"url": "https://mcp.context7.com/mcp",
+			"headers": {
+				"CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+			}
+		},
+		"chrome-devtools": {
+			"command": "bunx",
+			"args": [
+				"chrome-devtools-mcp",
+				"--userDataDir",
+				"${XDG_CACHE_HOME}/chrome-devtools-mcp"
+			]
+		},
+		"container-use": {
+			"command": "container-use"
+		},
+		"gcloud": {
+			"command": "bunx",
+			"args": ["@google-cloud/gcloud-mcp"]
+		},
+		"github": {
+			"type": "http",
+			"url": "https://api.githubcopilot.com/mcp/",
+			"headers": {
+				"Authorization": "Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}"
+			}
+		},
+		"kubernetes": {
+			"command": "bunx",
+			"args": ["kubernetes-mcp-server"]
+		},
+		"linear": {
+			"type": "sse",
+			"url": "https://mcp.linear.app/sse"
+		},
+		"playwright": {
+			"command": "bunx",
+			"args": ["@playwright/mcp"]
+		},
+		"sentry": {
+			"type": "http",
+			"url": "https://mcp.sentry.dev/mcp"
+		},
+		"sequential-thinking": {
+			"command": "bunx",
+			"args": ["@modelcontextprotocol/server-sequential-thinking"]
+		},
+		"terraform": {
+			"command": "docker",
+			"args": ["run", "--interactive", "--rm", "hashicorp/terraform-mcp-server"]
+		}
+	}
+}

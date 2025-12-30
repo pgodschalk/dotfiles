@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+msg() {
+  echo >&2 -e "${1-}"
+}
+
+die() {
+  local msg=${1}
+  local code=${2-1} # default exit status 1
+  msg "${msg}"
+  exit "${code}"
+}
+
+(
+  function branch() {
+    git branch 2>/dev/null | grep --regexp='^*' | tr -d '\* '
+  }
+
+  function ensure_valid_ref() {
+    local ref=${1}
+    (
+      git show-ref "${ref}" >/dev/null
+      if [[ ${?} == 1 ]]; then
+        die "${0}: bad ref: ${ref}"
+      fi
+    )
+  }
+
+  function show_rev() {
+    local rev=${1}
+    local fmt='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)'
+    fmt+=' %C(bold blue)<%an>%Creset'
+    git log \
+      --max-count=1 "${rev}" \
+      --graph \
+      --pretty=format:"${fmt}" \
+      --abbrev-commit \
+      --date=relative
+    echo
+    git diff --find-copies-harder "${rev}^..${rev}" | diffstat
+    echo
+  }
+
+  if [[ ${#} == 2 ]]; then
+    local="${1}"
+    remote="${2}"
+  elif [[ ${#} == 1 ]]; then
+    local=$(branch)
+    remote="${1}"
+  else
+    local=$(branch)
+    remote="origin/${local}"
+  fi
+
+  ensure_valid_ref "${local}"
+  ensure_valid_ref "${remote}"
+
+  msg "changes from local ${local} to remote ${remote}:"
+  echo
+
+  msg incoming:
+  echo
+  for rev in $(git rev-list "${local}..${remote}"); do
+    show_rev "${rev}"
+  done
+
+  echo
+  msg outgoing:
+  echo
+  for rev in $(git rev-list "${remote}..${local}"); do
+    show_rev "${rev}"
+  done
+) | less --raw-control-chars

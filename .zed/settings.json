@@ -1,0 +1,30 @@
+// Folder-specific settings
+//
+// For a full list of overridable settings, and general information on folder-specific settings,
+// see the documentation: https://zed.dev/docs/configuring-zed#settings-files
+{
+	"file_types": {
+		"Ghostty": ["**/ghostty/config"],
+		"Git Attributes": ["**/git/attributes"],
+		"Git Config": ["**/git/config*"],
+		"Git Ignore": ["**/git/ignore"],
+		"ini": ["**/npmrc", "**/wgetrc"],
+		"JSONC": [
+			"**/APPDATA/Code/User/*.json",
+			"**/LOCALAPPDATA/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/*.json"
+		],
+		"Plain Text": [
+			"**/Brewfile",
+			"**/HOME/.gnupg/*.conf",
+			"**/HOME/.hushlogin",
+			"**/XDG_CONFIG_HOME/npm/default-npm-packages",
+			"**/XDG_CONFIG_HOME/pip/default-python-packages",
+			"**/XDG_CONFIG_HOME/wgetrc",
+			"**/XDG_DATA_HOME/gnupg/*.conf"
+		],
+		"Python": ["**/XDG_BIN_HOME/gn", "**/XDG_BIN_HOME/gn.py"],
+		"Ruby": ["**/XDG_BIN_HOME/git-whodoneit"],
+		"Shell Script": ["**/XDG_BIN_HOME/*", "**/ZDOTDIR/*"],
+		"SSH Config": ["**/.ssh/config*"]
+	}
+}

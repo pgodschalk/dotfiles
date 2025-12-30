@@ -1,0 +1,240 @@
+# shellcheck shell=zsh
+
+# Integrates zsh-autosuggestions into Prezto, which implements the Fish shell's
+# autosuggestions feature, where the user can type in any part of a previously
+# entered command and Zsh suggests commands as you type based on history and
+# completions.
+pmodload autosuggestions
+
+# When you try to use a command that is not available locally, searches the
+# package manager for a package offering that command and suggests the proper
+# install command.
+#
+# Debian and Arch Linux based distributions use the command-not-found tool.
+#
+# macOS uses Homebrew's command-not-found clone. Note that you also need to
+# follow the instructions to tap the command-not-found homebrew repository.
+if [[ "${DISTRO}" == "macos" ]]; then
+  if (( $+commands[brew] )); then
+    pmodload command-not-found
+  fi
+elif [[ "${DISTRO}" == "debian" ]]; then
+  if [[ -x /usr/lib/command-not-found ]]; then
+    pmodload command-not-found
+  fi
+elif [[ "${DISTRO}" == "arch" ]]; then
+  # Cache pkgfile check (only runs once per install)
+  _pkgfile_cache="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh/pkgfile-installed"
+  if [[ ! -f "${_pkgfile_cache}" ]]; then
+    pacman -Q pkgfile &>/dev/null && echo 1 >| "${_pkgfile_cache}" \
+      || echo 0 >| "${_pkgfile_cache}"
+  fi
+  if [[ "$(<"${_pkgfile_cache}")" == "1" ]]; then
+    pmodload command-not-found
+  fi
+  unset _pkgfile_cache
+fi
+
+if (( $+commands[dnf] )); then
+  # Defines dnf aliases
+  pmodload dnf
+fi
+
+if (( $+commands[docker] )); then
+  # Defines Docker aliases and functions
+  pmodload docker
+fi
+
+if (( $+commands[dpkg] )); then
+  # Defines dpkg aliases and functions
+  pmodload dpkg
+fi
+
+if (( $+commands[carton] )); then
+  # Enables Emacs dependency management
+  pmodload emacs
+fi
+
+if (( $+commands[fasd] && ! $+commands[zoxide] )); then
+  # Fasd is a command-line productivity booster, inspired by tools like
+  # autojump, z and v, it offers quick access to files and directories by
+  # keeping track of files and directories that were previously accessed.
+  #
+  # For completion to work, this module must be loaded after the completion
+  # module.
+
+  # The Prezto Fasd configuration differs from the default. The default aliases
+  # have been disabled.
+  pmodload fasd
+fi
+
+if (( $+commands[gpg] )); then
+  # Provides for an easier use of GPG by setting up gpg-agent
+  pmodload gpg
+fi
+
+if (( $+commands[cabal] )); then
+  # Enables local Haskell package installation
+  pmodload haskell
+fi
+
+# Defines Homebrew specific environment variables and aliases
+if (( $+commands[brew] )); then
+  pmodload homebrew
+fi
+
+# Defines MacPorts aliases and adds MacPorts directories to path variables
+if (( $+commands[port] )); then
+  pmodload port
+fi
+
+if (( $+commands[opam] )); then
+  # Initializes OCaml package management
+  pmodload opam
+fi
+
+if [[ "${DISTRO}" == "macos" ]]; then
+  # Defines macOS aliases and functions
+  pmodload osx
+fi
+
+if (( $+commands[pacman] )); then
+  # Provides aliases and functions for the Pacman package manager and frontends
+  pmodload pacman
+fi
+
+if (( $+commands[perl] )); then
+  # Enables local Perl module installation on macOS and defines aliases
+  pmodload perl
+fi
+
+if (( $+commands[rails] )); then
+  # Defines Ruby on Rails aliases
+  if (( $+functions[zsh-defer] )); then
+    zsh-defer pmodload rails
+  else
+    pmodload rails
+  fi
+fi
+
+if (( $+commands[rsync] )); then
+  # Defines rsync aliases
+  pmodload rsync
+fi
+
+if (( $+commands[ruby] )); then
+  # Configures Ruby local gem installation, loads version managers, and defines
+  # aliases
+  pmodload ruby
+fi
+
+if (( $+commands[screen] )); then
+  # Defines GNU Screen aliases and provides for auto launching it at start-up
+  pmodload screen
+fi
+
+# Skip on macOS — launchd manages ssh-agent (or Secretive)
+if (( $+commands[ssh] )) && [[ "${DISTRO}" != "macos" ]]; then
+  # Provides for an easier use of SSH by setting up ssh-agent
+  pmodload ssh
+fi
+
+if (( $+commands[tmux] )); then
+  # Defines tmux aliases and provides for auto launching it at start-up
+  pmodload tmux
+fi
+
+if (( $+commands[wakeonlan] )); then
+  # This module provides a wrapper around the wakeonlan tool
+  pmodload wakeonlan
+fi
+
+if (( $+commands[yum] )); then
+  # Defines yum aliases
+  pmodload yum
+fi
+
+if [[ -d "${ZDOTDIR:-${HOME}}/.zprezto/contrib" ]]; then
+  # Alias-tips is a plugin to help remembering aliases you once defined. It
+  # works by trying to find an alias for the command you are currently trying
+  # to execute and printing a help line reminding you about that alias.
+  pmodload alias-tips
+
+  # Integrates zsh clipboard with system clipboard.
+  if [[ "${DISTRO}" == "macos" ]] || \
+     (( $+commands[xclip] || $+commands[xsel] )); then
+    pmodload clipboard
+  fi
+
+  if (( $+commands[direnv] )); then
+    pmodload direnv
+  fi
+
+  if (( $+commands[dotnet] )); then
+    # Adds the completion handler for dotnet to the CLI, which can complete
+    # command names, paths, NuGet packages, and more
+    pmodload dotnet-completion
+  fi
+
+  if (( $+commands[mix] )); then
+    # Defines Elixir and Phoenix aliases
+    pmodload elixir
+    pmodload phoenix
+  fi
+
+  # Integrates enhancd into Prezto, which implements a next-generation cd
+  # command with an interactive filter.
+  if (( ! $+commands[zoxide] )); then
+    pmodload enhancd
+  fi
+
+  if (( $+commands[fzy] )); then
+    pmodload fzy
+  fi
+
+  if (( $+commands[kind] )); then
+    # Enhances Kind command line integration by setting up autocomplete and
+    # providing aliases
+    pmodload kind
+  fi
+
+  if (( $+commands[kubectl] )); then
+    # Enhances Kubernetes command line integration by providing aliases,
+    # functions and by exposing repository status information to prompts
+    pmodload kubernetes
+  fi
+
+  if (( $+commands[nvm] && ! $+commands[mise] )); then
+    # This module integrates nvm auto use shell integration into Prezto. It
+    # will automatically call nvm use in a directory with a .nvmrc file
+    if (( $+functions[zsh-defer] )); then
+      zsh-defer pmodload nvm-auto-use
+    else
+      pmodload nvm-auto-use
+    fi
+  fi
+
+  if (( $+commands[fuck] )); then
+    # Correct miss typed commands by using thefuck tool
+    pmodload thefuck
+  fi
+
+  if (( $+commands[xpanes] )); then
+    # tmux-xpanes is a tmux plugin that eases creating multiple tmux panels
+    pmodload tmux-xpanes
+  fi
+
+  if (( $+commands[todo.sh] )); then
+    pmodload todo-txt
+  fi
+
+  if (( $+commands[zoxide] )); then
+    # Initializes zoxide, a smarter cd command for your terminal
+    pmodload zoxide
+  fi
+
+  if (( $+commands[zypper] )); then
+    # Defines zypper aliases
+    pmodload zypper
+  fi
+fi

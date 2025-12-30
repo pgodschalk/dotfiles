@@ -1,0 +1,329 @@
+# shellcheck shell=zsh
+
+# Detect distro (used for OS-specific config)
+if [[ ${OSTYPE} == linux-gnu* ]]; then
+  [[ -f /etc/os-release ]] && source /etc/os-release
+  case ${ID} in
+    debian|ubuntu) export DISTRO="debian" ;;
+    arch) export DISTRO="arch" ;;
+    rhel|fedora|centos) export DISTRO="rhel" ;;
+  esac
+elif [[ ${OSTYPE} == darwin* ]]; then
+  export DISTRO="macos"
+fi
+
+# Cache brew prefix
+_brew_prefix="${HOMEBREW_PREFIX:-/opt/homebrew}"
+
+# Set up XDG directories
+if [[ "${DISTRO}" == "macos" ]]; then
+  export XDG_CACHE_HOME="${HOME}/Library/Caches"
+  export XDG_CONFIG_DIRS="${HOME}/Library/Preferences"
+  XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS}:/Library/Application Support"
+  XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS}:/Library/Preferences"
+  XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS}:${HOME}/.config"
+  export XDG_CONFIG_HOME="${HOME}/Library/Application Support"
+  export XDG_DATA_DIRS="/Library/Application Support:${HOME}/.local/share"
+  export XDG_DATA_HOME="${HOME}/Library/Application Support"
+  export XDG_STATE_HOME="${HOME}/Library/Application Support"
+  export XDG_RUNTIME_DIR="${HOME}/Library/Application Support"
+  export XDG_BIN_HOME="${HOME}/Library/Scripts"
+else
+  export XDG_CACHE_HOME="${HOME}/.cache"
+  export XDG_CONFIG_DIRS="/etc/xdg"
+  export XDG_CONFIG_HOME="${HOME}/.config"
+  export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+  export XDG_DATA_HOME="${HOME}/.local/share"
+  if [[ -z "${XDG_RUNTIME_DIR}" ]]; then
+    export XDG_RUNTIME_DIR="/run/user/${UID}"
+  fi
+  export XDG_STATE_HOME="${HOME}/.local/state"
+  export XDG_BIN_HOME="${HOME}/.local/bin"
+fi
+
+export XDG_DESKTOP_DIR="${HOME}/Desktop"
+export XDG_DOCUMENTS_DIR="${HOME}/Documents"
+export XDG_DOWNLOAD_DIR="${HOME}/Downloads"
+export XDG_MOVIES_DIR="${HOME}/Movies"
+export XDG_MUSIC_DIR="${HOME}/Music"
+export XDG_PICTURES_DIR="${HOME}/Pictures"
+export XDG_PUBLICSHARE_DIR="${HOME}/Public"
+export XDG_TEMPLATES_DIR="${HOME}/Templates"
+
+# Add brew to $PATH
+if [[ -d "${_brew_prefix}/bin" ]]; then
+  export PATH="${_brew_prefix}/bin:${PATH}"
+fi
+
+# Add uutils to $PATH
+if [[ -d "${_brew_prefix}/opt/uutils-coreutils" ]]; then
+  export PATH="${_brew_prefix}/opt/uutils-coreutils/libexec/uubin:${PATH}"
+fi
+if [[ -d "${_brew_prefix}/opt/uutils-diffutils" ]]; then
+  export PATH="${_brew_prefix}/opt/uutils-diffutils/libexec/uubin:${PATH}"
+fi
+if [[ -d "${_brew_prefix}/opt/uutils-findutils" ]]; then
+  export PATH="${_brew_prefix}/opt/uutils-findutils/libexec/uubin:${PATH}"
+fi
+
+# Add snap to $PATH
+if [[ -d "/snap/bin" ]]; then
+  export PATH="/snap/bin:${PATH}"
+fi
+if [[ -d "${HOME}/snap/bin" ]]; then
+  export PATH="${HOME}/snap/bin:${PATH}"
+fi
+
+# Add LLVM to $PATH
+if [[ -d "${_brew_prefix}/opt/llvm/bin" ]]; then
+  export PATH="${_brew_prefix}/opt/llvm/bin:${PATH}"
+fi
+
+# Add OpenJDK to $PATH
+if [[ -d "${_brew_prefix}/opt/openjdk/bin" ]]; then
+  export PATH="${_brew_prefix}/opt/openjdk/bin:${PATH}"
+fi
+
+# Add Go packages to $PATH
+export GOPATH="${XDG_DATA_HOME}/go"
+if [[ -d "${XDG_DATA_HOME}/go" ]]; then
+  export PATH="${GOPATH}/bin:${PATH}"
+fi
+
+# Add npm global packages to $PATH
+if [[ -d "${XDG_CONFIG_HOME}/npm/bin" ]]; then
+  export PATH="${XDG_CONFIG_HOME}/npm/bin:${PATH}"
+fi
+
+# Add bun global packages to $PATH
+if [[ -d "${XDG_CACHE_HOME}/.bun/bin" ]]; then
+  export PATH="${XDG_CACHE_HOME}/.bun/bin:${PATH}"
+fi
+
+# Add gem packages to $PATH
+if [[ -d "${XDG_DATA_HOME}/gem/bin" ]]; then
+  export PATH="${XDG_DATA_HOME}/gem/bin:${PATH}"
+fi
+
+# Add postgresql to $PATH
+if [[ -d ${_brew_prefix}/opt/postgresql@18/bin ]]; then
+  export PATH="/opt/homebrew/opt/postgresql@18/bin:$PATH"
+fi
+
+# Add XDG binaries to $PATH
+if [[ -d "${XDG_BIN_HOME}" ]]; then
+  export PATH="${XDG_BIN_HOME}:${PATH}"
+fi
+
+# Add bison to $LDFLAGS
+if [[ -d "${_brew_prefix}/opt/bison" ]]; then
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/bison/lib"
+fi
+
+# Add bzip2 to $LDFLAGS and $CPPFLAGS
+if [[ -d "${_brew_prefix}/opt/bzip2" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }-I${_brew_prefix}/opt/bzip2/include"
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/bzip2/lib"
+fi
+
+# Add krb5 to $LDFLAGS and $CPPFLAGS
+if [[ -d "${_brew_prefix}/opt/krb5" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }-I${_brew_prefix}/opt/krb5/include"
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/krb5/lib"
+fi
+
+# Add libedit to $LDFLAGS and $CPPFLAGS
+if [[ -d "${_brew_prefix}/opt/libedit" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }"
+  CPPFLAGS+="-I${_brew_prefix}/opt/libedit/include"
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/libedit/lib"
+fi
+
+# Add libiconv to $LDFLAGS and $CPPFLAGS
+if [[ -d "${_brew_prefix}/opt/libiconv" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }"
+  CPPFLAGS+="-I${_brew_prefix}/opt/libiconv/include"
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/libiconv/lib"
+fi
+
+# Add jpeg to $LDFLAGS and $CPPFLAGS
+if [[ -d "${_brew_prefix}/opt/jpeg" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }-I${_brew_prefix}/opt/jpeg/include"
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/jpeg/lib"
+fi
+
+# Add libxml2 to $LDFLAGS and $CPPFLAGS
+if [[ -d "${_brew_prefix}/opt/libxml2" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }"
+  CPPFLAGS+="-I${_brew_prefix}/opt/libxml2/include"
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/libxml2/lib"
+fi
+
+# Add openssl to $LDFLAGS and $CPPFLAGS
+if [[ -d "${_brew_prefix}/opt/openssl" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }"
+  CPPFLAGS+="-I${_brew_prefix}/opt/openssl/include"
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/openssl/lib"
+fi
+
+# Add postgresql@18 to $LDFLAGS and $CPPFLAGS
+if [[ -d "${_brew_prefix}/opt/postgresql@18" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }"
+  CPPFLAGS+="-I${_brew_prefix}/opt/postgresql@18/include"
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/postgresql@18/lib"
+fi
+
+# Add zlib to $LDFLAGS, $CPPFLAGS and $PKG_CONFIG_PATH
+if [[ -d "${_brew_prefix}/opt/zlib" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }-I${_brew_prefix}/opt/zlib/include"
+  export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/zlib/lib"
+  export PKG_CONFIG_PATH="${PKG_CONFIG_PATH:+${PKG_CONFIG_PATH}:}"
+  PKG_CONFIG_PATH+="${_brew_prefix}/opt/zlib/lib/pkgconfig"
+fi
+
+# Ensure XDG directories are used
+export ANSIBLE_HOME="${XDG_DATA_HOME}/ansible"
+export AWS_CONFIG_FILE="${XDG_CONFIG_HOME}/aws/config"
+export AWS_SHARED_CREDENTIALS_FILE="${XDG_CONFIG_HOME}/aws/credentials"
+export AZURE_CONFIG_DIR="${XDG_DATA_HOME}/azure"
+export BUNDLE_USER_CONFIG="${XDG_CONFIG_HOME}"/bundle
+export BUNDLE_USER_CACHE="${XDG_CACHE_HOME}"/bundle
+export BUNDLE_USER_PLUGIN="${XDG_DATA_HOME}"/bundle
+export CARGO_HOME="${XDG_DATA_HOME}/cargo"
+export CLAUDE_CONFIG_DIR="${XDG_CONFIG_HOME}/claude"
+export CLOUDSDK_CONFIG="${XDG_CONFIG_HOME}/gcloud"
+export DEVPOD_HOME="${XDG_CONFIG_HOME}/devpod"
+export DOCKER_CONFIG="${XDG_CONFIG_HOME}/docker"
+export DOTNET_CLI_HOME="${XDG_DATA_HOME}/dotnet"
+export ENHANCD_DIR="${XDG_CACHE_HOME}/enhancd"
+export GEM_HOME="${XDG_DATA_HOME}/gem"
+export GOMODCACHE="${XDG_CACHE_HOME}/go/mod"
+export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+export HELIX_RUNTIME="${XDG_CONFIG_HOME}/helix/runtime"
+export INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
+export IPYTHONDIR="${XDG_CONFIG_HOME}/ipython"
+export JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}/jupyter"
+export PYTHONSTARTUP="${XDG_CONFIG_HOME}/python/pythonrc"
+export LESSHISTFILE="${XDG_STATE_HOME}/less/history"
+export MISE_CACHE_DIR="${XDG_CACHE_HOME}/mise"
+export MISE_DATA_DIR="${HOME}/.local/share/mise" # Spaces in paths break mise
+export MISE_NODE_DEFAULT_PACKAGES_FILE
+MISE_NODE_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME}/npm/default-npm-packages"
+export MISE_PYTHON_DEFAULT_PACKAGES_FILE
+MISE_PYTHON_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME}/pip"
+MISE_PYTHON_DEFAULT_PACKAGES_FILE+="/default-python-packages"
+export MISE_RUBY_DEFAULT_PACKAGES_FILE
+MISE_RUBY_DEFAULT_PACKAGES_FILE="${XDG_CONFIG_HOME}/gem/default-gem-packages"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+export PSQL_HISTORY="${XDG_DATA_HOME}/psql_history"
+export PIPX_HOME="${XDG_DATA_HOME}/pipx"
+export PIPX_BIN_DIR="${XDG_BIN_HOME}"
+export PUPPETEER_CACHE_DIR="${XDG_CACHE_HOME}/puppeteer"
+export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
+export SCREENRC="${XDG_CONFIG_HOME}/screen/screenrc"
+export STARSHIP_CACHE="${XDG_CACHE_HOME}/starship"
+export STARSHIP_CONFIG="${XDG_CONFIG_HOME}/starship/starship.toml"
+if [[ -d "/Applications/Ghostty.app/Contents/Resources/terminfo" ]]; then
+  readonly GHOSTTY_TERMINFO="/Applications/Ghostty.app/Contents/Resources/terminfo"
+  export TERMINFO_DIRS
+  TERMINFO_DIRS="${GHOSTTY_TERMINFO}:${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
+else
+  export TERMINFO="${XDG_DATA_HOME}/terminfo"
+  export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
+fi
+export TF_CLI_CONFIG_FILE="${XDG_CONFIG_HOME}/terraform/terraformrc"
+export TF_PLUGIN_CACHE_DIR="${XDG_CACHE_HOME}/terraform/plugins"
+export VAGRANT_HOME="${XDG_DATA_HOME}"/vagrant
+export WGETRC="${XDG_CONFIG_HOME}/wgetrc"
+if [[ "${DISTRO}" == "macos" ]]; then
+  export ZELLIJ_CONFIG_DIR="${XDG_CONFIG_HOME}/org.Zellij-Contributors.Zellij"
+else
+  export ZELLIJ_CONFIG_DIR="${XDG_CONFIG_HOME}/zellij"
+fi
+
+# Set the default editor
+if (( $+commands[hx] )); then
+  export EDITOR="hx"
+elif (( $+commands[nano] )); then
+  export EDITOR="nano"
+elif (( $+commands[vim] )); then
+  export EDITOR="vim"
+elif (( $+commands[vi] )); then
+  export EDITOR="vi"
+fi
+export VISUAL="${EDITOR}"
+
+# Enable persistent REPL history for `node`
+export NODE_REPL_HISTORY="${XDG_DATA_HOME}/node_history"
+
+# Allow 32³ entries; the default is 1000
+export NODE_REPL_HISTORY_SIZE="32768"
+
+# Use sloppy mode by default, matching web browsers
+export NODE_REPL_MODE="sloppy"
+
+# Make Python use UTF-8 encoding for output to stdin, stdout, and stderr
+export PYTHONIOENCODING="UTF-8" #t odo move me
+
+# Prefer US English and use UTF-8
+export LC_CTYPE="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+
+# Use bat as man pager, or don't clear screen in less after quitting
+if (( $+commands[bat] || $+commands[batcat] )); then
+  export MANPAGER="bat -plman"
+else
+  export MANPAGER="less --no-init"
+fi
+
+# Avoid issues with `gpg` as installed via Homebrew.
+# https://stackoverflow.com/a/42265848/96656
+export GPG_TTY=$(tty);
+
+# Hide the "default interactive shell is now zsh" warning on macOS
+if [[ "${DISTRO}" == "macos" ]]; then
+  export BASH_SILENCE_DEPRECATION_WARNING=1
+fi
+
+export CLOUDSDK_PYTHON="${MISE_DATA_DIR}/installs/python/3.13/bin/python"
+export CLOUDSDK_PYTHON_SITEPACKAGES=1
+export GOOGLE_APPLICATION_CREDENTIALS
+GOOGLE_APPLICATION_CREDENTIALS="${CLOUDSDK_CONFIG}"
+GOOGLE_APPLICATION_CREDENTIALS+="/application_default_credentials.json"
+
+# Hide Homebrew hints
+export HOMEBREW_NO_ENV_HINTS=1
+
+# Don't use insecure redirects
+export HOMEBREW_NO_INSECURE_REDIRECTS=1
+
+# fzf file finder integration
+if (( $+commands[rg] )); then
+  export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+elif (( $+commands[fd] )); then
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
+fi
+export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
+if (( $+commands[chafa] && ($+commands[bat] || $+commands[batcat]) )); then
+  export FZF_CTRL_T_OPTS="--preview '[[ \$(file --mime {}) =~ image ]] && \
+    chafa --format=symbols --size=80x24 {} || \
+    bat --color=always --style=numbers --line-range=:500 {}'"
+elif (( $+commands[bat] || $+commands[batcat] )); then
+  export FZF_CTRL_T_OPTS="--preview \
+    'bat --color=always --style=numbers --line-range=:500 {}'"
+elif (( $+commands[chafa] )); then
+  export FZF_CTRL_T_OPTS="--preview \
+    'chafa --format=symbols --size=80x24 {}'"
+fi
+
+# Allow 1Password biometric unlock
+export OP_BIOMETRIC_UNLOCK_ENABLED=true
+
+if [[ "${DISTRO}" == "macos" ]]; then
+  # Use Secretive SSH agent
+  export SSH_AUTH_SOCK
+  SSH_AUTH_SOCK="${HOME}/Library/Containers"
+  SSH_AUTH_SOCK+="/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh"
+fi
+
+unset _brew_prefix

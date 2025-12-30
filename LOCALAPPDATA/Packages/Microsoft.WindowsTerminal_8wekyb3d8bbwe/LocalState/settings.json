@@ -1,0 +1,84 @@
+{
+	"$help": "https://aka.ms/terminal-documentation",
+	"$schema": "https://aka.ms/terminal-profiles-schema",
+	"actions": [],
+	"copyFormatting": "none",
+	"copyOnSelect": false,
+	"defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+	"keybindings": [
+		{
+			"id": "Terminal.CopyToClipboard",
+			"keys": "ctrl+c"
+		},
+		{
+			"id": "Terminal.PasteFromClipboard",
+			"keys": "ctrl+v"
+		},
+		{
+			"id": "Terminal.DuplicatePaneAuto",
+			"keys": "alt+shift+d"
+		}
+	],
+	"newTabMenu": [
+		{
+			"type": "remainingProfiles"
+		}
+	],
+	"profiles": {
+		"defaults": {
+			"colorScheme": {
+				"dark": "Dracula Pro",
+				"light": "Dracula Pro Alucard"
+			},
+			"cursorShape": "filledBox",
+			"font": {
+				"face": "JetBrainsMono Nerd Font Mono"
+			}
+		},
+		"list": [
+			{
+				"commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+				"guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+				"hidden": false,
+				"name": "Windows PowerShell"
+			},
+			{
+				"commandline": "%SystemRoot%\\System32\\cmd.exe",
+				"guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+				"hidden": false,
+				"name": "Command Prompt"
+			},
+			{
+				"guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+				"hidden": false,
+				"name": "PowerShell",
+				"source": "Windows.Terminal.PowershellCore"
+			},
+			{
+				"guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+				"hidden": false,
+				"name": "Azure Cloud Shell",
+				"source": "Windows.Terminal.Azure"
+			},
+			{
+				"commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+				"elevate": true,
+				"guid": "{7e0007a6-6a49-4170-a651-be6f87576478}",
+				"hidden": false,
+				"icon": "ms-appx:///ProfileIcons/pwsh.png",
+				"name": "PowerShell (Administrator)",
+				"startingDirectory": "%USERPROFILE%"
+			}
+		]
+	},
+	"schemes": [
+		{
+			"name": "Dracula Pro"
+		},
+		{
+			"name": "Dracula Pro Alucard"
+		}
+	],
+	"theme": "system",
+	"themes": []
+}

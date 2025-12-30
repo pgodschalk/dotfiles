@@ -1,0 +1,106 @@
+# shellcheck shell=zsh
+
+# Completion cache directory
+_comp_cache="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh/completions"
+[[ -d "${_comp_cache}" ]] || mkdir -p "${_comp_cache}"
+
+# Cache brew prefix
+_brew_prefix="${HOMEBREW_PREFIX:-/opt/homebrew}"
+
+# Homebrew completions
+if [[ -d "${_brew_prefix}/share/zsh/site-functions" ]]; then
+  fpath=("${_brew_prefix}/share/zsh/site-functions" "${fpath[@]}")
+fi
+
+# Vagrant completions (cache resolved glob path)
+if (( $+commands[vagrant] )); then
+  if [[ ! -f "${_comp_cache}/_vagrant_path" ]]; then
+    echo /opt/vagrant/embedded/gems/gems/vagrant-*/contrib/zsh(N[1]) \
+      > "${_comp_cache}/_vagrant_path"
+  fi
+  _vagrant_zsh=$(<"${_comp_cache}/_vagrant_path")
+  [[ -n "${_vagrant_zsh}" ]] && fpath=("${_vagrant_zsh}" "${fpath[@]}")
+  unset _vagrant_zsh
+fi
+
+# OrbStack $PATH and completions
+if [[ "${DISTRO}" == "macos" ]] && (( $+commands[orb] )); then
+  source "${HOME}/.orbstack/shell/init.zsh" 2>/dev/null || :
+fi
+
+# Cached completions
+fpath=("${_comp_cache}" "${fpath[@]}")
+
+# GitHub CLI completions (patched to bypass op plugin alias)
+if (( $+commands[gh] )) && [[ ! -f "${_comp_cache}/_gh" \
+    || "${commands[gh]}" -nt "${_comp_cache}/_gh" ]]; then
+  command gh completion -s zsh \
+    | sed 's/${words\[1\]} __complete/command gh __complete/' \
+    > "${_comp_cache}/_gh"
+fi
+
+# doggo completions (override broken homebrew version)
+if (( $+commands[doggo] )) && [[ ! -f "${_comp_cache}/_doggo" \
+    || "${commands[doggo]}" -nt "${_comp_cache}/_doggo" ]]; then
+  doggo completions zsh 2>/dev/null \
+    | sed -e '/^compdef _doggo doggo$/d' -e '/^_doggo$/d' \
+    > "${_comp_cache}/_doggo"
+fi
+
+# DevPod completions
+if (( $+commands[devpod] )) && [[ ! -f "${_comp_cache}/_devpod" \
+    || "${commands[devpod]}" -nt "${_comp_cache}/_devpod" ]]; then
+  devpod completion zsh > "${_comp_cache}/_devpod"
+fi
+
+# Homebrew completions (patched to bypass op plugin alias)
+_brew_src="${_brew_prefix}/share/zsh/site-functions/_brew"
+if (( $+commands[brew] )) && [[ -f "${_brew_src}" ]] \
+    && [[ ! -f "${_comp_cache}/_brew" \
+    || "${_brew_src}" -nt "${_comp_cache}/_brew" ]]; then
+  sed 's/\$(brew /$(command brew /g' "${_brew_src}" > "${_comp_cache}/_brew"
+fi
+unset _brew_src
+
+# ripgrep completions (patched to bypass batgrep alias)
+_rg_src="${_brew_prefix}/share/zsh/site-functions/_rg"
+if (( $+commands[rg] )) && [[ -f "${_rg_src}" ]] \
+    && [[ ! -f "${_comp_cache}/_rg" \
+    || "${commands[rg]}" -nt "${_comp_cache}/_rg" ]]; then
+  sed 's/\$words\[1\] --type-list/command rg --type-list/' \
+    "${_rg_src}" > "${_comp_cache}/_rg"
+fi
+unset _rg_src
+
+# Cache compinit for faster startup
+autoload -Uz compinit
+if [[ -n "${ZDOTDIR}"/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
+# Register patched completions
+(( $+functions[_brew] )) && compdef _brew brew
+(( $+functions[_doggo] )) && compdef _doggo doggo
+(( $+functions[_rg] )) && compdef _rg rg batgrep
+
+# gcloud completions (lazy load on first tab)
+if (( $+commands[gcloud] )); then
+  if [[ "${DISTRO}" == "macos" ]]; then
+    _gcloud_completion="${_brew_prefix}/share/google-cloud-sdk/completion.zsh.inc"
+  else
+    _gcloud_completion="/usr/share/google-cloud-sdk/completion.zsh.inc"
+  fi
+  _gcloud() {
+    unfunction _gcloud
+    if [[ -f "${_gcloud_completion}" ]]; then
+      source "${_gcloud_completion}"
+      unset _gcloud_completion
+      _gcloud "${@}"
+    fi
+  }
+  compdef _gcloud gcloud
+fi
+
+unset _comp_cache _brew_prefix

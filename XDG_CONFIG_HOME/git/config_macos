@@ -1,0 +1,13 @@
+[core]
+  excludesFile = ~/Library/Application Support/git/ignore
+  attributesFile = ~/Library/Application Support/git/attributes
+[credential]
+  helper = osxkeychain
+[gpg "ssh"]
+  allowedSignersFile = ~/Library/Application Support/git/allowed-signers
+[merge]
+  tool = opendiff
+[mergetool]
+  keepBackup = false
+[user]
+  signingkey = ~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/PublicKeys/7ce48136c0230550babf5f389965be28.pub

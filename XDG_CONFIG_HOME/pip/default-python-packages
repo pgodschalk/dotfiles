@@ -1,0 +1,15 @@
+black
+certifi
+cmake-format
+crcmod
+cryptography
+debugpy
+django-template-lsp
+google_crc32c
+grpcio
+ipykernel
+nginx-language-server
+numpy
+pip
+pyopenssl
+setuptools

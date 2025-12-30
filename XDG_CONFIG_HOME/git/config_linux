@@ -1,0 +1,11 @@
+[core]
+  excludesFile = ~/.config/git/ignore
+  attributesFile = ~/.config/git/attributes
+[credential]
+  helper = libsecret
+[gpg "ssh"]
+  allowedSignersFile = ~/.config/git/allowed-signers
+[merge]
+  tool = vimdiff
+[mergetool]
+  keepBackup = false

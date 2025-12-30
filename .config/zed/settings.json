@@ -1,0 +1,823 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+	// The name of the Zed theme to use for the UI.
+	//
+	// `mode` is one of:
+	// - "system": Use the theme that corresponds to the system's appearance
+	// - "light": Use the theme indicated by the "light" field
+	// - "dark": Use the theme indicated by the "dark" field
+	"theme": {
+		"mode": "system",
+		"light": "Dracula Pro (Alucard)",
+		"dark": "Dracula Pro"
+	},
+	// The name of a font to use for rendering text in the editor
+	// ".ZedMono" currently aliases to Lilex
+	// but this may change in the future.
+	"buffer_font_family": "JetBrainsMono Nerd Font Mono",
+	// The default font size for text in the editor
+	"buffer_font_size": 16,
+	// Whether to restore last closed project when fresh Zed instance is opened
+	// May take 3 values:
+	//  1. All workspaces open during last session
+	//         "restore_on_startup": "last_session"
+	//  2. The workspace opened
+	//         "restore_on_startup": "last_workspace",
+	//  3. Do not restore previous workspaces
+	//         "restore_on_startup": "none",
+	"restore_on_startup": "none",
+	// Whether to attempt to restore previous file's state when opening it again.
+	// The state is stored per pane.
+	// When disabled, defaults are applied instead of the state restoration.
+	//
+	// E.g. for editors, selections, folds and scroll positions are restored, if
+	// the same file is closed and, later, opened again in the same pane.
+	// When disabled, a single selection in the very beginning of the file, zero
+	// scroll position and no folds state is used as a default.
+	//
+	// Default: true
+	"restore_on_file_reopen": false,
+	// Whether the cursor blinks in the editor.
+	"cursor_blink": false,
+	// Cursor shape for the default editor.
+	//  1. A vertical bar
+	//     "bar"
+	//  2. A block that surrounds the following character
+	//     "block"
+	//  3. An underline / underscore that runs along the following character
+	//     "underline"
+	//  4. A box drawn around the following character
+	//     "hollow"
+	//
+	// Default: "bar"
+	"cursor_shape": "block",
+	// Character counts at which to show wrap guides in the editor.
+	"wrap_guides": [80, 120],
+	"project_panel": {
+		// Where to dock the project panel. Can be 'left' or 'right'.
+		"dock": "right"
+	},
+	"outline_panel": {
+		// Where to dock the outline panel. Can be 'left' or 'right'.
+		"dock": "right"
+	},
+	"collaboration_panel": {
+		// Where to dock the outline panel. Can be 'left' or 'right'.
+		"dock": "right"
+	},
+	"git_panel": {
+		// Where to dock the outline panel. Can be 'left' or 'right'.
+		"dock": "right"
+	},
+	"message_editor": {
+		// Whether to automatically replace emoji shortcodes with emoji characters.
+		// For example: typing `:wave:` gets replaced with `👋`.
+		"auto_replace_emoji_shortcode": false
+	},
+	"agent": {
+		// The default model to use when creating new threads.
+		"default_model": {
+			// The provider to use.
+			"provider": "anthropic",
+			// The model to use.
+			"model": "claude-sonnet-4-5-thinking-latest"
+		}
+	},
+	// Settings related to the editor's tabs
+	"tabs": {
+		// Position of the close button on the editor tabs.
+		// One of: ["right", "left"]
+		"close_position": "left"
+	},
+	// How many columns a tab should occupy.
+	"tab_size": 2,
+	// Control what info is collected by Zed.
+	"telemetry": {
+		// Send debug info like crash reports.
+		"diagnostics": false,
+		// Send anonymized usage data like what languages you're using Zed with.
+		"metrics": false
+	},
+	// Files or globs of files that will be excluded by Zed entirely. They will
+	// be skipped during file scans, file searches, and not be displayed in the
+	// project file tree. Takes precedence over `file_scan_inclusions`.
+	"file_scan_exclusions": [
+		"**/.git",
+		"**/.svn",
+		"**/.hg",
+		"**/.jj",
+		"**/.repo",
+		"**/CVS",
+		"**/.DS_Store",
+		"**/Thumbs.db",
+		"**/.classpath",
+		"**/.settings",
+		"**/.ansible",
+		"**/.devcontainer/.devpod-internal",
+		"**/.mypy_cache",
+		"**/.ropeproject",
+		"**/.ruby-lsp",
+		"**/.ruff_cache",
+		"**/.terraform",
+		"**/.venv",
+		"**/__pycache__",
+		"**/node_modules"
+	],
+	// The list of custom Git hosting providers.
+	"git_hosting_providers": [
+		{
+			"provider": "gitlab",
+			"name": "",
+			"base_url": ""
+		}
+	],
+	// Settings specific to the terminal
+	"terminal": {
+		// Any key-value pairs added to this list will be added to the terminal's
+		// environment. Use `:` to separate multiple values.
+		"env": {
+			"EDITOR": "zed --wait",
+			"GIT_EDITOR": "zed --wait",
+			"VISUAL": "zed --wait"
+		}
+	},
+	// An object whose keys are language names, and whose values
+	// are arrays of filenames or extensions of files that should
+	// use those languages.
+	//
+	// For example, to treat files like `foo.notjs` as JavaScript,
+	// and `Embargo.lock` as TOML:
+	//
+	// {
+	//   "JavaScript": ["notjs"],
+	//   "TOML": ["Embargo.lock"]
+	// }
+	//
+	"file_types": {
+		"Ansible": [
+			"**.ansible.yml",
+			"**.ansible.yaml",
+			"**/defaults/*.yml",
+			"**/defaults/*.yaml",
+			"**/meta/*.yml",
+			"**/meta/*.yaml",
+			"**/tasks/*.yml",
+			"**/tasks/*.yaml",
+			"**/handlers/*.yml",
+			"**/handlers/*.yaml",
+			"**/group_vars/*.yml",
+			"**/group_vars/*.yaml",
+			"**/playbooks/*.yaml",
+			"**/playbooks/*.yml",
+			"**playbook*.yaml",
+			"**playbook*.yml"
+		],
+		"Django": ["**/templates/**/*.html"],
+		"Dockerfile": ["Dockerfile.*"],
+		"env": [".env", "**/.env*", "**/.envrc*"],
+		"Git Attributes": ["{git,.git,.git/info}/attributes"],
+		"Git Config": [
+			"*.gitconfig",
+			"**/{git,.git/modules,.git/modules/*}/config"
+		],
+		"Git Ignore": ["{git,.git}/ignore", ".git/info/exclude"],
+		"GitHub Actions": [
+			"**/.github/workflows/*.yaml",
+			"**/.github/workflows/*.yml"
+		],
+		"Go HTML Template": ["**/*.gohtml", "**/*.html.tmpl", "**/*.html.gotmpl"],
+		"Go Text Template": ["**/*.gotmpl", "**/*.tmpl"],
+		"Helm": [
+			"**/Chart.yaml",
+			"**/helmfile.d/**/*.yaml",
+			"**/helmfile.d/**/*.yml",
+			"**/templates/**/*.tpl",
+			"**/templates/**/*.yaml",
+			"**/templates/**/*.yml",
+			"**/values*.yaml"
+		],
+		"HTML-Jinja": ["**/*.html.j2", "**/*.htm.j2"],
+		"ini": ["**/.pylintrc"],
+		"JSON": ["**/*.webmanifest", "**/.prettierrc", "**/.babelrc"],
+		"JSONC": [
+			"**/.zed/**/*.json",
+			"**/zed/**/*.json",
+			"**/Zed/**/*.json",
+			"**/.vscode/**/*.json",
+			"tsconfig*.json",
+			"**/.devcontainer.json",
+			"**/.vscode/**/*.json",
+			"**/devcontainer.json"
+		],
+		"Markdown": [
+			".rules",
+			".cursorrules",
+			".windsurfrules",
+			".clinerules",
+			"**/.github/PULL_REQUEST_TEMPLATE"
+		],
+		"Nginx": ["**/nginx/**/*.conf"],
+		"Python constraints": ["*constraints*.txt"],
+		"Python requirements": [
+			"**/requirements/*.{in,txt}",
+			"*requirements*.{in,txt}"
+		],
+		"XML": ["**/*.drawio", "**/*.svg"],
+		"YAML": ["**/*.ansible-lint"]
+	},
+	// Different settings for specific languages.
+	"languages": {
+		"Ansible": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "yamlfmt",
+					"arguments": ["-in"]
+				}
+			}
+		},
+		"Astro": {
+			"code_actions_on_format": {
+				"source.fixAll.eslint": true,
+				"source.fixAll.stylelint": true
+			},
+			"format_on_save": "on",
+			"language_servers": ["eslint", "stylelint", "!biome", "..."]
+		},
+		"C": {
+			"format_on_save": "on"
+		},
+		"C++": {
+			"format_on_save": "on"
+		},
+		"CSS": {
+			"format_on_save": "on",
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			},
+			"language_servers": ["!stylelint-lsp", "biome", "..."],
+			"prettier": {
+				"allowed": false
+			}
+		},
+		"Django": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "djlint",
+					"arguments": ["--reformat", "--profile", "jinja", "-"]
+				}
+			}
+		},
+		"ERB": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "~/Library/Application Support/gem/bin/erb-formatter",
+					"arguments": ["--stdin"]
+				}
+			},
+			"language_servers": [
+				"ruby-lsp",
+				"!solargraph",
+				"rubocop",
+				"steep",
+				"!sorbet",
+				"..."
+			]
+		},
+		"env": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "shfmt",
+					"arguments": ["--indent", "2", "--case-indent", "--binary-next-line"]
+				}
+			}
+		},
+		"Gherkin": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"gherkin",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-gherkin/dist/index.js"
+					]
+				}
+			}
+		},
+		"Git Commit": {
+			"wrap_guides": [50, 72],
+			"preferred_line_length": 72
+		},
+		"GitHub Actions": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "yamlfmt",
+					"arguments": ["-in"]
+				}
+			}
+		},
+		"Go HTML Template": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"go-template",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-go-template/lib/index.js"
+					]
+				}
+			}
+		},
+		"Go Text Template": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"go-template",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-go-template/lib/index.js"
+					]
+				}
+			}
+		},
+		"HCL": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "~/.local/share/mise/shims/terraform",
+					"arguments": ["fmt", "-"]
+				}
+			}
+		},
+		"HTML": {
+			"format_on_save": "on",
+			"language_servers": ["!stylelint-lsp", "!biome", "..."]
+		},
+		"HTML+ERB": {
+			"format_on_save": "on",
+			"language_servers": [
+				"herb",
+				"ruby-lsp",
+				"!solargraph",
+				"rubocop",
+				"steep",
+				"!sorbet",
+				"..."
+			]
+		},
+		"HTML-Jinja": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "djlint",
+					"arguments": ["--reformat", "--profile", "jinja", "-"]
+				}
+			}
+		},
+		"ini": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"ini",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-ini/src/plugin.js"
+					]
+				}
+			}
+		},
+		"JavaScript": {
+			"code_actions_on_format": {
+				"source.fixAll.biome": true,
+				"source.organizeImports.biome": true
+			},
+			"format_on_save": "on",
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			},
+			"language_servers": [
+				"biome",
+				"!eslint",
+				"!stylelint-lsp",
+				"!tsgo",
+				"vstls",
+				"!typescript-language-server",
+				"..."
+			]
+		},
+		"Jinja2": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"jinja-template",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-jinja-template/lib/index.js"
+					]
+				}
+			}
+		},
+		"JS+ERB": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "~/Library/Application Support/gem/bin/erb-formatter",
+					"arguments": ["--stdin"]
+				}
+			},
+			"language_servers": [
+				"ruby-lsp",
+				"!solargraph",
+				"rubocop",
+				"steep",
+				"!sorbet",
+				"..."
+			]
+		},
+		"JSON": {
+			"format_on_save": "on",
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			}
+		},
+		"JSONC": {
+			"format_on_save": "on",
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			}
+		},
+		"Kdl": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "kdlfmt",
+					"arguments": ["format", "-"]
+				}
+			}
+		},
+		"Markdown": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"markdown",
+						"--prose-wrap",
+						"always",
+						"--print-width",
+						"80"
+					]
+				}
+			},
+			"preferred_line_length": 80
+		},
+		"MDX": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"markdown",
+						"--prose-wrap",
+						"always",
+						"--print-width",
+						"80"
+					]
+				}
+			},
+			"preferred_line_length": 80
+		},
+		"Nginx": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"nginx",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-nginx/dist/index.js"
+					]
+				}
+			}
+		},
+		"Nomad Job": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "nomad",
+					"arguments": ["fmt", "-"]
+				}
+			}
+		},
+		"PHP": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"php",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/@prettier/plugin-php/src/index.mjs"
+					]
+				}
+			},
+			"language_servers": ["intelephense", "!phpactor", "!phptools", "..."]
+		},
+		"Python": {
+			"format_on_save": "on",
+			"formatter": [
+				{
+					"language_server": {
+						"name": "ruff"
+					}
+				}
+			],
+			"language_servers": [
+				"ruff",
+				"ty",
+				"!basedpyright",
+				"!pyright",
+				"!pylsp",
+				"..."
+			]
+		},
+		"Ruby": {
+			"format_on_save": "on",
+			"formatter": {
+				"language_server": {
+					"name": "ruby-lsp"
+				}
+			},
+			"language_servers": [
+				"ruby-lsp",
+				"!solargraph",
+				"rubocop",
+				"steep",
+				"!sorbet",
+				"..."
+			]
+		},
+		"SCSS": {
+			"code_actions_on_format": {
+				"source.fixAll.stylelint": true
+			},
+			"format_on_save": "on",
+			"language_servers": [
+				"stylelint-lsp",
+				"!biome",
+				"some-sass-lsp",
+				"!scss-lsp",
+				"..."
+			]
+		},
+		"Shell Script": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "shfmt",
+					"arguments": ["--indent", "2", "--case-indent", "--binary-next-line"]
+				}
+			}
+		},
+		"SQL": {
+			"formatter": {
+				"external": {
+					"command": "sql-formatter"
+				}
+			}
+		},
+		"TSX": {
+			"code_actions_on_format": {
+				"source.fixAll.biome": true,
+				"source.organizeImports.biome": true
+			},
+			"format_on_save": "on",
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			},
+			"language_servers": [
+				"biome",
+				"!eslint",
+				"!stylelint-lsp",
+				"!tsgo",
+				"vstls",
+				"!typescript-language-server",
+				"..."
+			],
+			"prettier": {
+				"allowed": false
+			}
+		},
+		"TypeScript": {
+			"code_actions_on_format": {
+				"source.fixAll.biome": true,
+				"source.organizeImports.biome": true
+			},
+			"format_on_save": "on",
+			"formatter": {
+				"language_server": {
+					"name": "biome"
+				}
+			},
+			"language_servers": [
+				"!eslint",
+				"biome",
+				"!typescript-language-server",
+				"!tsgo",
+				"vstls",
+				"..."
+			],
+			"prettier": {
+				"allowed": false
+			}
+		},
+		"XML": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "prettier",
+					"arguments": [
+						"--parser",
+						"xml",
+						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/@prettier/plugin-xml/src/plugin.js"
+					]
+				}
+			}
+		},
+		"YAML": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "yamlfmt",
+					"arguments": ["-in"]
+				}
+			}
+		},
+		"YAML+ERB": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "~/Library/Application Support/gem/bin/erb-formatter",
+					"arguments": ["--stdin"]
+				}
+			},
+			"language_servers": [
+				"ruby-lsp",
+				"!solargraph",
+				"rubocop",
+				"steep",
+				"!sorbet",
+				"..."
+			]
+		}
+	},
+	// LSP Specific settings.
+	"lsp": {
+		"intelephense": {
+			"initialization_options": {
+				"globalStoragePath": "~/Library/Application Support/intelephense"
+			}
+		},
+		"ansible-language-server": {
+			"settings": {
+				"executionEnvironment": {
+					"enabled": false
+				}
+			}
+		},
+		"django-template-lsp": {
+			"binary": {
+				"path": "~/.local/share/mise/shims/djlsp"
+			}
+		},
+		"eslint": {
+			"settings": {
+				"onIgnoredFiles": "off"
+			}
+		},
+		"gh-actions-language-server": {
+			"initialization_options": {
+				"sessionToken": ""
+			}
+		},
+		"gitlab-ci-ls": {
+			"initialization_options": {
+				"cache": "~/Library/Caches/gitlab-ci-lsbase"
+			}
+		},
+		"gopls": {
+			"binary": {
+				"path": "~/.local/share/mise/shims/gopls"
+			}
+		},
+		"mdx-analyzer": {
+			"initialization_options": {
+				"typescript": {
+					"enabled": true
+				}
+			}
+		},
+		"nginx": {
+			"binary": {
+				"path": "~/.local/share/mise/installs/python/3.11/bin/nginx-language-server"
+			}
+		},
+		"ruff": {
+			"initialization_options": {
+				"settings": {
+					"lineLength": 79
+				}
+			}
+		},
+		"ruby-lsp": {
+			"binary": {
+				"path": "~/Library/Application Support/gem/bin/ruby-lsp"
+			}
+		},
+		"rubocop": {
+			"binary": {
+				"path": "~/Library/Application Support/gem/bin/rubocop",
+				"arguments": ["--lsp"]
+			}
+		},
+		"steep": {
+			"binary": {
+				"path": "~/Library/Application Support/gem/bin/steep",
+				"arguments": ["langserver"]
+			},
+			"settings": {
+				"require_root_steepfile": false
+			}
+		},
+		"terraform-ls": {
+			"initialization_options": {
+				"terraform": {
+					"path": "~/.local/share/mise/shims/terraform"
+				}
+			}
+		},
+		"vscode-css-language-server": {
+			"settings": {
+				"css": {
+					"validate": false
+				}
+			}
+		}
+	},
+	// Configures context servers for use by the agent.
+	"context_servers": {
+		"terraform-context-server": {
+			"enabled": true,
+			"settings": {}
+		},
+		"mcp-server-context7": {
+			"settings": {
+				"context7_api_key": ""
+			}
+		},
+		"mcp-server-github": {
+			"settings": {
+				"github_personal_access_token": ""
+			}
+		},
+		"mcp-server-linear": {
+			"command": "bunx",
+			"args": ["mcp-remote", "https://mcp.linear.app/sse"]
+		},
+		"mcp-server-mui": {
+			"enabled": true,
+			"settings": {
+				"preferred_theme": "",
+				"component_filter": [""]
+			}
+		}
+	}
+}

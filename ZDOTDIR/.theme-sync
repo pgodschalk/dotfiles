@@ -1,0 +1,236 @@
+# shellcheck shell=zsh
+
+typeset -g _theme_file="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/dark-mode"
+typeset -g dracula_pro_extras_dir
+dracula_pro_extras_dir="${HOME}/Developer/for/me/dracula-pro-extras/themes"
+
+# Apply theme settings based on dark/light mode
+_apply_theme() {
+  local theme="${1:-light}"
+  export THEME="${theme}"
+
+  if [[ "${theme}" == "dark" ]]; then
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+    export BAT_THEME="Dracula Pro"
+    export DFT_BACKGROUND="dark"
+    export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/eza/dark"
+    export GLAMOUR_STYLE="dark"
+    export MISE_COLOR_THEME="dracula"
+    export RIPGREP_CONFIG_PATH="${dracula_pro_extras_dir}/ripgrep/pro.conf"
+    source "${dracula_pro_extras_dir}/docker/pro.sh"
+    source "${dracula_pro_extras_dir}/fzf/pro.sh"
+    source "${dracula_pro_extras_dir}/grep/pro.sh"
+    source "${dracula_pro_extras_dir}/kubectx/pro.sh"
+    source "${dracula_pro_extras_dir}/zsh-syntax-highlighting/pro.sh"
+    _starship_theme="${dracula_pro_extras_dir}/starship/pro.toml"
+  else
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=245"
+    export BAT_THEME="Dracula Pro (Alucard)"
+    export DFT_BACKGROUND="light"
+    export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/eza/light"
+    export GLAMOUR_STYLE="light"
+    export MISE_COLOR_THEME="base16"
+    export RIPGREP_CONFIG_PATH="${dracula_pro_extras_dir}/ripgrep/alucard.conf"
+    source "${dracula_pro_extras_dir}/docker/alucard.sh"
+    source "${dracula_pro_extras_dir}/fzf/alucard.sh"
+    source "${dracula_pro_extras_dir}/grep/alucard.sh"
+    source "${dracula_pro_extras_dir}/kubectx/alucard.sh"
+    source "${dracula_pro_extras_dir}/zsh-syntax-highlighting/alucard.sh"
+    _starship_theme="${dracula_pro_extras_dir}/starship/alucard.toml"
+  fi
+
+  # Generate combined starship config
+  # Order: palette selector, main config, palette definitions
+  local starship_cache="${XDG_CACHE_HOME:-${HOME}/.cache}/starship"
+  local starship_config
+  starship_config="${XDG_CONFIG_HOME:-${HOME}/.config}/starship/starship.toml"
+  [[ -d "${starship_cache}" ]] || mkdir -p "${starship_cache}"
+
+  if [[ -f "${starship_config}" && -f "${_starship_theme}" ]]; then
+    {
+      command grep '^palette' "${_starship_theme}"
+      cat "${starship_config}"
+      command grep -v '^palette' "${_starship_theme}" | command grep -v '^#'
+    } >|"${starship_cache}/config.toml"
+    export STARSHIP_CONFIG="${starship_cache}/config.toml"
+  fi
+
+  if [[ -n "${TMUX}" && "${FZF_DEFAULT_OPTS}" != *--tmux* ]]; then
+    export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --tmux"
+  fi
+}
+
+# Set initial theme based on current appearance (must be before prezto)
+if [[ -r "${_theme_file}" && "$(<"${_theme_file}")" == "dark" ]]; then
+  _apply_theme dark
+else
+  _apply_theme light
+fi
+
+# Sync fzf theme based on current appearance
+typeset -g _last_fzf_theme=""
+_sync_fzf_theme() {
+  [[ -r "${_theme_file}" ]] || return
+  local theme=$(<"${_theme_file}")
+  [[ "${theme}" == "${_last_fzf_theme}" ]] && return
+  _last_fzf_theme="${theme}"
+
+  if [[ "${theme}" == "dark" ]]; then
+    source "${dracula_pro_extras_dir}/fzf/pro.sh"
+  else
+    source "${dracula_pro_extras_dir}/fzf/alucard.sh"
+  fi
+
+  if [[ -n "${TMUX}" && "${FZF_DEFAULT_OPTS}" != *--tmux* ]]; then
+    export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --tmux"
+  fi
+}
+
+# Wrap fzf widgets to sync theme before invocation
+_wrap_fzf_widgets() {
+  local widget
+
+  for widget in fzf-history-widget fzf-file-widget fzf-cd-widget; do
+    if (( $+functions[$widget] )); then
+      functions[_orig_$widget]=${functions[$widget]}
+      eval "$widget() { _sync_fzf_theme; _orig_$widget; }"
+    fi
+  done
+}
+
+# Live sync via dark-notify (updates on each prompt)
+zmodload -F zsh/stat b:zstat
+typeset -g _last_theme=""
+typeset -g _theme_mtime=""
+
+_dark_notify_sync() {
+  [[ -r "${_theme_file}" ]] || return
+
+  local mtime
+  mtime=$(zstat +mtime "${_theme_file}" 2>/dev/null)
+  [[ "${mtime}" == "${_theme_mtime}" ]] && return
+  _theme_mtime="${mtime}"
+
+  local theme=$(<"${_theme_file}")
+  local theme_changed=0
+  if [[ "${theme}" != "${_last_theme}" ]]; then
+    theme_changed=1
+    _last_theme="${theme}"
+    _apply_theme "${theme}"
+  fi
+
+  # Dracula theme name for apps that use it
+  local dracula_theme
+  if [[ "${theme}" == "dark" ]]; then
+    dracula_theme="dracula-pro"
+  else
+    dracula_theme="dracula-pro-alucard"
+  fi
+
+  # Sync Claude Code theme
+  local claude_config
+  claude_config="${CLAUDE_CONFIG_DIR:-${HOME}/.config/claude}/.claude.json"
+  if [[ -f "${claude_config}" ]]; then
+    local current
+    current=$(command jq --raw-ouptut '.theme // empty' "${claude_config}" \
+      2>/dev/null)
+
+    if [[ "${current}" != "${theme}" ]]; then
+      local tmp="${claude_config}.tmp.$$"
+
+      if command jq --arg theme "${theme}" '.theme = $theme' \
+          "${claude_config}" >"${tmp}" 2>/dev/null; then
+        command mv -f "${tmp}" "${claude_config}"
+      else
+        command rm -f "${tmp}"
+      fi
+    fi
+  fi
+
+  # Sync git theme (colors + delta)
+  local git_theme_config="${XDG_CONFIG_HOME:-${HOME}/.config}/git/config.theme"
+  local git_theme_file
+  if [[ "${theme}" == "dark" ]]; then
+    git_theme_file="pro.gitconfig"
+  else
+    git_theme_file="alucard.gitconfig"
+  fi
+  if ! command grep -q "${git_theme_file}" "${git_theme_config}" 2>/dev/null
+  then
+    command cat >|"${git_theme_config}" <<EOF
+[include]
+  path = ~/Developer/for/me/dracula-pro-extras/themes/git/${git_theme_file}
+[delta]
+  features = ${dracula_theme}
+EOF
+  fi
+
+  # Sync glab glamour_style
+  local glab_config="${XDG_CONFIG_HOME:-${HOME}/.config}/glab-cli/config.yml"
+  if [[ -f "${glab_config}" ]]; then
+    local current_glab
+    current_glab=$(command grep '^glamour_style:' "${glab_config}" 2>/dev/null \
+      | command awk '{print $2}')
+
+    if [[ "${current_glab}" != "${theme}" ]]; then
+      if [[ "${DISTRO}" == "macos" ]]; then
+        command sed -i '' \
+          "s/^glamour_style:.*/glamour_style: ${theme}/" "${glab_config}"
+      else
+        command sed -i \
+          "s/^glamour_style:.*/glamour_style: ${theme}/" "${glab_config}"
+      fi
+    fi
+  fi
+
+  # Sync helix theme
+  local helix_config="${XDG_CONFIG_HOME:-${HOME}/.config}/helix/config.toml"
+  [[ -L "${helix_config}" ]] && helix_config=$(realpath "${helix_config}")
+  if [[ -f "${helix_config}" ]]; then
+    local current_helix
+    current_helix=$(command grep '^theme' "${helix_config}" 2>/dev/null \
+      | command sed 's/theme = "\(.*\)"/\1/')
+
+    if [[ "${current_helix}" != "${dracula_theme}" ]]; then
+      if [[ "${DISTRO}" == "macos" ]]; then
+        command sed -i '' \
+          "s/^theme = \".*\"/theme = \"${dracula_theme}\"/" "${helix_config}"
+      else
+        command sed -i \
+          "s/^theme = \".*\"/theme = \"${dracula_theme}\"/" "${helix_config}"
+      fi
+    fi
+  fi
+
+  # Sync tlrc theme
+  local tlrc_config="${XDG_CONFIG_HOME:-${HOME}/.config}/tlrc/config.toml"
+  local tlrc_theme
+  if [[ "${theme}" == "dark" ]]; then
+    tlrc_theme="${dracula_pro_extras_dir}/tlrc/pro.toml"
+  else
+    tlrc_theme="${dracula_pro_extras_dir}/tlrc/alucard.toml"
+  fi
+  if [[ -f "${tlrc_theme}" ]]; then
+    [[ -d "${tlrc_config:h}" ]] || mkdir -p "${tlrc_config:h}"
+    command cp "${tlrc_theme}" "${tlrc_config}"
+  fi
+
+  # Sync zellij theme
+  local zellij_config="${ZELLIJ_CONFIG_DIR:-${HOME}/.config/zellij}/config.kdl"
+  [[ -L "${zellij_config}" ]] && zellij_config=$(realpath "${zellij_config}")
+  if [[ -f "${zellij_config}" ]]; then
+    local current_zellij
+    current_zellij=$(command grep '^theme ' "${zellij_config}" 2>/dev/null \
+      | command sed 's/theme "\(.*\)"/\1/')
+
+    if [[ "${current_zellij}" != "${dracula_theme}" ]]; then
+      if [[ "${DISTRO}" == "macos" ]]; then
+        command sed -i '' \
+          "s/^theme \".*\"/theme \"${dracula_theme}\"/" "${zellij_config}"
+      else
+        command sed -i \
+          "s/^theme \".*\"/theme \"${dracula_theme}\"/" "${zellij_config}"
+      fi
+    fi
+  fi
+}

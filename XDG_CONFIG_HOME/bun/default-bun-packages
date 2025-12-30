@@ -1,0 +1,4 @@
+@astrojs/language-server
+intelephense
+sql-formatter
+sql-language-server

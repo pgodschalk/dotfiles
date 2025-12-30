@@ -1,0 +1,26 @@
+[tools]
+bun = "latest"
+deno = "latest"
+go = "latest"
+helm = ["latest", "3"]
+node = "lts"
+php = "latest"
+poetry = "latest"
+python = ["3.14", "3.13", "3.12", "3.11", "3.10"]
+ruby = "latest"
+terraform = "latest"
+uv = "latest"
+
+[env]
+PHP_CONFIGURE_OPTIONS = """
+--with-bz2=/opt/homebrew/opt/bzip2 \
+--with-gettext=/opt/homebrew/opt/gettext \
+--with-gmp=/opt/homebrew/opt/gmp \
+--with-iconv=/opt/homebrew/opt/libiconv \
+--with-libedit \
+--with-openssl=/opt/homebrew/opt/openssl@3 \
+--with-readline=/opt/homebrew/opt/readline \
+--with-sodium \
+--with-zlib \
+"""
+PKG_CONFIG_PATH = "/opt/homebrew/opt/bzip2/lib/pkgconfig:/opt/homebrew/opt/icu4c/lib/pkgconfig:/opt/homebrew/opt/libedit/lib/pkgconfig:/opt/homebrew/opt/libsodium/lib/pkgconfig:/opt/homebrew/opt/libxml2/lib/pkgconfig:/opt/homebrew/opt/libzip/lib/pkgconfig:/opt/homebrew/opt/openssl@3/lib/pkgconfig:/opt/homebrew/opt/zlib/lib/pkgconfig:${PKG_CONFIG_PATH}"

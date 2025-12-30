@@ -1,0 +1,7 @@
+{
+	"name": "Dotfiles Test",
+	"remoteUser": "patrick",
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+	"onCreateCommand": "sudo useradd --create-home --shell /bin/bash --groups sudo patrick && echo 'patrick ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/patrick",
+	"postCreateCommand": "bash install.sh"
+}

@@ -1,0 +1,262 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: dotfiles
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  lint-ini:
+    name: Lint ini
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up bun
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
+      - name: Cache global bun packages
+        uses: actions/cache@v5
+        with:
+          key: bun-global-ini-${{ runner.os }}-prettier
+          path: ~/.bun/install/global
+      - name: Install Prettier with INI plugin
+        run: bun add --global prettier prettier-plugin-ini
+      - name: Format check with Prettier
+        run: |
+          prettier \
+            --check \
+            --parser ini \
+            --plugin \
+            ~/.bun/install/global/node_modules/prettier-plugin-ini/src/plugin.js \
+            XDG_CONFIG_HOME/npm/npmrc
+  lint-json:
+    name: Lint JSON
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up Biome
+        uses: biomejs/setup-biome@454fa0d884737805f48d7dc236c1761a0ac3cc13 # v2.6.0
+      - name: Lint and format check with Biome
+        run: biome ci "**/*.json" "**/*.jsonc"
+  lint-kdl:
+    name: Lint KDL
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up kdlfmt
+        uses: hougesen/kdlfmt@64bd1a4ea2fec30ad2a21e273bcb254994ec78c2 # v0.1.5
+      - name: Format check with kdlfmt
+        run: kdlfmt --check "**/*.kdl"
+  lint-markdown:
+    name: Lint Markdown
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Lint with markdownlint-cli2
+        uses: DavidAnson/markdownlint-cli2-action@07035fd053f7be764496c0f8d8f9f41f98305101 # v22.0.0
+        with:
+          globs: |
+            **/.github/PULL_REQUEST_TEMPLATE
+            **/*.md
+      - name: Set up bun
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
+      - name: Cache global bun packages
+        uses: actions/cache@v5
+        with:
+          key: bun-global-markdown-${{ runner.os }}-prettier
+          path: ~/.bun/install/global
+      - name: Install Prettier
+        run: bun add --global prettier
+      - name: Format check with Prettier
+        run: |
+          prettier \
+            --check \
+            --parser markdown \
+            --prose-wrap always \
+            --print-width 80 \
+            "**/*.md" "**/.github/PULL_REQUEST_TEMPLATE"
+  lint-python:
+    name: Lint Python
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+      - name: Lint and format check with Ruff
+        uses: astral-sh/ruff-action@57714a7c8a2e59f32539362ba31877a1957dded1 # v3.5.1
+        with:
+          src: XDG_BIN_HOME/gn XDG_BIN_HOME/gn.py XDG_CONFIG_HOME/python/pythonrc
+      - name: Set up uv
+        uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
+      - name: Type check with ty
+        run: |
+          uvx ty check \
+            XDG_BIN_HOME/gn \
+            XDG_BIN_HOME/gn.py \
+            XDG_CONFIG_HOME/python/pythonrc
+  lint-ruby:
+    name: Lint Ruby
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@ae195bbe749a7cef685ac729197124a48305c1cb # v1.276.0
+        with:
+          bundler-cache: true
+      - name: Install tools
+        run: gem install ruby-lsp steep
+      - name: Lint with RuboCop
+        run: bundle exec rubocop --format github XDG_BIN_HOME/git-whodoneit
+      - name: Check with ruby-lsp
+        run: ruby-lsp-check XDG_BIN_HOME/git-whodoneit
+      - name: Type check with Steep
+        run: steep check XDG_BIN_HOME/git-whodoneit
+  lint-shell:
+    name: Lint Shell
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Install shfmt
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes shfmt
+        env:
+          DEBIAN_FRONTEND: noninteractive
+      - name: Lint with shellcheck
+        run: |
+          shopt -s globstar nullglob
+
+          bash_files=(
+            **/*.env*
+            **/*.sh
+            XDG_BIN_HOME/!(ai-generate|dark-notify-hook|launchctl-env|gn|gn.py|git-whodoneit)
+          )
+          if [[ ${#bash_files[@]} -gt 0 ]]; then
+            shellcheck --shell=bash "${bash_files[@]}"
+          fi
+
+          zsh_files=(
+            XDG_BIN_HOME/ai-generate
+            XDG_BIN_HOME/dark-notify-hook
+            XDG_BIN_HOME/launchctl-env
+            ZDOTDIR/.aliases
+            ZDOTDIR/.completions
+            ZDOTDIR/.exports
+            ZDOTDIR/.functions
+            ZDOTDIR/.sources
+            ZDOTDIR/.theme-sync
+            ZDOTDIR/.zmodules
+            ZDOTDIR/.zpreztorc
+            ZDOTDIR/.zshrc
+          )
+          if [[ ${#zsh_files[@]} -gt 0 ]]; then
+            shellcheck --shell=zsh "${zsh_files[@]}"
+          fi
+      - name: Format check with shfmt
+        run: |
+          shopt -s globstar nullglob extglob
+          files=(
+            **/*.env*
+            **/*.sh
+            XDG_BIN_HOME/!(gn|gn.py|git-whodoneit)
+          )
+
+          if [[ ${#files[@]} -gt 0 ]]; then
+            shfmt --diff --indent 2 --case-indent --binary-next-line \
+              "${files[@]}"
+          fi
+  lint-toml:
+    name: Lint TOML
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up Tombi
+        uses: tombi-toml/setup-tombi@f7cb38e77d9a62bc27a8445bf50e660e9496b893 # v1.0.7
+      - name: Lint and format check with Tombi
+        run: |
+          tombi format --check "**/*.toml"
+          tombi lint "**/*.toml"
+  lint-yaml:
+    name: Lint YAML
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: stable
+          cache: false
+      - name: Cache Go binaries
+        uses: actions/cache@v5
+        with:
+          key: go-bin-yaml-${{ runner.os }}-yamlfmt
+          path: ~/go/bin
+      - name: Install yamlfmt
+        run: go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+      - name: Format check with yamlfmt
+        run: yamlfmt --lint "**/*.{yml,yaml}"
+  lint-xml:
+    name: Lint XML
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up bun
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
+      - name: Cache global bun packages
+        uses: actions/cache@v5
+        with:
+          key: bun-global-xml-${{ runner.os }}-prettier
+          path: ~/.bun/install/global
+      - name: Install Prettier with XML plugin
+        run: bun add --global prettier @prettier/plugin-xml
+      - name: Format check with Prettier
+        run: |
+          prettier \
+            --check \
+            --parser xml \
+            --plugin ~/.bun/install/global/node_modules/@prettier/plugin-xml/src/plugin.js \
+            "**/*.plist"

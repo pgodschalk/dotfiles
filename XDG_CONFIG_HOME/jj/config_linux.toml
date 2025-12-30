@@ -1,0 +1,43 @@
+[user]
+name = "Patrick Godschalk"
+email = "patrick@kernelpanics.nl"
+
+[ui]
+diff-formatter = ["difft", "--color=always", "$left", "$right"]
+conflict-marker-style = "git"
+merge-editor = "vimdiff"
+pager = ["delta", "--line-numbers", "--navigate"]
+
+[aliases]
+b = ["branch"]
+n = ["new"]
+# Rebase the current branch onto the trunk.
+retrunk = ["rebase", "-d", "trunk()"]
+# Move the closest bookmark to the current commit. This is useful when working
+# on a named branch, creating a bunch of commits, and then needing to update
+# the bookmark before pushing.
+tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
+
+[signing]
+behavior = "own"
+backend = "ssh"
+
+[signing.backends.ssh]
+allowed-signers = "~/.local/share/git/allowed-signers"
+
+[git]
+sign-on-push = true
+
+[merge-tools.vimdiff]
+program = "vimdiff"
+merge-args = ["-d", "$left", "$base", "$right", "$output"]
+
+[fsmonitor]
+backend = "watchman"
+
+[revset-aliases]
+"closest_bookmark(to)" = "heads(::to & bookmarks())"
+"fork_history(to, from)" = "fork_point(to | from)..@"
+
+[template-aliases]
+"format_timestamp(timestamp)" = "timestamp.ago()"

@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Labeler
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  labeler:
+    name: Label pull request
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Label pull request
+        uses: actions/labeler@v6
+        with:
+          sync-labels: true

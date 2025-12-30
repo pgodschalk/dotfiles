@@ -1,0 +1,239 @@
+if empty("$XDG_CACHE_HOME")
+  let $XDG_CACHE_HOME="$HOME/.cache"
+endif
+
+if empty("$XDG_CONFIG_HOME")
+  let $XDG_CONFIG_HOME="$HOME/.config"
+endif
+
+if empty("$XDG_DATA_HOME")
+  let $XDG_DATA_HOME="$HOME/.local/share"
+endif
+
+" Change mapleader
+let mapleader=","
+
+syntax on
+
+if isdirectory(expand('~/Developer/build/dracula-pro/dracula-pro/themes/vim'))
+  set runtimepath+=~/Developer/build/dracula-pro/dracula-pro/themes/vim
+endif
+
+function! SetAppearance()
+  " Read from dark-notify's theme file for consistency with shell
+  let l:theme_file = $XDG_RUNTIME_DIR
+  if empty(l:theme_file)
+    let l:theme_file = $TMPDIR
+  endif
+  if empty(l:theme_file)
+    let l:theme_file = '/tmp'
+  endif
+  let l:theme_file = l:theme_file . '/dark-mode'
+
+  if filereadable(l:theme_file)
+    let l:theme = trim(readfile(l:theme_file)[0])
+  elseif !empty($THEME)
+    " Use THEME env var (forwarded via SSH)
+    let l:theme = $THEME
+  elseif has('mac')
+    " Fallback to macOS defaults
+    let l:theme = system('defaults read -g AppleInterfaceStyle 2>/dev/null')
+    let l:theme = l:theme =~ 'Dark' ? 'dark' : 'light'
+  else
+    let l:theme = ''
+  endif
+
+  if empty(l:theme)
+    return
+  elseif l:theme ==# 'dark'
+    try
+      colorscheme dracula_pro
+      let g:fzf_colors = {
+        \ 'fg':      ['fg', 'Normal'],
+        \ 'bg':      ['bg', 'Normal'],
+        \ 'hl':      ['fg', 'DraculaPurple'],
+        \ 'fg+':     ['fg', 'Normal'],
+        \ 'bg+':     ['bg', 'DraculaBgLight'],
+        \ 'hl+':     ['fg', 'DraculaPurple'],
+        \ 'info':    ['fg', 'DraculaGreen'],
+        \ 'prompt':  ['fg', 'DraculaCyan'],
+        \ 'pointer': ['fg', 'DraculaPink'],
+        \ 'marker':  ['fg', 'DraculaPink'],
+        \ 'spinner': ['fg', 'DraculaPink'],
+        \ 'header':  ['fg', 'DraculaComment'],
+        \ 'border':  ['fg', 'DraculaBgLight'] }
+    catch
+    endtry
+    set background=dark
+  else
+    try
+      colorscheme dracula_pro_alucard
+      let g:fzf_colors = {
+        \ 'fg':      ['fg', 'Normal'],
+        \ 'bg':      ['bg', 'Normal'],
+        \ 'hl':      ['fg', 'DraculaPurple'],
+        \ 'fg+':     ['fg', 'Normal'],
+        \ 'bg+':     ['bg', 'DraculaBgLighter'],
+        \ 'hl+':     ['fg', 'DraculaPurple'],
+        \ 'info':    ['fg', 'DraculaGreen'],
+        \ 'prompt':  ['fg', 'DraculaCyan'],
+        \ 'pointer': ['fg', 'DraculaPink'],
+        \ 'marker':  ['fg', 'DraculaPink'],
+        \ 'spinner': ['fg', 'DraculaPink'],
+        \ 'header':  ['fg', 'DraculaComment'],
+        \ 'border':  ['fg', 'DraculaBgLighter'] }
+    catch
+    endtry
+    set background=light
+    highlight StatusLine ctermbg=254 ctermfg=236 guibg=#e0e0e0 guifg=#333333
+    highlight StatusLineNC
+      \ ctermbg=252 ctermfg=244 guibg=#d0d0d0 guifg=#808080
+  endif
+  highlight Normal ctermbg=NONE guibg=NONE
+endfunction
+
+call SetAppearance()
+if has('timers')
+  call timer_start(5000,
+    \ {-> execute('call SetAppearance()')}, {'repeat': -1})
+endif
+
+" Allow backspace in insert mode
+set backspace=indent,eol,start
+
+" Centralize backups
+set backupdir=$XDG_CACHE_HOME/vim/backup,~/,/tmp
+
+" Don’t create backups when editing files in certain directories
+set backupskip=/tmp/*
+if has('mac')
+  set backupskip+=/private/tmp/*
+endif
+
+" Don’t add empty newlines at the end of files
+set binary
+set noeol
+
+" Use the OS clipboard by default (on versions compiled with `+clipboard`)
+set clipboard=unnamed
+
+" Highlight current line
+set cursorline
+
+" Centralize swapfiles
+set directory=$XDG_CACHE_HOME/vim/swap,~/,/tmp
+
+" Use UTF-8 without BOM
+set encoding=utf-8 nobomb
+
+" Enable per-directory .vimrc files
+set exrc
+
+" Add the g flag to search/replace by default
+set gdefault
+
+" Highlight searches
+set hlsearch
+
+" Ignore case of searches
+set ignorecase
+
+" Highlight dynamically as pattern is typed
+set incsearch
+
+set keyprotocol+=ghostty:kitty
+
+" Always show status line
+set laststatus=2
+
+" Show “invisible” characters
+set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+
+set list
+
+" Respect modeline in files
+set modelines=4
+
+" Enable mouse in all modes
+set mouse=a
+
+" Enable line numbers
+set number
+
+" Use relative line numbers
+if exists("&relativenumber")
+	set relativenumber
+	au BufReadPost * set relativenumber
+endif
+
+let fzf_paths = [
+  \ '/opt/homebrew/opt/fzf',
+  \ '/usr/local/opt/fzf',
+  \ '/usr/share/fzf'
+  \ ]
+for fzf_path in fzf_paths
+  if isdirectory(fzf_path)
+    execute 'set rtp+=' . fzf_path
+    break
+  endif
+endfor
+
+" Show the cursor position
+set ruler
+
+set runtimepath+=$XDG_CONFIG_HOME/vim
+set runtimepath+=$XDG_CONFIG_HOME/vim/after
+set runtimepath+=$VIM,$VIMRUNTIME
+
+" Start scrolling three lines before the horizontal window border
+set scrolloff=5
+
+" Disable unsafe commands in per-directory .vimrc files
+set secure
+
+" Don’t show the intro message when starting Vim
+set shortmess=atI
+
+" Don’t reset cursor to start of line when moving around.
+set nostartofline
+
+" Make tabs as wide as two spaces
+set tabstop=2
+
+" Show the filename in the window titlebar
+set title
+
+" Optimize for fast terminal connections
+set ttyfast
+
+" Centralize undo history
+set undodir=$XDG_CACHE_HOME/vim/undo,~/,/tmp
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+
+" Enhance command-line completion
+set wildmenu
+
+" Strip trailing whitespace (,ss)
+function! StripWhitespace()
+	let save_cursor = getpos(".")
+	let old_query = getreg('/')
+	:%s/\s\+$//e
+	call setpos('.', save_cursor)
+	call setreg('/', old_query)
+endfunction
+noremap <leader>ss :call StripWhitespace()<CR>
+
+" Save a file as root (,W)
+noremap <leader>W :w !sudo tee % > /dev/null<CR>
+
+" Automatic commands
+if has("autocmd")
+  " Enable file type detection
+	filetype on
+
+	" Treat .json files as .js
+	autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+
+	" Treat .md files as Markdown
+	autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+endif
