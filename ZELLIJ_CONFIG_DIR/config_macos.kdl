@@ -639,7 +639,7 @@ web_client {
 // Default: default
 //
 theme "dracula-pro"
-theme_dir "~/Library/Application Support/org.Zellij-Contributors.Zellij/themes"
+theme_dir "/Users/patrick/Library/Application Support/org.Zellij-Contributors.Zellij/themes"
  // Choose the base input mode of zellij.
 // Default: normal
 //
