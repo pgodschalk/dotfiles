@@ -58,6 +58,19 @@ _apply_theme() {
   if [[ -n "${TMUX}" && "${FZF_DEFAULT_OPTS}" != *--tmux* ]]; then
     export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --tmux"
   fi
+
+  # Sync macchina theme (macchina ignores XDG_CONFIG_HOME on macOS)
+  local macchina_themes="${HOME}/.config/macchina/themes"
+  local macchina_theme
+  if [[ "${theme}" == "dark" ]]; then
+    macchina_theme="${dracula_pro_extras_dir}/macchina/pro.toml"
+  else
+    macchina_theme="${dracula_pro_extras_dir}/macchina/alucard.toml"
+  fi
+  if [[ -f "${macchina_theme}" ]]; then
+    [[ -d "${macchina_themes}" ]] || mkdir -p "${macchina_themes}"
+    command cp "${macchina_theme}" "${macchina_themes}/dracula.toml"
+  fi
 }
 
 # Set initial theme based on current appearance (must be before prezto)
