@@ -187,12 +187,6 @@ for v in $(mise ls python --installed | awk '{print $2}'); do
     | tail --lines 3
 done
 
-msg "${BLUE}Updating PowerShell modules${NOFORMAT}"
-pwsh -NoProfile -Command "Update-Module -Name PSScriptAnalyzer -Force" 2>&1 | tail --lines 1
-
-msg "${BLUE}Updating PowerShellEditorServices${NOFORMAT}"
-update-pses
-
 msg "${BLUE}Clearing zsh completion cache${NOFORMAT}"
 rm -rf "${XDG_CACHE_HOME:-${HOME}/.cache}/zsh/completions"
 rm -f "${ZDOTDIR:-${HOME}}/.zcompdump"*
