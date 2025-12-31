@@ -39,24 +39,18 @@ support.
 Other than that,
 
 - [1Password](https://1password.com) is my secrets manager.
-- [Core Tunnel](https://codinn.com/tunnel/) is my SSH tunnel manager.
-- [Dash](https://kapeli.com/dash) is my go-to documentation browser.
 - [DevPod](https://devpod.io) is running development environments when I need
   more juice than my MacBook Pro can provide. Sometimes I run said environment
   on my Windows machine. Though I'll also use plain old Codespaces every now and
   then.
-- [DevUtils](https://devutils.com) is a bunch of useful stuff.
-- [GitHub Desktop](https://desktop.github.com) is basically there to provide
-  `gh`.
+- [Monodraw](https://monodraw.helftone.com) is my diagramming tool.
 - [OrbStack](https://orbstack.dev) runs my Docker containers, since Docker
   Desktop is just slow, and gets in my way a lot.
 - [Passepartout](https://passepartoutvpn.app) is my VPN manager, other than
   Tailscale.
-- [PixelSnap 2](https://pixelsnap.com) is my screen measurement tool.
 - [RapidAPI](https://rapidapi.com) is used for playing with API's, if
   [xh](https://github.com/ducaale/xh) isn't enough.
 - [Secretive](https://github.com/maxgoedjen/secretive) is my SSH agent.
-- [Sip](https://sipapp.io) is my colour picker.
 - [SnippetsLab](https://www.renfei.org/snippets-lab/) is where I keep my code
   snippets.
 - [TablePlus](https://tableplus.com) is my database browser.
