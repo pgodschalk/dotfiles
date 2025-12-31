@@ -162,6 +162,21 @@ fi
   OPENAI_API_KEY="op://Private/sgjddcuzvgu3qbpzqqw6tn5lw4/credential" \
   op run -- llm'
 
+# Use 1Password for minisign private key
+if (( $+commands[minisign] && $+commands[op] )); then
+  minisign() {
+    local keyfile
+    keyfile=$(mktemp) || return 1
+    {
+      op read "op://Private/6w2qki2ijachamuvgbglgvxtda/private key" \
+        | sed 's/\(secret key\) /\1\n/' >| "${keyfile}" && \
+        command minisign -s "${keyfile}" "$@"
+    } always {
+      rm -f "${keyfile}"
+    }
+  }
+fi
+
 # Alias wget to use custom hsts cache file location
 (( $+commands[wget] )) && \
   alias wget='wget --hsts-file="${XDG_DATA_HOME}"/wget-hsts'
