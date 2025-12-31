@@ -10,4 +10,4 @@
 [mergetool]
   keepBackup = false
 [user]
-  signingkey = ~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/PublicKeys/7ce48136c0230550babf5f389965be28.pub
+  signingKey = ~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/PublicKeys/9decc179f0af831a3ac203804d9310af.pub
