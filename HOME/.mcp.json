@@ -17,7 +17,7 @@
 		},
 		"container-use": {
 			"command": "container-use",
-			"args": "stdio"
+			"args": ["stdio"]
 		},
 		"gcloud": {
 			"command": "bunx",
