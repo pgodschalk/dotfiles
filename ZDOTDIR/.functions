@@ -188,7 +188,7 @@ function claude() {
       ref="${line#*=}"
       ref="${ref%\"}"
       ref="${ref#\"}"
-      env_vars+=("${name}=$(op read "${ref}")")
+      env_vars+=("${name}=$(OP_ACCOUNT=my.1password.eu op read "${ref}")")
     done < "${secrets_file}"
   fi
 
