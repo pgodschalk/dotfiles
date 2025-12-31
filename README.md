@@ -59,6 +59,9 @@ Other than that,
 - [UTM](https://mac.getutm.app) is my virtualization manager.
 - [Xcode](https://developer.apple.com/xcode/) kinda just exists.
 
+![Light theme](docs/assets/light.webp)
+![Dark theme](docs/assets/dark.webp)
+
 ### Built with
 
 - A whole bunch of stuff. :)
