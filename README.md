@@ -150,65 +150,65 @@ See [LICENSE](LICENSE.txt) for more information.
 ## Acknowledgements
 
 - [$HOME/.hushlogin](https://github.com/mathiasbynens/dotfiles/blob/main/.hushlogin)
-  from @mathiasbynens
+  from [@mathiasbynens](https://github.com/mathiasbynens)
 - [$HOME/.ssh/config](https://infosec.mozilla.org/guidelines/openssh) from
-  @mozilla
+  [@mozilla](https://github.com/mozilla)
 - [$XDG_BIN_HOME/beep](https://github.com/garybernhardt/dotfiles/blob/main/bin/beep)
-  from @garybernhardt
+  from [@garybernhardt](https://github.com/garybernhardt)
 - [$XDG_BIN_HOME/git-churn](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-churn)
 - [$XDG_BIN_HOME/git-divergence](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-divergence)
 - [$XDG_BIN_HOME/git-goodness](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-goodness)
 - [$XDG_BIN_HOME/git-what-the-hell-just-happened](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-what-the-hell-just-happened)
 - [$XDG_BIN_HOME/git-whodoneit](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-whodoneit)
 - [$XDG_BIN_HOME/githelpers](https://github.com/garybernhardt/dotfiles/blob/main/.githelpers)
-  from @garybernhardt
+  from [@garybernhardt](https://github.com/garybernhardt)
 - [$XDG_BIN_HOME/gn](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn)
 - [$XDG_BIN_HOME/gn.py](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn.py)
 - [$XDG_CONFIG_HOME/com.mitchellh.ghostty/config](https://github.com/mitchellh/nixos-config/blob/main/users/mitchellh/ghostty.linux)
-  from @mitchellh
+  from [@mitchellh](https://github.com/mitchellh)
 - [$XDG_CONFIG_HOME/git/attributes](https://github.com/gitattributes/gitattributes/tree/master/Global)
-  from @gitattributes
+  from [@gitattributes](https://github.com/gitattributes)
 - [$XDG_CONFIG_HOME/git/config](https://github.com/garybernhardt/dotfiles/blob/main/.gitconfig)
-  from @garybernhardt
+  from [@garybernhardt](https://github.com/garybernhardt)
 - [$XDG_CONFIG_HOME/git/config](https://blog.gitbutler.com/how-git-core-devs-configure-git)
-  from @gitbutler
+  from [@gitbutler](https://github.com/gitbutler)
 - [$XDG_CONFIG_HOME/git/config](https://www.git-tower.com/blog/make-git-rebase-safe-on-osx/)
-  from @gittower
+  from [@gittower](https://github.com/gittower)
 - [$XDG_CONFIG_HOME/git/config](https://jvns.ca/blog/2024/02/16/popular-git-config-options/)
-  from @jvns
+  from [@jvns](https://github.com/jvns)
 - [$XDG_CONFIG_HOME/git/config](https://github.com/mathiasbynens/dotfiles/blob/main/.gitconfig)
-  from @mathiasbynens
+  from [@mathiasbynens](https://github.com/mathiasbynens)
 - [$XDG_CONFIG_HOME/git/config](http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html)
-  from @mischah
+  from [@mischah](https://github.com/mischah)
 - [$XDG_CONFIG_HOME/git/ignore](https://github.com/github/gitignore/tree/main/Global)
-  from @github
+  from [@github](https://github.com/github)
 - [$XDG_CONFIG_HOME/jj/config](https://github.com/mitchellh/nixos-config/blob/main/users/mitchellh/home-manager.nix)
-  from @mitchellh
+  from [@mitchellh](https://github.com/mitchellh)
 - [$XDG_CONFIG_HOME/nano/nanorc](https://bash-prompt.net/guides/nanorc-settings/)
   from Elliot Cooper
 - [$XDG_CONFIG_HOME/python/pythonrc](https://github.com/b3nj5m1n/xdg-ninja/blob/main/programs/python.json#L4)
-  from @b3nj5m1n
+  from [@b3nj5m1n](https://github.com/b3nj5m1n)
 - [$XDG_CONFIG_HOME/readline/inputrc](https://github.com/mathiasbynens/dotfiles/blob/main/.inputrc)
-  from @mathiasbynens
+  from [@mathiasbynens](https://github.com/mathiasbynens)
 - [$XDG_CONFIG_HOME/starship/starship.toml](https://starship.rs/presets/nerd-font)
-  from @starship
+  from [@starship](https://github.com/starship)
 - [$XDG_CONFIG_HOME/vim/vimrc](https://github.com/mathiasbynens/dotfiles/blob/main/.vimrc)
-  from @mathiasbynens
+  from [@mathiasbynens](https://github.com/mathiasbynens)
 - [$XDG_CONFIG_HOME/.curlc](https://github.com/mathiasbynens/dotfiles/blob/main/.curlrc)
-  from @mathiasbynens
+  from [@mathiasbynens](https://github.com/mathiasbynens)
 - [$XDG_CONFIG_HOME/wgetrc](https://github.com/mathiasbynens/dotfiles/blob/main/.wgetrc)
-  from @mathiasbynens
+  from [@mathiasbynens](https://github.com/mathiasbynens)
 - [$XDG_DATA_HOME/gnupg/gpg.conf](https://github.com/drduh/config/blob/main/gpg.conf)
-  from @drduh
+  from [@drduh](https://github.com/drduh)
 - [$XDG_DATA_HOME/gnupg/gpg-agent.conf](https://github.com/drduh/config/blob/main/gpg-agent.conf)
-  from @drduh
+  from [@drduh](https://github.com/drduh)
 - [$ZDOTDIR/.aliases](https://github.com/mathiasbynens/dotfiles/blob/main/.aliases)
-  from @mathiasbynens
+  from [@mathiasbynens](https://github.com/mathiasbynens)
 - [$ZDOTDIR/.aliases](https://github.com/mitchellh/nixos-config/blob/main/users/mitchellh/home-manager.nix)
-  from @mitchellh
+  from [@mitchellh](https://github.com/mitchellh)
 - [$ZDOTDIR/.exports](https://github.com/mathiasbynens/dotfiles/blob/main/.exports)
-  from @mathiasbynens
+  from [@mathiasbynens](https://github.com/mathiasbynens)
 - [$ZDOTDIR/.functions](https://github.com/mathiasbynens/dotfiles/blob/main/.functions)
-  from @mathiasbynens
+  from [@mathiasbynens](https://github.com/mathiasbynens)
 - [$ZDOTDIR/.zprezto](https://github.com/sorin-ionescu/prezto) from
-  @sorin-ionescu
+  [@sorin-ionescu](https://github.com/sorin-ionescu)
