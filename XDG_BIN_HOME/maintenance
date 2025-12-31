@@ -194,7 +194,6 @@ rm -f "${ZDOTDIR:-${HOME}}/.zcompdump"*
 msg "${GREEN}Applications to update manually${NOFORMAT}"
 brew list --cask -1 | xargs op plugin run -- brew info --cask | rg auto_updates
 msg "Apple Books"
-msg "Dash (docsets"
 msg "GarageBand (sound library)"
 msg "Xcode (components)"
 msg "Wipr (definitions)"
