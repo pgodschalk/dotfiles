@@ -178,11 +178,6 @@ done <"${HOME}/Library/Application Support/go/default-go-packages"
 msg "${BLUE}Updating global npm packages${NOFORMAT}"
 npm update --global
 
-msg "${BLUE}Updating pecl packages${NOFORMAT}"
-pecl list | tail -n +4 | awk '{print $1}' | while read -r pkg; do
-  pecl upgrade "$pkg" 2>&1 | tail --lines 1
-done
-
 msg "${BLUE}Updating global pip packages${NOFORMAT}"
 for v in $(mise ls python --installed | awk '{print $2}'); do
   "${HOME}/.local/share/mise/installs/python/${v}/bin/pip" install \
