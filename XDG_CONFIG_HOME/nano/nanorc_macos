@@ -16,7 +16,7 @@ set minibar
 set nohelp
 set positionlog
 set smarthome
-set speller "aspell -x -c"
+set speller "aspell --dont-backup --check"
 set softwrap
 set tabsize 2
 set tabstospaces
