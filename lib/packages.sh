@@ -200,7 +200,7 @@ install_github_tools() {
   # eza
   local eza_url="https://github.com/eza-community/eza/releases/download"
   eza_url="${eza_url}/{version}/eza_{arch}-unknown-linux-gnu.tar.gz"
-  install_from_github "eza" "eza-community/eza" "${eza_url}" "eza"
+  install_from_github "eza" "eza-community/eza" "${eza_url}" "./eza"
 
   # git-delta
   if ! command -v delta &>/dev/null; then
