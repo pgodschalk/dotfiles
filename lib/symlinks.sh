@@ -91,13 +91,13 @@ link_directory() {
     name="$(basename "${item}")"
 
     # Skip macOS-specific files and items that don't work in containers
-    # Also skip files that need theme lines stripped (handled by copy_configs)
+    # Also skip dirs/files needing theme stripped (handled by copy_configs)
     if [[ "${name}" == *"_macos"* ]] \
       || [[ "${name}" == ".theme-sync" ]] \
       || [[ "${name}" == ".zed" ]] \
       || [[ "${name}" == "gpg-agent.conf" ]] \
       || [[ "${name}" == "mcp.json" ]] \
-      || [[ "${name}" == "macchina.toml" ]] \
+      || [[ "${name}" == "macchina" ]] \
       || [[ "${name}" == "config.toml" && "${src_dir}" == *"/helix" ]] \
       || [[ "${name}" == "config_linux.kdl" ]]; then
       continue
