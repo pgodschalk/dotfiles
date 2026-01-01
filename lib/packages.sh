@@ -281,10 +281,14 @@ install_github_tools() {
   # ripgrep-all
   if ! command -v rga &>/dev/null; then
     msg "  Installing ripgrep-all..."
-    local rga_version
+    local rga_version rga_suffix
     rga_version=$(get_latest_version "phiresky/ripgrep-all")
+    case "${arch}" in
+      aarch64) rga_suffix="gnu" ;;
+      *) rga_suffix="musl" ;;
+    esac
     local rga_url="https://github.com/phiresky/ripgrep-all/releases/download"
-    local rga_file="ripgrep_all-${rga_version}-${arch}-unknown-linux-musl"
+    local rga_file="ripgrep_all-${rga_version}-${arch}-unknown-linux-${rga_suffix}"
     rga_url="${rga_url}/${rga_version}/${rga_file}.tar.gz"
     local tmp_dir
     tmp_dir=$(mktemp --directory)
