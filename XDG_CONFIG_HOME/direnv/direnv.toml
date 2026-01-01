@@ -1,0 +1,4 @@
+[global]
+# If set to true, the .envrc will be loaded with set -euo pipefail. This option
+# will be the default in the future.
+strict_env = true
