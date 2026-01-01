@@ -304,11 +304,15 @@ install_github_tools() {
   tspin_url="${tspin_url}/{version}/tailspin-{arch}-unknown-linux-musl.tar.gz"
   install_from_github "tspin" "bensadeh/tailspin" "${tspin_url}" "tspin"
 
-  # tlrc
-  local tldr_url="https://github.com/tldr-pages/tlrc/releases/download"
-  local tldr_file="tlrc-{version}-{arch}-unknown-linux-musl.tar.gz"
-  tldr_url="${tldr_url}/{version}/${tldr_file}"
-  install_from_github "tldr" "tldr-pages/tlrc" "${tldr_url}" "tldr"
+  # tlrc (no ARM64 builds available)
+  if [[ "${arch}" != "aarch64" ]]; then
+    local tldr_url="https://github.com/tldr-pages/tlrc/releases/download"
+    local tldr_file="tlrc-{version}-{arch}-unknown-linux-musl.tar.gz"
+    tldr_url="${tldr_url}/{version}/${tldr_file}"
+    install_from_github "tldr" "tldr-pages/tlrc" "${tldr_url}" "tldr"
+  else
+    msg "  tldr skipped (no ARM64 build)"
+  fi
 
   # xh
   if ! command -v xh &>/dev/null; then
