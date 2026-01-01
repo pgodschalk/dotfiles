@@ -287,3 +287,4 @@ build-iPhoneSimulator/
 
 # Documentation assets
 !docs/assets/*.webp
+!lib/

@@ -21,9 +21,10 @@ tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
 [signing]
 behavior = "own"
 backend = "ssh"
+key = "~/.ssh/agent-keys.pub"
 
 [signing.backends.ssh]
-allowed-signers = "~/.local/share/git/allowed-signers"
+allowed-signers = "~/.config/git/allowed-signers"
 
 [git]
 sign-on-push = true

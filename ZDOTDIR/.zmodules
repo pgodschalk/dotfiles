@@ -68,7 +68,8 @@ if (( $+commands[fasd] && ! $+commands[zoxide] )); then
   pmodload fasd
 fi
 
-if (( $+commands[gpg] )); then
+# Skip gpg-agent in containers (no keys, no pinentry)
+if (( $+commands[gpg] )) && [[ "${DISTRO}" == "macos" ]]; then
   # Provides for an easier use of GPG by setting up gpg-agent
   pmodload gpg
 fi
@@ -131,12 +132,6 @@ fi
 if (( $+commands[screen] )); then
   # Defines GNU Screen aliases and provides for auto launching it at start-up
   pmodload screen
-fi
-
-# Skip on macOS — launchd manages ssh-agent (or Secretive)
-if (( $+commands[ssh] )) && [[ "${DISTRO}" != "macos" ]]; then
-  # Provides for an easier use of SSH by setting up ssh-agent
-  pmodload ssh
 fi
 
 if (( $+commands[tmux] )); then

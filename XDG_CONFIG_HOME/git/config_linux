@@ -9,3 +9,5 @@
   tool = vimdiff
 [mergetool]
   keepBackup = false
+[user]
+  signingKey = ~/.ssh/agent-keys.pub

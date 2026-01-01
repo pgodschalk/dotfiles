@@ -19,6 +19,23 @@ fi
 _cache="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh"
 [[ -d "${_cache}" ]] || mkdir -p "${_cache}"
 
+# Export SSH agent public keys for signing (Linux only)
+if [[ "${DISTRO}" != "macos" ]] && [[ -n "${SSH_AUTH_SOCK}" ]] \
+    && (( $+commands[ssh-add] )); then
+  ssh-add -L > "${HOME}/.ssh/agent-keys.pub" 2>/dev/null || true
+
+  # Generate allowed-signers from agent keys
+  if [[ -s "${HOME}/.ssh/agent-keys.pub" ]]; then
+    _email="$(git config --global user.email 2>/dev/null)"
+    if [[ -n "${_email}" ]]; then
+      mkdir -p "${XDG_CONFIG_HOME}/git"
+      awk -v email="${_email}" '{print email, $1, $2}' \
+        "${HOME}/.ssh/agent-keys.pub" > "${XDG_CONFIG_HOME}/git/allowed-signers"
+    fi
+    unset _email
+  fi
+fi
+
 # zsh-defer
 if [[ -s "${ZDOTDIR}/.zsh-defer/zsh-defer.plugin.zsh" ]]; then
   source "${ZDOTDIR}/.zsh-defer/zsh-defer.plugin.zsh"
@@ -125,18 +142,33 @@ if (( $+commands[fzf] )); then
   _fzf_cache="${_cache}/fzf.zsh"
   _fzf_bin="${commands[fzf]}"
 
-  if [[ ! -f "${_fzf_cache}" ]] \
+  if [[ ! -s "${_fzf_cache}" ]] \
       || [[ "${_fzf_bin}" -nt "${_fzf_cache}" ]]; then
-    fzf --zsh >| "${_fzf_cache}"
-    zcompile "${_fzf_cache}"
+    if fzf --zsh &>/dev/null; then
+      fzf --zsh >| "${_fzf_cache}"
+    elif [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
+      cat /usr/share/doc/fzf/examples/key-bindings.zsh \
+          /usr/share/doc/fzf/examples/completion.zsh >| "${_fzf_cache}"
+    elif (( $+commands[curl] )); then
+      # Download shell integration matching installed fzf version
+      _fzf_ver="$(fzf --version | awk '{print $1}')"
+      _fzf_url="https://raw.githubusercontent.com/junegunn/fzf/${_fzf_ver}/shell"
+      { curl --fail --silent --show-error --location \
+          "${_fzf_url}/key-bindings.zsh"
+        curl --fail --silent --show-error --location \
+          "${_fzf_url}/completion.zsh"
+      } >| "${_fzf_cache}" 2>/dev/null
+      unset _fzf_ver _fzf_url
+    fi
+    [[ -s "${_fzf_cache}" ]] && zcompile "${_fzf_cache}"
   fi
 
-  source "${_fzf_cache}"
+  [[ -s "${_fzf_cache}" ]] && source "${_fzf_cache}"
   unset _fzf_cache _fzf_bin
-fi
 
-# Wrap fzf widgets
-_wrap_fzf_widgets
+  # Wrap fzf widgets
+  (( $+functions[_wrap_fzf_widgets] )) && _wrap_fzf_widgets
+fi
 
 # Enable live theme sync
 precmd_functions+=(_dark_notify_sync)

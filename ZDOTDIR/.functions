@@ -77,7 +77,14 @@ function gz() {
 #######################################
 function getcertnames() {
   (( $+commands[openssl] )) || { echo "openssl not found" >&2; return 1; }
-  (( $+commands[gsed] )) || { echo "gsed not found" >&2; return 1; }
+  local sed_cmd
+  if (( $+commands[gsed] )); then
+    sed_cmd="gsed"
+  elif (( $+commands[sed] )); then
+    sed_cmd="sed"
+  else
+    echo "sed not found" >&2; return 1
+  fi
   if [[ -z "${1}" ]]; then
     echo "ERROR: No domain specified."
     return 1
@@ -98,13 +105,14 @@ function getcertnames() {
     no_serial, no_sigdump, no_signame, no_validity, no_version")
     echo "Common Name:"
     echo "" # newline
-    echo "${certText}" | grep "Subject:" | gsed --expression="s/^.*CN=//" \
-      | gsed --expression="s/\/emailAddress=.*//"
+    echo "${certText}" | grep "Subject:" \
+      | "${sed_cmd}" --expression="s/^.*CN=//" \
+      | "${sed_cmd}" --expression="s/\/emailAddress=.*//"
     echo "" # newline
     echo "Subject Alternative Name(s):"
     echo "" # newline
     echo "${certText}" | grep --after-context=1 "Subject Alternative Name:" \
-      | gsed --expression="2s/DNS://g" -e "s/ //g" | tr "," "\n" \
+      | "${sed_cmd}" --expression="2s/DNS://g" -e "s/ //g" | tr "," "\n" \
       | tail --lines=+2
     return 0
   else
@@ -118,28 +126,31 @@ function getcertnames() {
 # Arguments:
 #   $@ - Description of the command to generate
 #######################################
-function ai() {
-  local cmd
-  cmd=$("${XDG_BIN_HOME:-${HOME}/.local/bin}/ai-generate" "$@")
-  if [[ -n "${cmd}" ]]; then
-    print -z "${cmd}"
-  fi
-}
+if (( $+commands[llm] )); then
+  function ai() {
+    local cmd
+    cmd=$("${XDG_BIN_HOME:-${HOME}/.local/bin}/ai-generate" "$@")
+    if [[ -n "${cmd}" ]]; then
+      print -z "${cmd}"
+    fi
+  }
+fi
 
 #######################################
 # asciinema wrapper that injects install-id from 1Password
 #######################################
-function asciinema() {
-  (( $+commands[asciinema] )) || { echo "asciinema not found" >&2; return 1; }
-  (( $+commands[op] )) || { echo "op not found" >&2; return 1; }
-  local state_dir="${XDG_STATE_HOME:-${HOME}/.local/state}/asciinema"
-  local id_file="${state_dir}/install-id"
-  mkdir -p "${state_dir}"
-  chmod 700 "${state_dir}"
-  (umask 077 && op read 'op://Private/asciinema/credential' >"${id_file}")
-  command asciinema "${@}"
-  rm -f "${id_file}"
-}
+if (( $+commands[asciinema] )); then
+  function asciinema() {
+    (( $+commands[op] )) || { echo "op not found" >&2; return 1; }
+    local state_dir="${XDG_STATE_HOME:-${HOME}/.local/state}/asciinema"
+    local id_file="${state_dir}/install-id"
+    mkdir -p "${state_dir}"
+    chmod 700 "${state_dir}"
+    (umask 077 && op read 'op://Private/asciinema/credential' >"${id_file}")
+    command asciinema "${@}"
+    rm -f "${id_file}"
+  }
+fi
 
 #######################################
 # Make a PDF look like it was scanned (for bureaucratic requirements)
@@ -168,32 +179,33 @@ function bureaucracy() {
 # MCP secrets from 1Password.
 # Claude can't read custom bat themes, so we override with built-ins.
 #######################################
-function claude() {
-  (( $+commands[claude] )) || { echo "claude not found" >&2; return 1; }
-  (( $+commands[op] )) || { echo "op not found" >&2; return 1; }
+if (( $+commands[claude] )); then
+  function claude() {
+    (( $+commands[op] )) || { echo "op not found" >&2; return 1; }
 
-  local theme_file="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/dark-mode"
-  local bat_theme="Dracula"
-  if [[ -r "${theme_file}" && "$(<"${theme_file}")" != "dark" ]]; then
-    bat_theme="base16"
-  fi
+    local theme_file="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/dark-mode"
+    local bat_theme="Dracula"
+    if [[ -r "${theme_file}" && "$(<"${theme_file}")" != "dark" ]]; then
+      bat_theme="base16"
+    fi
 
-  local secrets_file="${XDG_CONFIG_HOME}/secrets/mcp"
-  local -a env_vars=()
-  if [[ -r "${secrets_file}" ]]; then
-    local line name ref
-    while IFS= read -r line || [[ -n "${line}" ]]; do
-      [[ -z "${line}" || "${line}" == \#* ]] && continue
-      name="${line%%=*}"
-      ref="${line#*=}"
-      ref="${ref%\"}"
-      ref="${ref#\"}"
-      env_vars+=("${name}=$(OP_ACCOUNT=my.1password.eu op read "${ref}")")
-    done < "${secrets_file}"
-  fi
+    local secrets_file="${XDG_CONFIG_HOME}/secrets/mcp"
+    local -a env_vars=()
+    if [[ -r "${secrets_file}" ]]; then
+      local line name ref
+      while IFS= read -r line || [[ -n "${line}" ]]; do
+        [[ -z "${line}" || "${line}" == \#* ]] && continue
+        name="${line%%=*}"
+        ref="${line#*=}"
+        ref="${ref%\"}"
+        ref="${ref#\"}"
+        env_vars+=("${name}=$(OP_ACCOUNT=my.1password.eu op read "${ref}")")
+      done < "${secrets_file}"
+    fi
 
-  env BAT_THEME="${bat_theme}" "${env_vars[@]}" claude "${@}"
-}
+    env BAT_THEME="${bat_theme}" "${env_vars[@]}" claude "${@}"
+  }
+fi
 
 #######################################
 # Convert a DER-encoded certificate to PEM format
@@ -214,13 +226,27 @@ function der2pem() {
 #   $@ - Arguments passed to fd
 #######################################
 function fd() {
-  (( $+commands[fd] )) || { echo "fd not found" >&2; return 1; }
-  (( $+commands[bat] )) || { echo "bat not found" >&2; return 1; }
+  local fd_cmd
+  if (( $+commands[fd] )); then
+    fd_cmd="fd"
+  elif (( $+commands[fdfind] )); then
+    fd_cmd="fdfind"
+  else
+    echo "fd not found" >&2; return 1
+  fi
+  local bat_cmd
+  if (( $+commands[bat] )); then
+    bat_cmd="bat"
+  elif (( $+commands[batcat] )); then
+    bat_cmd="batcat"
+  else
+    echo "bat not found" >&2; return 1
+  fi
   if [[ "${1}" == "--raw" ]]; then
     shift
-    command fd "${@}"
+    "${fd_cmd}" "${@}"
   else
-    command fd "${@}" --exec-batch bat
+    "${fd_cmd}" "${@}" --exec-batch "${bat_cmd}"
   fi
 }
 
@@ -236,6 +262,8 @@ function find() {
     command find "${@}"
   elif (( $+commands[bat] )); then
     command find "${@}" -type f -exec bat {} +
+  elif (( $+commands[batcat] )); then
+    command find "${@}" -type f -exec batcat {} +
   else
     command find "${@}"
   fi
@@ -249,13 +277,20 @@ function find() {
 #######################################
 function git() {
   (( $+commands[git] )) || { echo "git not found" >&2; return 1; }
-  (( $+commands[bat] )) || { echo "bat not found" >&2; return 1; }
+  local bat_cmd
+  if (( $+commands[bat] )); then
+    bat_cmd="bat"
+  elif (( $+commands[batcat] )); then
+    bat_cmd="batcat"
+  else
+    echo "bat not found" >&2; return 1
+  fi
   if [[ "${1}" == "--raw" ]]; then
     shift
     command git "${@}"
   elif [[ "${1}" == "show" && "${2}" == *:* ]]; then
     local file="${2#*:}"
-    command git "${@}" | bat --file-name "${file}"
+    command git "${@}" | "${bat_cmd}" --file-name "${file}"
   else
     command git "${@}"
   fi
@@ -267,15 +302,16 @@ function git() {
 # Arguments:
 #   $@ - Arguments passed to tail
 #######################################
-function tail() {
-  (( $+commands[tspin] )) || { echo "tspin not found" >&2; return 1; }
-  if [[ "${1}" == "--raw" ]]; then
-    shift
-    command tail "${@}"
-  else
-    command tail "${@}" | tspin
-  fi
-}
+if (( $+commands[tspin] )); then
+  function tail() {
+    if [[ "${1}" == "--raw" ]]; then
+      shift
+      command tail "${@}"
+    else
+      command tail "${@}" | tspin
+    fi
+  }
+fi
 
 #######################################
 # Convert a PFX/PKCS12 certificate to PEM format.
