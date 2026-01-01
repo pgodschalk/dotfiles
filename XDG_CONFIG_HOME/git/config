@@ -107,7 +107,6 @@
   ui = auto
 [commit]
   gpgSign = true
-
   verbose = true
 [core]
 	hideDotFiles = dotGitOnly
@@ -130,7 +129,7 @@
   # [default] space-before-tab: looks for spaces before tabs at the beginning
   #                             of a line
   whitespace = space-before-tab,-indent-with-non-tab,trailing-space
-	excludesfile = ~/.gitignore_global
+	excludesFile = ~/.gitignore_global
 [diff]
   context = 10
   external = difft
@@ -163,7 +162,7 @@
   format = ssh
 [help]
 	# Automatically correct and execute mistyped commands.
-	autocorrect = 1
+	autoCorrect = 1
 [init]
   defaultBranch = main
 [interactive]
