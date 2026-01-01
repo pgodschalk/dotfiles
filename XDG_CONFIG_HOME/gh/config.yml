@@ -14,7 +14,7 @@ prompt: enabled
 prefer_editor_prompt: disabled
 # A pager program to send command output to, e.g. "less". If blank, will refer
 # to environment. Set the value to "cat" to disable the pager.
-pager:
+pager: bat --style=plain
 # Aliases allow you to create nicknames for gh commands
 aliases:
   co: pr checkout
