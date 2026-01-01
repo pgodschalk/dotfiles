@@ -152,11 +152,6 @@ fi
 # Use miniserve as http-serve
 (( $+commands[miniserve] )) && alias http-serve="miniserve ."
 
-# AI commit message to clipboard
-(( $+commands[aicommit2] && $+commands[op] )) && alias aic='\
-  OPENAI_API_KEY="op://Private/sgjddcuzvgu3qbpzqqw6tn5lw4/credential" \
-  op run -- aicommit2 --include-body'
-
 # Use 1Password for llm API keys
 (( $+commands[llm] && $+commands[op] )) && alias llm='\
   OPENAI_API_KEY="op://Private/sgjddcuzvgu3qbpzqqw6tn5lw4/credential" \

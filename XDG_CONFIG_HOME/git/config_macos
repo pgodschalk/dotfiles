@@ -1,6 +1,7 @@
 [core]
   excludesFile = ~/Library/Application Support/git/ignore
   attributesFile = ~/Library/Application Support/git/attributes
+  hooksPath = ~/Library/Application Support/git/hooks
 [credential]
   helper = osxkeychain
 [gpg "ssh"]
