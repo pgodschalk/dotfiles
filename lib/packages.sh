@@ -361,7 +361,7 @@ install_github_tools() {
     local zoxide_version
     zoxide_version=$(get_latest_version "ajeetdsouza/zoxide")
     local zoxide_url="https://github.com/ajeetdsouza/zoxide/releases/download"
-    local zoxide_file="zoxide-${zoxide_version}-${arch}-unknown-linux-musl"
+    local zoxide_file="zoxide-${zoxide_version#v}-${arch}-unknown-linux-musl"
     zoxide_url="${zoxide_url}/${zoxide_version}/${zoxide_file}.tar.gz"
     curl --silent --show-error --location "${zoxide_url}" \
       | tar --extract --gzip --directory "${XDG_BIN_HOME}" zoxide
