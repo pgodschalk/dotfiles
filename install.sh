@@ -55,13 +55,13 @@ setup_colors() {
 }
 
 msg() {
-  echo >&2 -e "${1-}"
+  echo -e "${1-}"
 }
 
 die() {
   local message="${1}"
   local code="${2:-1}"
-  msg "${message}"
+  echo -e "${message}" >&2
   exit "${code}"
 }
 
