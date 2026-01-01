@@ -9,15 +9,6 @@ command = "intelephense"
 args = ["--stdio"]
 config = { globalStoragePath = "~/.local/share/intelephense" }
 
-[language-server.powershell-editor-services]
-command = "pwsh"
-args = [
-  "-NoLogo",
-  "-NoProfile",
-  "-Command",
-  "~/.local/share/powershell-editor-services/PowerShellEditorServices/Start-EditorServices.ps1 -Stdio"
-]
-
 [language-server.tailwindcss-ls]
 command = "tailwindcss-language-server"
 args = ["--stdio"]
@@ -245,16 +236,6 @@ formatter = { command = "prettier", args = [
   "php",
   "--plugin=~/.local/share/npm/lib/node_modules/@prettier/plugin-php/src/index.mjs"
 ] }
-
-[[language]]
-name = "powershell"
-auto-format = true
-formatter = { command = "pwsh", args = [
-  "-NoProfile",
-  "-Command",
-  "($input | Out-String | Invoke-Formatter) -replace '\\r?\\n$', ''"
-] }
-language-servers = ["powershell-editor-services"]
 
 [[language]]
 name = "python"
