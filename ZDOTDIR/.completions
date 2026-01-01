@@ -53,6 +53,12 @@ if (( $+commands[devpod] )) && [[ ! -f "${_comp_cache}/_devpod" \
   devpod completion zsh > "${_comp_cache}/_devpod"
 fi
 
+# kdlfmt completions
+if (( $+commands[kdlfmt] )) && [[ ! -f "${_comp_cache}/_kdlfmt" \
+    || "${commands[kdlfmt]}" -nt "${_comp_cache}/_kdlfmt" ]]; then
+  kdlfmt completions zsh > "${_comp_cache}/_kdlfmt"
+fi
+
 # Homebrew completions (patched to bypass op plugin alias)
 _brew_src="${_brew_prefix}/share/zsh/site-functions/_brew"
 if (( $+commands[brew] )) && [[ -f "${_brew_src}" ]] \
