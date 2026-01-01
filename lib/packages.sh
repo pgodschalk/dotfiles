@@ -177,14 +177,22 @@ install_github_tools() {
   # doggo
   if ! command -v doggo &>/dev/null; then
     msg "  Installing doggo..."
-    local doggo_version
+    local doggo_version doggo_arch
     doggo_version=$(get_latest_version "mr-karan/doggo")
+    case "${arch}" in
+      aarch64) doggo_arch="arm64" ;;
+      *) doggo_arch="${arch}" ;;
+    esac
     local doggo_url="https://github.com/mr-karan/doggo/releases/download"
-    doggo_url="${doggo_url}/${doggo_version}"
-    doggo_url="${doggo_url}/doggo_${doggo_version#v}_linux_${arch}.tar.gz"
+    local doggo_file="doggo_${doggo_version#v}_Linux_${doggo_arch}"
+    doggo_url="${doggo_url}/${doggo_version}/${doggo_file}.tar.gz"
+    local tmp_dir
+    tmp_dir=$(mktemp --directory)
     curl --silent --show-error --location "${doggo_url}" \
-      | tar --extract --gzip --directory "${XDG_BIN_HOME}" doggo
+      | tar --extract --gzip --directory "${tmp_dir}"
+    mv "${tmp_dir}/${doggo_file}/doggo" "${XDG_BIN_HOME}/doggo"
     chmod +x "${XDG_BIN_HOME}/doggo"
+    rm --recursive --force "${tmp_dir}"
   else
     msg "  doggo already installed"
   fi
