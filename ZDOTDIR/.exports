@@ -270,12 +270,6 @@ export PYTHONIOENCODING="UTF-8" #t odo move me
 export LC_CTYPE="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
-# Determine bat command (batcat on Debian/Ubuntu)
-if (( $+commands[bat] )); then
-  _bat_cmd="bat"
-elif (( $+commands[batcat] )); then
-  _bat_cmd="batcat"
-fi
 
 # Set bat themes for dark/light mode
 if [[ "${DISTRO}" == "macos" ]]; then
@@ -283,9 +277,9 @@ if [[ "${DISTRO}" == "macos" ]]; then
   export BAT_THEME_LIGHT="Dracula Pro (Alucard)"
 fi
 
-# Use bat as man pager, or don't clear screen in less after quitting
-if [[ -n "${_bat_cmd}" ]]; then
-  export MANPAGER="${_bat_cmd} -plman"
+# Use batman as man pager, or don't clear screen in less after quitting
+if (( $+commands[batman] )); then
+  eval "$(batman --export-env)"
 else
   export MANPAGER="less --no-init"
 fi
@@ -320,19 +314,17 @@ elif (( $+commands[fd] )); then
   export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
 fi
 export FZF_CTRL_T_COMMAND="${FZF_DEFAULT_COMMAND}"
-if (( $+commands[chafa] )) && [[ -n "${_bat_cmd}" ]]; then
+if (( $+commands[chafa] && $+commands[bat] )); then
   export FZF_CTRL_T_OPTS="--preview '[[ \$(file --mime {}) =~ image ]] && \
     chafa --format=symbols --size=80x24 {} || \
-    ${_bat_cmd} --color=always --style=numbers --line-range=:500 {}'"
-elif [[ -n "${_bat_cmd}" ]]; then
+    bat --color=always --style=numbers --line-range=:500 {}'"
+elif (( $+commands[bat] )); then
   export FZF_CTRL_T_OPTS="--preview \
-    '${_bat_cmd} --color=always --style=numbers --line-range=:500 {}'"
+    'bat --color=always --style=numbers --line-range=:500 {}'"
 elif (( $+commands[chafa] )); then
   export FZF_CTRL_T_OPTS="--preview \
     'chafa --format=symbols --size=80x24 {}'"
 fi
-
-unset _bat_cmd
 
 # Allow 1Password biometric unlock
 export OP_BIOMETRIC_UNLOCK_ENABLED=true
