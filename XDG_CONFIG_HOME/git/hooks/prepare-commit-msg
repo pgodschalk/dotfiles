@@ -21,6 +21,7 @@ fi
 op run -- aicommit2 --include-body --hook-mode "$@"
 
 # Strip aicommit2 banner comments and leading blank lines
+# Insert scissors line before diff so git strips it from final message
 COMMIT_MSG_FILE="${1}"
 if [[ -f "${COMMIT_MSG_FILE}" ]]; then
   sed -i '' \
@@ -29,6 +30,8 @@ if [[ -f "${COMMIT_MSG_FILE}" ]]; then
     -e '/^# How to use:/d' \
     -e '/^# [0-9]\. /d' \
     -e '/^# 📝 Generated commit message:/d' \
+    -e '/^diff --git/i\
+# ------------------------ >8 ------------------------' \
     "${COMMIT_MSG_FILE}"
   sed -i '' '1,/[^[:space:]]/{/^$/d;}' "${COMMIT_MSG_FILE}"
 fi
