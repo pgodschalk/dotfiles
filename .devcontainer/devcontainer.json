@@ -1,5 +1,4 @@
 {
 	"name": "dotfiles",
-	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-	"postCreateCommand": "bash install.sh"
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu"
 }
