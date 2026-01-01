@@ -277,6 +277,12 @@ elif (( $+commands[batcat] )); then
   _bat_cmd="batcat"
 fi
 
+# Set bat themes for dark/light mode
+if [[ "${DISTRO}" == "macos" ]]; then
+  export BAT_THEME_DARK="Dracula Pro"
+  export BAT_THEME_LIGHT="Dracula Pro (Alucard)"
+fi
+
 # Use bat as man pager, or don't clear screen in less after quitting
 if [[ -n "${_bat_cmd}" ]]; then
   export MANPAGER="${_bat_cmd} -plman"

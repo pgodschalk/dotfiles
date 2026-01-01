@@ -11,7 +11,6 @@ _apply_theme() {
 
   if [[ "${theme}" == "dark" ]]; then
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
-    export BAT_THEME="Dracula Pro"
     export DFT_BACKGROUND="dark"
     export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/eza/dark"
     export GLAMOUR_STYLE="dark"
@@ -25,7 +24,6 @@ _apply_theme() {
     _starship_theme="${dracula_pro_extras_dir}/starship/pro.toml"
   else
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=245"
-    export BAT_THEME="Dracula Pro (Alucard)"
     export DFT_BACKGROUND="light"
     export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/eza/light"
     export GLAMOUR_STYLE="light"
