@@ -21,7 +21,7 @@ tug = ["bookmark", "move", "--from", "closest_bookmark(@-)", "--to", "@-"]
 [signing]
 behavior = "own"
 backend = "ssh"
-key = "~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/PublicKeys/7ce48136c0230550babf5f389965be28.pub"
+key = "~/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/PublicKeys/9decc179f0af831a3ac203804d9310af.pub"
 
 [signing.backends.ssh]
 allowed-signers = "~/Library/Application Support/git/allowed-signers"
