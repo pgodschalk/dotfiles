@@ -52,11 +52,7 @@ if (( $+commands[mise] )); then
     zcompile "${_mise_cache}"
   fi
 
-  if (( $+functions[zsh-defer] )); then
-    zsh-defer source "${_mise_cache}"
-  else
-    source "${_mise_cache}"
-  fi
+  source "${_mise_cache}"
 
   unset _mise_cache _mise_bin
 fi
