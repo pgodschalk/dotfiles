@@ -143,7 +143,7 @@ _For more information and to report security issues, please refer to our
 
 ## License
 
-This project is licensed under the MIT license.
+This project is licensed under the EUPL-1.2 license.
 
 See [LICENSE](LICENSE.txt) for more information.
 
