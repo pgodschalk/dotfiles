@@ -329,11 +329,4 @@ fi
 # Allow 1Password biometric unlock
 export OP_BIOMETRIC_UNLOCK_ENABLED=true
 
-if [[ "${DISTRO}" == "macos" ]]; then
-  # Use Secretive SSH agent
-  export SSH_AUTH_SOCK
-  SSH_AUTH_SOCK="${HOME}/Library/Containers"
-  SSH_AUTH_SOCK+="/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh"
-fi
-
 unset _brew_prefix
