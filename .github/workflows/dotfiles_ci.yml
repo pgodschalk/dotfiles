@@ -47,7 +47,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Set up Biome
-        uses: biomejs/setup-biome@454fa0d884737805f48d7dc236c1761a0ac3cc13 # v2.6.0
+        uses: biomejs/setup-biome@29711cbb52afee00eb13aeb30636592f9edc0088 # v2.7.0
       - name: Lint and format check with Biome
         run: |
           shopt -s globstar nullglob dotglob
