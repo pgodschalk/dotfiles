@@ -202,7 +202,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Set up Tombi
-        uses: tombi-toml/setup-tombi@f7cb38e77d9a62bc27a8445bf50e660e9496b893 # v1.0.7
+        uses: tombi-toml/setup-tombi@cebfd308ba02edadfcee148b7473536990950c92 # v1.0.8
       - name: Lint and format check with Tombi
         run: |
           tombi format --check "**/*.toml"
