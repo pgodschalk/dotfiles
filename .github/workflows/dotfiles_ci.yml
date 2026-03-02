@@ -65,7 +65,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
       - name: Set up kdlfmt
-        uses: hougesen/kdlfmt@64bd1a4ea2fec30ad2a21e273bcb254994ec78c2 # v0.1.5
+        uses: hougesen/kdlfmt@3f59892454dff09ed942dcb74f1b99f2726b47a2 # v0.1.6
       - name: Format check with kdlfmt
         run: |
           shopt -s globstar nullglob
