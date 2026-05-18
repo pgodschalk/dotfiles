@@ -198,17 +198,24 @@ EOF
   local helix_config="${XDG_CONFIG_HOME:-${HOME}/.config}/helix/config.toml"
   [[ -L "${helix_config}" ]] && helix_config=$(realpath "${helix_config}")
   if [[ -f "${helix_config}" ]]; then
+    local helix_theme
+    if [[ "${theme}" == "dark" ]]; then
+      helix_theme="pro"
+    else
+      helix_theme="alucard"
+    fi
+
     local current_helix
     current_helix=$(command grep '^theme' "${helix_config}" 2>/dev/null \
       | command sed 's/theme = "\(.*\)"/\1/')
 
-    if [[ "${current_helix}" != "${dracula_theme}" ]]; then
+    if [[ "${current_helix}" != "${helix_theme}" ]]; then
       if [[ "${DISTRO}" == "macos" ]]; then
         command sed -i '' \
-          "s/^theme = \".*\"/theme = \"${dracula_theme}\"/" "${helix_config}"
+          "s/^theme = \".*\"/theme = \"${helix_theme}\"/" "${helix_config}"
       else
         command sed -i \
-          "s/^theme = \".*\"/theme = \"${dracula_theme}\"/" "${helix_config}"
+          "s/^theme = \".*\"/theme = \"${helix_theme}\"/" "${helix_config}"
       fi
     fi
   fi

@@ -32,7 +32,7 @@
 	//         "restore_on_startup": "last_workspace",
 	//  3. Do not restore previous workspaces
 	//         "restore_on_startup": "none",
-	"restore_on_startup": "none",
+	"restore_on_startup": "empty_tab",
 	// Whether to attempt to restore previous file's state when opening it again.
 	// The state is stored per pane.
 	// When disabled, defaults are applied instead of the state restoration.
