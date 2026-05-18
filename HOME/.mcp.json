@@ -50,6 +50,10 @@
 			"command": "bunx",
 			"args": ["@modelcontextprotocol/server-sequential-thinking"]
 		},
+		"siderolabs-docs": {
+			"type": "http",
+			"url": "https://docs.siderolabs.com/mcp"
+		},
 		"terraform": {
 			"command": "docker",
 			"args": ["run", "--interactive", "--rm", "hashicorp/terraform-mcp-server"]
