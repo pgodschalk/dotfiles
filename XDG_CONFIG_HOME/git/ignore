@@ -257,3 +257,4 @@ mise/*.local.toml
 .claude
 .envrc
 CLAUDE.md
+.harness.json
