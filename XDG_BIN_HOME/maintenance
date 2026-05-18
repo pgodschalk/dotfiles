@@ -192,6 +192,14 @@ for v in $(mise ls python --installed | awk '{print $2}'); do
     | tail --lines 3
 done
 
+msg "${BLUE}Updating global R packages${NOFORMAT}"
+for v in $(mise ls r --installed | awk '{print $2}'); do
+  "${HOME}/.local/share/mise/installs/r/${v}/bin/Rscript" \
+    -e 'update.packages(ask = FALSE, checkBuilt = TRUE,
+        repos = "https://cloud.r-project.org")' 2>&1 \
+    | tail --lines 3
+done
+
 msg "${BLUE}Clearing zsh completion cache${NOFORMAT}"
 rm -rf "${XDG_CACHE_HOME:-${HOME}/.cache}/zsh/completions"
 rm -f "${ZDOTDIR:-${HOME}}/.zcompdump"*
