@@ -55,6 +55,11 @@ if [[ -d "${_brew_prefix}/bin" ]]; then
   export PATH="${_brew_prefix}/bin:${PATH}"
 fi
 
+# Add openjdk to $PATH
+if [[ -d "${_brew_prefix}/opt/openjdk/bin" ]]; then
+  export PATH="${_brew_prefix}/opt/openjdk/bin:${PATH}"
+fi
+
 # Add uutils to $PATH
 if [[ -d "${_brew_prefix}/opt/uutils-coreutils" ]]; then
   export PATH="${_brew_prefix}/opt/uutils-coreutils/libexec/uubin:${PATH}"
@@ -157,6 +162,12 @@ if [[ -d "${_brew_prefix}/opt/libxml2" ]]; then
   export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }"
   CPPFLAGS+="-I${_brew_prefix}/opt/libxml2/include"
   export LDFLAGS="${LDFLAGS:+${LDFLAGS} }-L${_brew_prefix}/opt/libxml2/lib"
+fi
+
+# Add openjdk to $CPPFLAGS
+if [[ -d "${_brew_prefix}/opt/openjdk" ]]; then
+  export CPPFLAGS="${CPPFLAGS:+${CPPFLAGS} }"
+  CPPFLAGS+="-I${_brew_prefix}/opt/openjdk/include"
 fi
 
 # Add openssl to $LDFLAGS and $CPPFLAGS
