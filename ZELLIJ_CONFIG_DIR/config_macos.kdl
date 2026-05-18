@@ -638,7 +638,7 @@ web_client {
 // Choose the theme that is specified in the themes section.
 // Default: default
 //
-theme "dracula-pro"
+theme "dracula-pro-alucard"
 theme_dir "/Users/patrick/Library/Application Support/org.Zellij-Contributors.Zellij/themes"
  // Choose the base input mode of zellij.
 // Default: normal
