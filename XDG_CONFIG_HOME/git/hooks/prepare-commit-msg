@@ -7,8 +7,8 @@ if ! command -v aicommit2 &>/dev/null || ! command -v op &>/dev/null; then
   exit 0
 fi
 
-export OP_ACCOUNT="my.1password.eu"
-export OPENAI_API_KEY="op://Private/sgjddcuzvgu3qbpzqqw6tn5lw4/credential"
+export OP_ACCOUNT="dutchanalytics.1password.com"
+export ANTHROPIC_API_KEY="op://Employee/c4vn34btapfgcnvq45khlz676i/credential"
 
 # Use local config if present and AICOMMIT_CONFIG_PATH not already set
 if [[ -z "${AICOMMIT_CONFIG_PATH}" ]]; then
