@@ -32,7 +32,7 @@
 	//         "restore_on_startup": "last_workspace",
 	//  3. Do not restore previous workspaces
 	//         "restore_on_startup": "none",
-	"restore_on_startup": "none",
+	"restore_on_startup": "empty_tab",
 	// Whether to attempt to restore previous file's state when opening it again.
 	// The state is stored per pane.
 	// When disabled, defaults are applied instead of the state restoration.
@@ -82,12 +82,17 @@
 		"auto_replace_emoji_shortcode": false
 	},
 	"agent": {
+		// Where to dock the agent panel. Can be 'left', 'right' or 'bottom'.
+		"dock": "left",
 		// The default model to use when creating new threads.
 		"default_model": {
 			// The provider to use.
 			"provider": "anthropic",
 			// The model to use.
-			"model": "claude-sonnet-4-5-thinking-latest"
+			"model": "claude-opus-4-7-latest",
+			// Whether thinking is enabled.
+			"enable_thinking": true,
+			"effort": "xhigh"
 		}
 	},
 	// Settings related to the editor's tabs
@@ -205,7 +210,13 @@
 		],
 		"HTML-Jinja": ["**/*.html.j2", "**/*.htm.j2"],
 		"ini": ["**/.pylintrc"],
-		"JSON": ["**/*.webmanifest", "**/.prettierrc", "**/.babelrc"],
+		"Jinja2": ["**/*.j2"],
+		"JSON": [
+			"**/*.webmanifest",
+			"**/.prettierrc",
+			"**/.babelrc",
+			"**/Package.resolved"
+		],
 		"JSONC": [
 			"**/.zed/**/*.json",
 			"**/zed/**/*.json",
@@ -238,8 +249,11 @@
 			"format_on_save": "on",
 			"formatter": {
 				"external": {
-					"command": "yamlfmt",
-					"arguments": ["-in"]
+					"command": "bash",
+					"arguments": [
+						"-c",
+						"tmp=$(mktemp /tmp/ansible-XXXXXX.yaml); cat > \"$tmp\"; ansible-lint --fix --nocolor \"$tmp\" >/dev/null 2>&1; cat \"$tmp\"; rm -f \"$tmp\""
+					]
 				}
 			}
 		},
@@ -288,6 +302,7 @@
 			},
 			"language_servers": [
 				"ruby-lsp",
+				"!kanayago",
 				"!solargraph",
 				"rubocop",
 				"steep",
@@ -301,6 +316,13 @@
 				"external": {
 					"command": "shfmt",
 					"arguments": ["--indent", "2", "--case-indent", "--binary-next-line"]
+				}
+			}
+		},
+		"Fish": {
+			"formatter": {
+				"external": {
+					"command": "fish_indent"
 				}
 			}
 		},
@@ -360,7 +382,7 @@
 			"format_on_save": "on",
 			"formatter": {
 				"external": {
-					"command": "/Users/patrick/.local/share/mise/shims/terraform",
+					"command": "~/.local/share/mise/shims/terraform",
 					"arguments": ["fmt", "-"]
 				}
 			}
@@ -380,15 +402,6 @@
 				"!sorbet",
 				"..."
 			]
-		},
-		"HTML-Jinja": {
-			"format_on_save": "on",
-			"formatter": {
-				"external": {
-					"command": "djlint",
-					"arguments": ["--reformat", "--profile", "jinja", "-"]
-				}
-			}
 		},
 		"ini": {
 			"format_on_save": "on",
@@ -424,19 +437,6 @@
 				"..."
 			]
 		},
-		"Jinja2": {
-			"format_on_save": "on",
-			"formatter": {
-				"external": {
-					"command": "prettier",
-					"arguments": [
-						"--parser",
-						"jinja-template",
-						"--plugin=/Users/patrick/Library/Application Support/npm/lib/node_modules/prettier-plugin-jinja-template/lib/index.js"
-					]
-				}
-			}
-		},
 		"JS+ERB": {
 			"format_on_save": "on",
 			"formatter": {
@@ -459,6 +459,15 @@
 			"formatter": {
 				"language_server": {
 					"name": "biome"
+				}
+			}
+		},
+		"JSON5": {
+			"format_on_save": "on",
+			"formatter": {
+				"external": {
+					"command": "biome",
+					"arguments": ["format", "--stdin-file-path", "a.jsonc"]
 				}
 			}
 		},
@@ -576,7 +585,9 @@
 			},
 			"language_servers": [
 				"ruby-lsp",
+				"!fuzzy-ruby-server",
 				"!solargraph",
+				"!kanayago",
 				"rubocop",
 				"steep",
 				"!sorbet",
@@ -611,6 +622,9 @@
 					"command": "sql-formatter"
 				}
 			}
+		},
+		"Swift": {
+			"tab_size": 4
 		},
 		"TSX": {
 			"code_actions_on_format": {
@@ -701,18 +715,6 @@
 	},
 	// LSP Specific settings.
 	"lsp": {
-		"intelephense": {
-			"initialization_options": {
-				"globalStoragePath": "~/Library/Application Support/intelephense"
-			}
-		},
-		"ansible-language-server": {
-			"settings": {
-				"executionEnvironment": {
-					"enabled": false
-				}
-			}
-		},
 		"django-template-lsp": {
 			"binary": {
 				"path": "~/.local/share/mise/shims/djlsp"
@@ -728,14 +730,14 @@
 				"sessionToken": ""
 			}
 		},
-		"gitlab-ci-ls": {
-			"initialization_options": {
-				"cache": "~/Library/Caches/gitlab-ci-lsbase"
-			}
-		},
 		"gopls": {
 			"binary": {
 				"path": "~/.local/share/mise/shims/gopls"
+			}
+		},
+		"intelephense": {
+			"initialization_options": {
+				"globalStoragePath": "~/Library/Application Support/intelephense"
 			}
 		},
 		"mdx-analyzer": {
@@ -759,13 +761,19 @@
 		},
 		"ruby-lsp": {
 			"binary": {
-				"path": "~/Library/Application Support/gem/bin/ruby-lsp"
+				"path": "~/Library/Application Support/gem/bin/ruby-lsp",
+				"env": {
+					"GEM_HOME": "/Users/patrick/Library/Application Support/gem"
+				}
 			}
 		},
 		"rubocop": {
 			"binary": {
 				"path": "~/Library/Application Support/gem/bin/rubocop",
-				"arguments": ["--lsp"]
+				"arguments": ["--lsp"],
+				"env": {
+					"GEM_HOME": "/Users/patrick/Library/Application Support/gem"
+				}
 			}
 		},
 		"steep": {
@@ -780,7 +788,7 @@
 		"terraform-ls": {
 			"initialization_options": {
 				"terraform": {
-					"path": "~/.local/share/mise/shims/terraform"
+					"path": "/Users/patrick/.local/share/mise/shims/terraform"
 				}
 			}
 		},
@@ -818,6 +826,12 @@
 				"preferred_theme": "",
 				"component_filter": [""]
 			}
+		}
+	},
+	// Configures agent servers available in the agent panel.
+	"agent_servers": {
+		"claude-acp": {
+			"type": "registry"
 		}
 	}
 }
