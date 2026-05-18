@@ -1,4 +1,4 @@
-theme = "dracula-pro"
+theme = "alucard"
 
 [editor]
 # Enable mouse mode
@@ -50,6 +50,7 @@ hidden = false
 # Options for rendering whitespace with visible characters. Use
 # :set whitespace.render all to temporarily enable visible whitespace.
 [editor.whitespace]
+
 # Whether to render whitespace. May either be all or none, or a table with
 # sub-keys space, nbsp, nnbsp, tab, and newline
 [editor.whitespace.render]
