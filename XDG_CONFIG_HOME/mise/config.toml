@@ -2,15 +2,20 @@
 bun = "latest"
 cmake = "latest"
 deno = "latest"
+dotnet = "latest"
 go = "latest"
 helm = ["latest", "3"]
+java = "openjdk"
+kotlin = { version = "latest", asset_pattern = "kotlin-compiler-*.zip", bin_path = "kotlinc/bin" }
 node = "lts"
 php = "latest"
 poetry = "latest"
 python = ["3.14", "3.13", "3.12", "3.11", "3.10"]
+r = "latest"
 ruby = "latest"
 terraform = "latest"
 uv = "latest"
+zig = "latest"
 
 [env]
 PHP_CONFIGURE_OPTIONS = """
@@ -25,3 +30,7 @@ PHP_CONFIGURE_OPTIONS = """
 --with-zlib \
 """
 PKG_CONFIG_PATH = "/opt/homebrew/opt/bzip2/lib/pkgconfig:/opt/homebrew/opt/icu4c/lib/pkgconfig:/opt/homebrew/opt/libedit/lib/pkgconfig:/opt/homebrew/opt/libsodium/lib/pkgconfig:/opt/homebrew/opt/libxml2/lib/pkgconfig:/opt/homebrew/opt/libzip/lib/pkgconfig:/opt/homebrew/opt/openssl@3/lib/pkgconfig:/opt/homebrew/opt/zlib/lib/pkgconfig:${PKG_CONFIG_PATH}"
+
+[settings]
+experimental = true
+env_shell_expand = true
