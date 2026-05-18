@@ -23,10 +23,5 @@
 		"bindings": {
 			"shift-enter": ["terminal::SendText", "\u001b\r"]
 		}
-	},
-	{
-		"bindings": {
-			"cmd-alt-c": ["agent::NewExternalAgentThread", { "agent": "claude_code" }]
-		}
 	}
 ]
