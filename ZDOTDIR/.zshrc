@@ -11,6 +11,14 @@ if [[ "${DISTRO}" == "macos" ]]; then
   SSH_AUTH_SOCK+="/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh"
 fi
 
+# macOS /etc/zshenv hard-codes ZDOTDIR, which breaks Ghostty's ZDOTDIR
+# injection. Source the integration manually so SSH terminfo forwarding,
+# OSC 133 marks, and the ghostty CLI on PATH all work.
+if [[ -n "${GHOSTTY_RESOURCES_DIR}" ]] \
+    && [[ -r "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration" ]]; then
+  source "${GHOSTTY_RESOURCES_DIR}/shell-integration/zsh/ghostty-integration"
+fi
+
 if [[ $TERM == "xterm-ghostty" ]] && (( $+commands[macchina] )); then
   macchina
 fi
