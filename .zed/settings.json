@@ -24,7 +24,11 @@
 		],
 		"Python": ["**/XDG_BIN_HOME/gn", "**/XDG_BIN_HOME/gn.py"],
 		"Ruby": ["**/XDG_BIN_HOME/git-whodoneit"],
-		"Shell Script": ["**/XDG_BIN_HOME/*", "**/ZDOTDIR/*"],
+		"Shell Script": [
+			"**/XDG_BIN_HOME/*",
+			"**/ZDOTDIR/*",
+			"**/XDG_CONFIG_HOME/direnv/direnvrc"
+		],
 		"SSH Config": ["**/.ssh/config*"]
 	}
 }

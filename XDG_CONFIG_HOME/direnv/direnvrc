@@ -1,0 +1,30 @@
+# shellcheck shell=bash
+
+# Read a 1Password secret with macOS Keychain caching.
+#
+# `op read` round-trips to the 1Password desktop app and costs 1-3 seconds,
+# which makes any .envrc using it block the prompt redraw chain. Stashing the
+# resolved value in the login keychain reduces subsequent reads to ~10ms while
+# keeping the secret out of plaintext files.
+#
+# Usage:
+#   export GITLAB_TOKEN="$(op_keychain my-gitlab-token op://Vault/item/field)"
+#
+# To force a refresh (e.g. after rotation):
+#   security delete-generic-password -s my-gitlab-token
+op_keychain() {
+  local service=$1
+  shift
+
+  local value=""
+  value=$(security find-generic-password -a "$USER" -s "$service" -w \
+    2>/dev/null || true)
+
+  if [[ -z $value ]]; then
+    value=$(op read "$@")
+    security add-generic-password -a "$USER" -s "$service" -w "$value" -U \
+      >/dev/null
+  fi
+
+  printf '%s' "$value"
+}

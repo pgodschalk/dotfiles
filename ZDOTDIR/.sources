@@ -166,6 +166,14 @@ if (( $+commands[fzf] )); then
   (( $+functions[_wrap_fzf_widgets] )) && _wrap_fzf_widgets
 fi
 
+# Drop direnv's SIGINT mask so CTRL+C stays responsive during prompt redraw.
+# A cancelled `direnv export` produces no output, so eval leaves env unchanged.
+if (( $+functions[_direnv_hook] )); then
+  _direnv_hook() {
+    eval "$("/opt/homebrew/bin/direnv" export zsh)"
+  }
+fi
+
 # Enable live theme sync
 precmd_functions+=(_dark_notify_sync)
 
