@@ -244,9 +244,9 @@ function fd() {
   fi
   if [[ "${1}" == "--raw" ]]; then
     shift
-    "${fd_cmd}" "${@}"
+    command "${fd_cmd}" "${@}"
   else
-    "${fd_cmd}" "${@}" --exec-batch "${bat_cmd}"
+    command "${fd_cmd}" "${@}" --exec-batch "${bat_cmd}"
   fi
 }
 
