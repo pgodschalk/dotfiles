@@ -40,6 +40,7 @@ Zed).
 Other than that,
 
 - [1Password](https://1password.com) is my secrets manager.
+- [Harness](https://harness.mikelyons.org) is my agent manager.
 - [Lens](https://lenshq.io) is my Kubernetes IDE. I don't like TUI's but I also
   don't like typing `kubectl` (even with aliases) thousands of times per day.
 - [Monodraw](https://monodraw.helftone.com) is my diagramming tool.
