@@ -34,15 +34,14 @@ as a terminal emulator on macOS, and
 
 [Zed](https://zed.dev) is my main editor, though I do keep
 [Visual Studio Code](https://code.visualstudio.com) around mainly for Windows
-support.
+support and Jupyter Notebooks (until that feature gets merged into mainline
+Zed).
 
 Other than that,
 
 - [1Password](https://1password.com) is my secrets manager.
-- [DevPod](https://devpod.io) is running development environments when I need
-  more juice than my MacBook Pro can provide. Sometimes I run said environment
-  on my Windows machine. Though I'll also use plain old Codespaces every now and
-  then.
+- [Lens](https://lenshq.io) is my Kubernetes IDE. I don't like TUI's but I also
+  don't like typing `kubectl` (even with aliases) thousands of times per day.
 - [Monodraw](https://monodraw.helftone.com) is my diagramming tool.
 - [OrbStack](https://orbstack.dev) runs my Docker containers, since Docker
   Desktop is just slow, and gets in my way a lot.
