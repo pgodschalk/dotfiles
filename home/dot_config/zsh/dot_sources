@@ -19,7 +19,9 @@ fi
 _cache="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh"
 [[ -d "${_cache}" ]] || mkdir -p "${_cache}"
 
-# Export SSH agent public keys for signing (Linux only)
+# Export SSH agent public keys for signing (Linux only). Signing is always on
+# for git and jj, so the agent (e.g. forwarded Secretive) must be available to
+# commit; this just refreshes the signing key/allowed-signers from it.
 if [[ "${DISTRO}" != "macos" ]] && [[ -n "${SSH_AUTH_SOCK}" ]] \
     && (( $+commands[ssh-add] )); then
   ssh-add -L > "${HOME}/.ssh/agent-keys.pub" 2>/dev/null || true

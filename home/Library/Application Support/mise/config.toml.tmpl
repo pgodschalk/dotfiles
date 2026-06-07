@@ -1,4 +1,4 @@
-{{ include "dot_config/mise/config.toml" -}}
+{{ includeTemplate "mise-config.tmpl" . -}}
 
 [env]
 PHP_CONFIGURE_OPTIONS = """

@@ -118,9 +118,42 @@ repo — in VS Code, set `dotfiles.repository` to `pgodschalk/dotfiles` — and 
 clones the repo into the container and runs `install.sh`, which bootstraps
 chezmoi from `home/`.
 
-The only thing bootstrapped is chezmoi itself — installed into `~/.local/bin`
-via [get.chezmoi.io](https://get.chezmoi.io) when it is missing. Every other
-binary (`git`, `zsh`, `starship`, …) is assumed to already be present.
+[Zed](https://zed.dev) uses its own native dev-container support — it does not
+call the `devcontainer` CLI and has no dotfiles setting, so its "Reopen in Dev
+Container" won't apply these on its own. Instead, bring the container up with
+the `devcontainer` CLI first (installed via Homebrew — `brew "devcontainer"`),
+then let Zed attach to it:
+
+```sh
+devcontainer up --workspace-folder . \
+  --dotfiles-repository https://github.com/pgodschalk/dotfiles
+```
+
+The CLI clones this repo into the container and auto-runs `install.sh`, and tags
+the container with labels derived from the workspace path. Zed reuses an
+existing container matching those labels, so opening the same folder in Zed
+attaches to the already-personalised container instead of building a fresh one.
+
+`install.sh` bootstraps into `~/.local/bin` a curated set of general-purpose CLI
+tools the shell integrates with:
+
+- **chezmoi** (to apply the dotfiles), via
+  [get.chezmoi.io](https://get.chezmoi.io).
+- Via [mise](https://mise.jdx.dev) — into a dedicated `conf.d` drop-in:
+  `starship`, `eza`, `bat`, `fd`, `fzf`, `ripgrep`, `zoxide`, `delta`,
+  `difftastic`, `jaq`, `yq`, `xh`, `doggo`, `zellij`, `gh`, `glab`, `jj`,
+  `helix`, `claude` (claude-code).
+- Straight from their GitHub releases (not in mise's registry for every arch):
+  `tldr`, `procs`, `tspin`, `macchina`, `miniserve`, plus `bat-extras`
+  (`batgrep`, `batman`, …).
+
+Language toolchains are deliberately left to the dev container definition.
+`install.sh` exports `DOTFILES_DEVCONTAINER`, which makes the mise config skip
+its language list (see `home/.chezmoitemplates/mise-config.tmpl`) — so the
+`[tools]` block is empty in a container, while the CLI niceties above come from
+the `conf.d` drop-in. Tools that _need_ a runtime — `gemini-cli`/`aicommit2`
+(Node), `llm` (Python) — are left out for the same reason. Anything missing
+degrades gracefully behind its `(( $+commands[…] ))` guard.
 
 Secret-backed configs resolve each secret in order: a named **environment
 variable** first, then **1Password** via `op`, then an empty fallback. So in a
@@ -142,6 +175,43 @@ above — subject to that token's scopes. The other variables are never set
 automatically; add each one you want populated as a
 [Codespaces secret](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces)
 (or via a local dev container's `remoteEnv`).
+
+#### Host integration
+
+A few things lean on the macOS host.
+
+**SSH & commit signing** use the Secretive (Secure Enclave) agent — forward the
+host agent and both work, the key never leaving the Mac. Locally, add the
+OrbStack agent socket at `up` time:
+
+```sh
+devcontainer up --workspace-folder . \
+  --dotfiles-repository https://github.com/pgodschalk/dotfiles \
+  --mount type=bind,source=/run/host-services/ssh-auth.sock,target=/ssh-agent \
+  --remote-env SSH_AUTH_SOCK=/ssh-agent
+```
+
+In Codespaces the local agent isn't forwarded automatically. For **git**, enable
+**GPG verification** (Settings → Codespaces) and GitHub signs commits with its
+own key (Verified) via the system-level `gh-gpgsign`; the dotfiles detect
+`$CODESPACES` and switch `gpg.format` back to `openpgp` (dropping the SSH
+signing key) so they don't shadow it. For **jj**, or to sign with your own
+enclave key, connect with `gh codespace ssh` (forwards the agent); the web
+editor can't sign jj. Note signing stays forced, so without GPG verification
+enabled (or a forwarded agent) commits fail rather than going unsigned.
+
+- **1Password (`op`)** has no desktop-app socket in a container, so op-gated
+  commands degrade (they run without their secrets).
+
+- **Browser / ports.** Locally, Zed honors `appPort` and OrbStack routes
+  `<name>.orb.local`; Codespaces forwards ports automatically to
+  `https://<codespace>-<port>.app.github.dev`.
+
+- **Theme.** The shell follows macOS light/dark by querying the terminal (OSC
+  11), and themes from your Dracula Pro repos when they can be cloned
+  (`pgodschalk/dracula-pro-extras`, `dracula-pro/dracula-pro`) — via the
+  forwarded agent / `gh` locally, or a `DOTFILES_THEME_PAT` Codespaces secret
+  (classic PAT, `repo` scope). It falls back to built-in themes otherwise.
 
 ## Roadmap
 

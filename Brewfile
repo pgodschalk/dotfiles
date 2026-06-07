@@ -1,243 +1,246 @@
-tap "alesbrelih/gitlab-ci-ls", trusted: true
-tap "cormacrelf/tap", trusted: true
-tap "hashicorp/tap", trusted: true
-tap "hougesen/tap", trusted: true
-tap "siderolabs/tap", trusted: true
-brew "age"
-brew "icu4c@78"
-brew "xz"
-brew "aicommit2"
-brew "libsodium"
-brew "ansible"
-brew "ansible-language-server"
-brew "ansible-lint"
-brew "asciinema"
-brew "aspell"
-brew "autoconf"
-brew "automake"
-brew "gettext"
-brew "bash-language-server"
-brew "bat"
-brew "bat-extras"
-brew "biome"
-brew "bison"
-brew "butane"
-brew "bzip2"
-brew "libpng"
-brew "freetype"
-brew "pcre2"
-brew "cairo"
-brew "chafa"
-brew "chezmoi"
-brew "cosign"
-brew "kubernetes-cli"
-brew "devspace"
-brew "difftastic"
-brew "direnv"
-brew "djlint"
-brew "docker-compose-langserver"
-brew "dockerfile-language-server"
-brew "doggo"
-brew "eza"
-brew "fd"
-brew "ffmpeg"
-brew "fish"
-brew "fzf"
-brew "gmp"
-brew "gcc"
-brew "gd"
-brew "gemini-cli"
-brew "gh"
-brew "ghostscript"
-brew "git"
-brew "git-delta"
-brew "git-lfs"
-brew "glab"
-brew "gnu-sed"
-brew "gnu-tar"
-brew "golangci-lint"
-brew "golangci-lint-langserver"
-brew "helix"
-brew "helm-ls"
-brew "imagemagick"
-brew "jaq"
-brew "jj"
-brew "jpeg"
-brew "krb5"
-brew "kubectx"
-brew "libedit"
-brew "libiconv"
-brew "libxml2"
-brew "libxt"
-brew "libzip"
-brew "llm"
-brew "macchina"
-brew "markdownlint-cli2"
-brew "marksman"
-brew "mas"
-brew "miniserve"
-brew "minisign"
-brew "mise"
-brew "mkcert"
-brew "nano"
-brew "nanorc"
-brew "neocmakelsp"
-brew "openshift-cli"
-brew "openssh"
-brew "pigz"
-brew "pkgconf"
-brew "postgresql@18"
-brew "powershell"
-brew "pre-commit"
-brew "procs"
-brew "pwgen"
-brew "python-lsp-server"
-brew "python@3.13"
-brew "re2c"
-brew "ripgrep-all"
-brew "ruby-lsp"
-brew "ruff"
-brew "rust-analyzer"
-brew "screen"
-brew "shellcheck"
-brew "shfmt"
-brew "skopeo"
-brew "sops"
-brew "sql-formatter"
-brew "sql-language-server"
-brew "starship"
-brew "stern"
-brew "tailspin"
-brew "tailwindcss-language-server"
-brew "terraform-ls"
-brew "tlrc"
-brew "tombi"
-brew "tree-sitter-cli"
-brew "trivy"
-brew "ty"
-brew "typescript"
-brew "typescript-language-server"
-brew "uutils-coreutils"
-brew "uutils-diffutils"
-brew "uutils-findutils"
-brew "vscode-langservers-extracted"
-brew "watchman"
-brew "wget"
-brew "xh"
-brew "yaml-language-server"
-brew "yamlfmt"
-brew "yamllint"
-brew "yq"
-brew "yt-dlp"
-brew "zellij"
-brew "zlib"
-brew "zls"
-brew "zoxide"
-brew "zsh"
-brew "alesbrelih/gitlab-ci-ls/gitlab-ci-ls"
-brew "cormacrelf/tap/dark-notify"
-brew "hashicorp/tap/nomad"
-brew "hashicorp/tap/packer"
-brew "hougesen/tap/kdlfmt"
-brew "siderolabs/tap/talosctl"
-cask "1password"
-cask "1password-cli"
-cask "balenaetcher"
-cask "betterdisplay"
-cask "chatgpt"
-cask "citrix-workspace"
-cask "claude"
-cask "discord"
-cask "font-inter"
-cask "font-jetbrains-mono-nerd-font"
-cask "font-raleway"
-cask "gcloud-cli"
-cask "ghostty"
-cask "google-chrome"
-cask "google-drive"
-cask "google-gemini"
-cask "kotlin-lsp"
-cask "lens"
-cask "microsoft-teams"
-cask "nvidia-geforce-now"
-cask "orbstack"
-cask "rapidapi"
-cask "rectangle-pro"
-cask "secretive"
-cask "setapp"
-cask "tailscale-app"
-cask "vagrant"
-cask "visual-studio-code"
-cask "zed"
-mas "1Password for Safari", id: 1569813296
-mas "Apple Configurator", id: 1037126344
-mas "Compressor", id: 6746516157
-mas "Developer", id: 640199958
-mas "Final Cut Pro", id: 1631624924
-mas "GarageBand", id: 682658836
-mas "iMovie", id: 408981434
-mas "Kagi for Safari", id: 1622835804
-mas "Kagi News", id: 6748314243
-mas "Keynote", id: 361285480
-mas "Logic Pro", id: 1615087040
-mas "MainStage", id: 6746637089
-mas "Motion", id: 6746637149
-mas "Numbers", id: 361304891
-mas "OneDrive", id: 823766827
-mas "Pages", id: 361309726
-mas "Passepartout", id: 1433648537
-mas "Photomator", id: 1444636541
-mas "Pixelmator Pro", id: 6746662575
-mas "Prime Video", id: 545519333
-mas "ReadKit", id: 1615798039
-mas "Shazam", id: 897118787
-mas "Slack", id: 803453959
-mas "SnippetsLab", id: 1006087419
-mas "Swift Playground", id: 1496833156
-mas "Telegram", id: 747648890
-mas "TestFlight", id: 899247664
-mas "The Unarchiver", id: 425424353
-mas "Transporter", id: 1450874784
-mas "UTM", id: 1538878817
-mas "WhatsApp", id: 310633997
-mas "Wipr", id: 1662217862
-mas "Xcode", id: 497799835
-vscode "1password.op-vscode"
-vscode "biomejs.biome"
-vscode "davidanson.vscode-markdownlint"
-vscode "dracula-theme-pro.theme-dracula-pro"
-vscode "esbenp.prettier-vscode"
-vscode "github.codespaces"
-vscode "github.vscode-codeql"
-vscode "github.vscode-github-actions"
-vscode "github.vscode-pull-request-github"
-vscode "ms-python.debugpy"
-vscode "ms-python.python"
-vscode "ms-python.vscode-pylance"
-vscode "ms-python.vscode-python-envs"
-vscode "ms-toolsai.jupyter"
-vscode "ms-toolsai.jupyter-keymap"
-vscode "ms-toolsai.jupyter-renderers"
-vscode "ms-toolsai.vscode-jupyter-cell-tags"
-vscode "ms-toolsai.vscode-jupyter-slideshow"
-vscode "ms-vscode-remote.remote-ssh"
-vscode "ms-vscode-remote.remote-ssh-edit"
-vscode "ms-vscode-remote.remote-wsl"
-vscode "ms-vscode-remote.vscode-remote-extensionpack"
-vscode "ms-vscode.powershell"
-vscode "ms-vscode.remote-explorer"
-vscode "ms-vscode.remote-server"
-vscode "ms-vsliveshare.vsliveshare"
-vscode "redhat.vscode-yaml"
-vscode "upstash.context7-mcp"
-go "github.com/go-delve/delve/cmd/dlv"
-go "cmd/go"
-go "cmd/gofmt"
-go "golang.org/x/tools/gopls"
-uv "cmakelang"
-uv "django-template-lsp"
-uv "esbonio"
-uv "nginx-language-server"
-uv "ubiops-cli"
-npm "@anthropic-ai/claude-code"
-npm "corepack"
+# frozen-string-literal: true
+
+tap 'alesbrelih/gitlab-ci-ls', trusted: true
+tap 'cormacrelf/tap', trusted: true
+tap 'hashicorp/tap', trusted: true
+tap 'hougesen/tap', trusted: true
+tap 'siderolabs/tap', trusted: true
+brew 'age'
+brew 'icu4c@78'
+brew 'xz'
+brew 'aicommit2'
+brew 'libsodium'
+brew 'ansible'
+brew 'ansible-language-server'
+brew 'ansible-lint'
+brew 'asciinema'
+brew 'aspell'
+brew 'autoconf'
+brew 'automake'
+brew 'gettext'
+brew 'bash-language-server'
+brew 'bat'
+brew 'bat-extras'
+brew 'biome'
+brew 'bison'
+brew 'butane'
+brew 'bzip2'
+brew 'libpng'
+brew 'freetype'
+brew 'pcre2'
+brew 'cairo'
+brew 'chafa'
+brew 'chezmoi'
+brew 'cosign'
+brew 'devcontainer'
+brew 'kubernetes-cli'
+brew 'devspace'
+brew 'difftastic'
+brew 'direnv'
+brew 'djlint'
+brew 'docker-compose-langserver'
+brew 'dockerfile-language-server'
+brew 'doggo'
+brew 'eza'
+brew 'fd'
+brew 'ffmpeg'
+brew 'fish'
+brew 'fzf'
+brew 'gmp'
+brew 'gcc'
+brew 'gd'
+brew 'gemini-cli'
+brew 'gh'
+brew 'ghostscript'
+brew 'git'
+brew 'git-delta'
+brew 'git-lfs'
+brew 'glab'
+brew 'gnu-sed'
+brew 'gnu-tar'
+brew 'golangci-lint'
+brew 'golangci-lint-langserver'
+brew 'helix'
+brew 'helm-ls'
+brew 'imagemagick'
+brew 'jaq'
+brew 'jj'
+brew 'jpeg'
+brew 'krb5'
+brew 'kubectx'
+brew 'libedit'
+brew 'libiconv'
+brew 'libxml2'
+brew 'libxt'
+brew 'libzip'
+brew 'llm'
+brew 'macchina'
+brew 'markdownlint-cli2'
+brew 'marksman'
+brew 'mas'
+brew 'miniserve'
+brew 'minisign'
+brew 'mise'
+brew 'mkcert'
+brew 'nano'
+brew 'nanorc'
+brew 'neocmakelsp'
+brew 'openshift-cli'
+brew 'openssh'
+brew 'pigz'
+brew 'pkgconf'
+brew 'postgresql@18'
+brew 'powershell'
+brew 'pre-commit'
+brew 'procs'
+brew 'pwgen'
+brew 'python-lsp-server'
+brew 'python@3.13'
+brew 're2c'
+brew 'ripgrep-all'
+brew 'ruby-lsp'
+brew 'ruff'
+brew 'rust-analyzer'
+brew 'screen'
+brew 'shellcheck'
+brew 'shfmt'
+brew 'skopeo'
+brew 'sops'
+brew 'sql-formatter'
+brew 'sql-language-server'
+brew 'starship'
+brew 'stern'
+brew 'tailspin'
+brew 'tailwindcss-language-server'
+brew 'terraform-ls'
+brew 'tlrc'
+brew 'tombi'
+brew 'tree-sitter-cli'
+brew 'trivy'
+brew 'ty'
+brew 'typescript'
+brew 'typescript-language-server'
+brew 'uutils-coreutils'
+brew 'uutils-diffutils'
+brew 'uutils-findutils'
+brew 'vscode-langservers-extracted'
+brew 'watchman'
+brew 'wget'
+brew 'xh'
+brew 'yaml-language-server'
+brew 'yamlfmt'
+brew 'yamllint'
+brew 'yq'
+brew 'yt-dlp'
+brew 'zellij'
+brew 'zlib'
+brew 'zls'
+brew 'zoxide'
+brew 'zsh'
+brew 'alesbrelih/gitlab-ci-ls/gitlab-ci-ls'
+brew 'cormacrelf/tap/dark-notify'
+brew 'hashicorp/tap/nomad'
+brew 'hashicorp/tap/packer'
+brew 'hougesen/tap/kdlfmt'
+brew 'siderolabs/tap/talosctl'
+cask '1password'
+cask '1password-cli'
+cask 'balenaetcher'
+cask 'betterdisplay'
+cask 'chatgpt'
+cask 'citrix-workspace'
+cask 'claude'
+cask 'discord'
+cask 'font-inter'
+cask 'font-jetbrains-mono-nerd-font'
+cask 'font-raleway'
+cask 'gcloud-cli'
+cask 'ghostty'
+cask 'google-chrome'
+cask 'google-drive'
+cask 'google-gemini'
+cask 'kotlin-lsp'
+cask 'lens'
+cask 'microsoft-teams'
+cask 'nvidia-geforce-now'
+cask 'orbstack'
+cask 'rapidapi'
+cask 'rectangle-pro'
+cask 'secretive'
+cask 'setapp'
+cask 'tailscale-app'
+cask 'vagrant'
+cask 'visual-studio-code'
+cask 'zed'
+mas '1Password for Safari', id: 1_569_813_296
+mas 'Apple Configurator', id: 1_037_126_344
+mas 'Compressor', id: 6_746_516_157
+mas 'Developer', id: 640_199_958
+mas 'Final Cut Pro', id: 1_631_624_924
+mas 'GarageBand', id: 682_658_836
+mas 'iMovie', id: 408_981_434
+mas 'Kagi for Safari', id: 1_622_835_804
+mas 'Kagi News', id: 6_748_314_243
+mas 'Keynote', id: 361_285_480
+mas 'Logic Pro', id: 1_615_087_040
+mas 'MainStage', id: 6_746_637_089
+mas 'Motion', id: 6_746_637_149
+mas 'Numbers', id: 361_304_891
+mas 'OneDrive', id: 823_766_827
+mas 'Pages', id: 361_309_726
+mas 'Passepartout', id: 1_433_648_537
+mas 'Photomator', id: 1_444_636_541
+mas 'Pixelmator Pro', id: 6_746_662_575
+mas 'Prime Video', id: 545_519_333
+mas 'ReadKit', id: 1_615_798_039
+mas 'Shazam', id: 897_118_787
+mas 'Slack', id: 803_453_959
+mas 'SnippetsLab', id: 1_006_087_419
+mas 'Swift Playground', id: 1_496_833_156
+mas 'Telegram', id: 747_648_890
+mas 'TestFlight', id: 899_247_664
+mas 'The Unarchiver', id: 425_424_353
+mas 'Transporter', id: 1_450_874_784
+mas 'UTM', id: 1_538_878_817
+mas 'WhatsApp', id: 310_633_997
+mas 'Wipr', id: 1_662_217_862
+mas 'Xcode', id: 497_799_835
+vscode '1password.op-vscode'
+vscode 'biomejs.biome'
+vscode 'davidanson.vscode-markdownlint'
+vscode 'dracula-theme-pro.theme-dracula-pro'
+vscode 'esbenp.prettier-vscode'
+vscode 'github.codespaces'
+vscode 'github.vscode-codeql'
+vscode 'github.vscode-github-actions'
+vscode 'github.vscode-pull-request-github'
+vscode 'ms-python.debugpy'
+vscode 'ms-python.python'
+vscode 'ms-python.vscode-pylance'
+vscode 'ms-python.vscode-python-envs'
+vscode 'ms-toolsai.jupyter'
+vscode 'ms-toolsai.jupyter-keymap'
+vscode 'ms-toolsai.jupyter-renderers'
+vscode 'ms-toolsai.vscode-jupyter-cell-tags'
+vscode 'ms-toolsai.vscode-jupyter-slideshow'
+vscode 'ms-vscode-remote.remote-ssh'
+vscode 'ms-vscode-remote.remote-ssh-edit'
+vscode 'ms-vscode-remote.remote-wsl'
+vscode 'ms-vscode-remote.vscode-remote-extensionpack'
+vscode 'ms-vscode.powershell'
+vscode 'ms-vscode.remote-explorer'
+vscode 'ms-vscode.remote-server'
+vscode 'ms-vsliveshare.vsliveshare'
+vscode 'redhat.vscode-yaml'
+vscode 'upstash.context7-mcp'
+go 'github.com/go-delve/delve/cmd/dlv'
+go 'cmd/go'
+go 'cmd/gofmt'
+go 'golang.org/x/tools/gopls'
+uv 'cmakelang'
+uv 'django-template-lsp'
+uv 'esbonio'
+uv 'nginx-language-server'
+uv 'ubiops-cli'
+npm '@anthropic-ai/claude-code'
+npm 'corepack'

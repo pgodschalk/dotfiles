@@ -154,17 +154,17 @@ fi
 #######################################
 if (($+commands[asciinema])); then
   function asciinema() {
-    (($+commands[op])) || {
-      echo "op not found" >&2
-      return 1
-    }
-    local state_dir="${XDG_STATE_HOME:-${HOME}/.local/state}/asciinema"
-    local id_file="${state_dir}/install-id"
-    mkdir -p "${state_dir}"
-    chmod 700 "${state_dir}"
-    (umask 077 && op read 'op://Private/asciinema/credential' >"${id_file}")
-    command asciinema "${@}"
-    rm -f "${id_file}"
+    if (($+commands[op])); then
+      local state_dir="${XDG_STATE_HOME:-${HOME}/.local/state}/asciinema"
+      local id_file="${state_dir}/install-id"
+      mkdir -p "${state_dir}"
+      chmod 700 "${state_dir}"
+      (umask 077 && op read 'op://Private/asciinema/credential' >"${id_file}")
+      command asciinema "${@}"
+      rm -f "${id_file}"
+    else
+      command asciinema "${@}"
+    fi
   }
 fi
 
@@ -200,11 +200,6 @@ function bureaucracy() {
 #######################################
 if (($+commands[claude])); then
   function claude() {
-    (($+commands[op])) || {
-      echo "op not found" >&2
-      return 1
-    }
-
     local theme_file="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/dark-mode"
     local bat_theme="Dracula"
     if [[ -r "${theme_file}" && "$(<"${theme_file}")" != "dark" ]]; then
@@ -213,7 +208,7 @@ if (($+commands[claude])); then
 
     local secrets_file="${XDG_CONFIG_HOME}/secrets/mcp"
     local -a env_vars=()
-    if [[ -r "${secrets_file}" ]]; then
+    if (($+commands[op])) && [[ -r "${secrets_file}" ]]; then
       local line name ref
       while IFS= read -r line || [[ -n "${line}" ]]; do
         [[ -z "${line}" || "${line}" == \#* ]] && continue

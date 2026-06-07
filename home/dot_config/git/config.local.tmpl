@@ -4,11 +4,16 @@
   hooksPath = ~/.config/git/hooks
 [credential]
   helper = libsecret
-[gpg "ssh"]
-  allowedSignersFile = ~/.config/git/allowed-signers
 [merge]
   tool = vimdiff
 [mergetool]
   keepBackup = false
+{{ if env "CODESPACES" -}}
+[gpg]
+  format = openpgp
+{{- else -}}
+[gpg "ssh"]
+  allowedSignersFile = ~/.config/git/allowed-signers
 [user]
   signingKey = ~/.ssh/agent-keys.pub
+{{- end }}

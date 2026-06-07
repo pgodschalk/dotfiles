@@ -1,0 +1,364 @@
+# shellcheck shell=zsh
+
+typeset -g _theme_file="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}/dark-mode"
+typeset -g dracula_pro_extras_dir
+dracula_pro_extras_dir="${HOME}/Developer/for/me/dracula-pro-extras/themes"
+
+# Query the controlling terminal and echo its raw reply. Uses /dev/tty (not
+# stdin/stdout) so it works even inside $(...) where those are redirected.
+# Returns non-zero when there is no usable terminal.
+_query_terminal() {
+  emulate -L zsh
+  local tty=/dev/tty saved reply chunk tries=0
+  { : <"${tty}"; } 2>/dev/null || return 1
+  saved="$(stty -g <"${tty}" 2>/dev/null)" || return 1
+  stty -echo -icanon min 0 time 0 <"${tty}" 2>/dev/null
+  print -n -- "${1}" >"${tty}" 2>/dev/null
+  while ((tries < 20)); do
+    chunk=""
+    IFS= read -r -t 0.01 -k 32 chunk <"${tty}" 2>/dev/null
+    reply+="${chunk}"
+    [[ "${reply}" == *n || "${reply}" == *$'\a'* || "${reply}" == *'\\'* ]] \
+      && break
+    ((tries++))
+  done
+  stty "${saved}" <"${tty}" 2>/dev/null
+  print -r -- "${reply}"
+}
+
+# Color-scheme query via DEC mode 2031 (CSI ? 996 n → CSI ? 997 ; 1|2 n) — a
+# direct light/dark answer, no luminance guesswork. Ghostty/Kitty support it.
+_detect_theme_dsr996() {
+  local r
+  r="$(_query_terminal '\e[?996n')"
+  [[ "${r}" == *'997;1n'* ]] && {
+    print -r -- dark
+    return 0
+  }
+  [[ "${r}" == *'997;2n'* ]] && {
+    print -r -- light
+    return 0
+  }
+  return 1
+}
+
+# Fallback: terminal background via OSC 11, decided by luminance.
+_detect_theme_osc11() {
+  local r
+  r="$(_query_terminal '\e]11;?\e\\')"
+  [[ "${r}" == *rgb:* ]] || return 1
+  local hex="${r#*rgb:}" rc gc bc
+  rc="${hex%%/*}"
+  hex="${hex#*/}"
+  gc="${hex%%/*}"
+  hex="${hex#*/}"
+  bc="${hex%%[!0-9a-fA-F]*}"
+  local rv gv bv lum
+  rv=$((16#${rc[1, 2]}))
+  gv=$((16#${gc[1, 2]}))
+  bv=$((16#${bc[1, 2]}))
+  lum=$(((rv * 299 + gv * 587 + bv * 114) / 1000))
+  ((lum < 128)) && print -r -- dark || print -r -- light
+}
+
+# Resolve the current theme: dark-notify signal file (macOS) wins, else ask the
+# terminal (Linux/container/Codespace), else default dark.
+_detect_theme() {
+  if [[ -r "${_theme_file}" ]]; then
+    [[ "$(<"${_theme_file}")" == "light" ]] && {
+      print -r -- light
+      return
+    }
+    print -r -- dark
+    return
+  fi
+  _detect_theme_dsr996 && return
+  _detect_theme_osc11 && return
+  print -r -- dark
+}
+
+# Apply theme settings based on dark/light mode
+_apply_theme() {
+  local theme="${1:-light}"
+  export THEME="${theme}"
+
+  # On Linux, theme bat with the Dracula Pro tmThemes when installed, else a
+  # built-in (avoids bat's "unknown theme" warning when the repo isn't cloned).
+  local bat_dark="Dracula Pro" bat_light="Dracula Pro (Alucard)"
+  if [[ "${DISTRO}" != "macos" ]]; then
+    local _bat_dir="${XDG_CONFIG_HOME:-${HOME}/.config}/bat/themes"
+    [[ -f "${_bat_dir}/Dracula Pro.tmTheme" ]] || bat_dark="Dracula"
+    [[ -f "${_bat_dir}/Dracula Pro (Alucard).tmTheme" ]] || bat_light="GitHub"
+  fi
+
+  local variant ripgrep_conf
+  if [[ "${theme}" == "dark" ]]; then
+    variant="pro"
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+    export DFT_BACKGROUND="dark"
+    export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/eza/dark"
+    export GLAMOUR_STYLE="dark"
+    export MISE_COLOR_THEME="dracula"
+    [[ "${DISTRO}" != "macos" ]] && export BAT_THEME="${bat_dark}"
+    _starship_theme="${dracula_pro_extras_dir}/starship/pro.toml"
+  else
+    variant="alucard"
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=245"
+    export DFT_BACKGROUND="light"
+    export EZA_CONFIG_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/eza/light"
+    export GLAMOUR_STYLE="light"
+    export MISE_COLOR_THEME="base16"
+    [[ "${DISTRO}" != "macos" ]] && export BAT_THEME="${bat_light}"
+    _starship_theme="${dracula_pro_extras_dir}/starship/alucard.toml"
+  fi
+
+  # Source the Dracula Pro extras for this variant when present (absent in a
+  # container without the private theme repo — then tools keep their defaults).
+  ripgrep_conf="${dracula_pro_extras_dir}/ripgrep/${variant}.conf"
+  [[ -f "${ripgrep_conf}" ]] && export RIPGREP_CONFIG_PATH="${ripgrep_conf}"
+  local extra
+  for extra in docker fzf grep kubectx zsh-syntax-highlighting; do
+    [[ -f "${dracula_pro_extras_dir}/${extra}/${variant}.sh" ]] \
+      && source "${dracula_pro_extras_dir}/${extra}/${variant}.sh"
+  done
+
+  # Generate combined starship config
+  # Order: palette selector, main config, palette definitions
+  local starship_cache="${XDG_CACHE_HOME:-${HOME}/.cache}/starship"
+  local starship_config
+  starship_config="${XDG_CONFIG_HOME:-${HOME}/.config}/starship/starship.toml"
+  [[ -d "${starship_cache}" ]] || mkdir -p "${starship_cache}"
+
+  if [[ -f "${starship_config}" && -f "${_starship_theme}" ]]; then
+    {
+      command grep '^palette' "${_starship_theme}"
+      cat "${starship_config}"
+      command grep -v '^palette' "${_starship_theme}" | command grep -v '^#'
+    } >|"${starship_cache}/config.toml"
+    export STARSHIP_CONFIG="${starship_cache}/config.toml"
+  fi
+
+  if [[ -n "${TMUX}" && "${FZF_DEFAULT_OPTS}" != *--tmux* ]]; then
+    export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --tmux"
+  fi
+
+  # Sync macchina theme (macchina ignores XDG_CONFIG_HOME on macOS)
+  local macchina_themes="${HOME}/.config/macchina/themes"
+  local macchina_theme="${dracula_pro_extras_dir}/macchina/${variant}.toml"
+  if [[ -f "${macchina_theme}" ]]; then
+    [[ -d "${macchina_themes}" ]] || mkdir -p "${macchina_themes}"
+    command cp "${macchina_theme}" "${macchina_themes}/dracula.toml"
+  fi
+}
+
+# Per-tool config rewrites (Claude Code, git/delta, glab, helix, tlrc, zellij)
+# for the given theme. Shared by the macOS dark-notify precmd and the Linux
+# live-follow widgets. Each block guards on the target existing, so it is a
+# no-op for tools/configs that aren't present.
+_apply_theme_tools() {
+  local theme="${1}"
+  local dracula_theme
+  if [[ "${theme}" == "dark" ]]; then
+    dracula_theme="dracula-pro"
+  else
+    dracula_theme="dracula-pro-alucard"
+  fi
+
+  # Sync Claude Code theme
+  local claude_config
+  claude_config="${CLAUDE_CONFIG_DIR:-${HOME}/.config/claude}/.claude.json"
+  if [[ -f "${claude_config}" ]]; then
+    local current
+    current=$(command jq --raw-ouptut '.theme // empty' "${claude_config}" \
+      2>/dev/null)
+
+    if [[ "${current}" != "${theme}" ]]; then
+      local tmp="${claude_config}.tmp.$$"
+
+      if command jq --arg theme "${theme}" '.theme = $theme' \
+        "${claude_config}" >"${tmp}" 2>/dev/null; then
+        command mv -f "${tmp}" "${claude_config}"
+      else
+        command rm -f "${tmp}"
+      fi
+    fi
+  fi
+
+  # Sync git theme (colors + delta)
+  local git_theme_config="${XDG_CONFIG_HOME:-${HOME}/.config}/git/config.theme"
+  local git_theme_file
+  if [[ "${theme}" == "dark" ]]; then
+    git_theme_file="pro.gitconfig"
+  else
+    git_theme_file="alucard.gitconfig"
+  fi
+  if ! command grep -q "${git_theme_file}" "${git_theme_config}" 2>/dev/null; then
+    command cat >|"${git_theme_config}" <<EOF
+[include]
+  path = ~/Developer/for/me/dracula-pro-extras/themes/git/${git_theme_file}
+[delta]
+  features = ${dracula_theme}
+EOF
+  fi
+
+  # Sync glab glamour_style
+  local glab_config="${XDG_CONFIG_HOME:-${HOME}/.config}/glab-cli/config.yml"
+  if [[ -f "${glab_config}" ]]; then
+    local current_glab
+    current_glab=$(command grep '^glamour_style:' "${glab_config}" 2>/dev/null \
+      | command awk '{print $2}')
+
+    if [[ "${current_glab}" != "${theme}" ]]; then
+      if [[ "${DISTRO}" == "macos" ]]; then
+        command sed -i '' \
+          "s/^glamour_style:.*/glamour_style: ${theme}/" "${glab_config}"
+      else
+        command sed -i \
+          "s/^glamour_style:.*/glamour_style: ${theme}/" "${glab_config}"
+      fi
+    fi
+  fi
+
+  # Sync helix theme
+  local helix_config="${XDG_CONFIG_HOME:-${HOME}/.config}/helix/config.toml"
+  [[ -L "${helix_config}" ]] && helix_config=$(realpath "${helix_config}")
+  if [[ -f "${helix_config}" ]]; then
+    local helix_theme
+    if [[ "${theme}" == "dark" ]]; then
+      helix_theme="pro"
+    else
+      helix_theme="alucard"
+    fi
+
+    local current_helix
+    current_helix=$(command grep '^theme' "${helix_config}" 2>/dev/null \
+      | command sed 's/theme = "\(.*\)"/\1/')
+
+    if [[ "${current_helix}" != "${helix_theme}" ]]; then
+      if [[ "${DISTRO}" == "macos" ]]; then
+        command sed -i '' \
+          "s/^theme = \".*\"/theme = \"${helix_theme}\"/" "${helix_config}"
+      else
+        command sed -i \
+          "s/^theme = \".*\"/theme = \"${helix_theme}\"/" "${helix_config}"
+      fi
+    fi
+  fi
+
+  # Sync tlrc theme
+  local tlrc_config="${XDG_CONFIG_HOME:-${HOME}/.config}/tlrc/config.toml"
+  local tlrc_theme
+  if [[ "${theme}" == "dark" ]]; then
+    tlrc_theme="${dracula_pro_extras_dir}/tlrc/pro.toml"
+  else
+    tlrc_theme="${dracula_pro_extras_dir}/tlrc/alucard.toml"
+  fi
+  if [[ -f "${tlrc_theme}" ]]; then
+    [[ -d "${tlrc_config:h}" ]] || mkdir -p "${tlrc_config:h}"
+    command cp "${tlrc_theme}" "${tlrc_config}"
+  fi
+
+  # Sync zellij theme
+  local zellij_config="${ZELLIJ_CONFIG_DIR:-${HOME}/.config/zellij}/config.kdl"
+  [[ -L "${zellij_config}" ]] && zellij_config=$(realpath "${zellij_config}")
+  if [[ -f "${zellij_config}" ]]; then
+    local current_zellij
+    current_zellij=$(command grep '^theme ' "${zellij_config}" 2>/dev/null \
+      | command sed 's/theme "\(.*\)"/\1/')
+
+    if [[ "${current_zellij}" != "${dracula_theme}" ]]; then
+      if [[ "${DISTRO}" == "macos" ]]; then
+        command sed -i '' \
+          "s/^theme \".*\"/theme \"${dracula_theme}\"/" "${zellij_config}"
+      else
+        command sed -i \
+          "s/^theme \".*\"/theme \"${dracula_theme}\"/" "${zellij_config}"
+      fi
+    fi
+  fi
+}
+
+# Apply the detected theme at shell start (must be before prezto).
+_theme_initial="$(_detect_theme)"
+_apply_theme "${_theme_initial}"
+_apply_theme_tools "${_theme_initial}"
+unset _theme_initial
+
+# Live follow. macOS uses the dark-notify precmd (below). Elsewhere, ask the
+# terminal to report color-scheme changes (DEC mode 2031) and re-theme on the
+# fly; terminals without 2031 ignore it and the theme stays as detected at
+# start.
+if [[ ! -r "${_theme_file}" ]]; then
+  print -n '\e[?2031h' >/dev/tty 2>/dev/null
+  _theme_notify_dark() {
+    _apply_theme dark
+    _apply_theme_tools dark
+    zle reset-prompt
+  }
+  _theme_notify_light() {
+    _apply_theme light
+    _apply_theme_tools light
+    zle reset-prompt
+  }
+  zle -N _theme_notify_dark
+  zle -N _theme_notify_light
+  bindkey '\e[?997;1n' _theme_notify_dark
+  bindkey '\e[?997;2n' _theme_notify_light
+  autoload -Uz add-zsh-hook
+  _theme_disable_2031() { print -n '\e[?2031l' >/dev/tty 2>/dev/null; }
+  add-zsh-hook zshexit _theme_disable_2031
+fi
+
+# Sync fzf theme based on current appearance
+typeset -g _last_fzf_theme=""
+_sync_fzf_theme() {
+  [[ -r "${_theme_file}" ]] || return
+  local theme=$(<"${_theme_file}")
+  [[ "${theme}" == "${_last_fzf_theme}" ]] && return
+  _last_fzf_theme="${theme}"
+
+  local variant=alucard
+  [[ "${theme}" == "dark" ]] && variant=pro
+  [[ -f "${dracula_pro_extras_dir}/fzf/${variant}.sh" ]] \
+    && source "${dracula_pro_extras_dir}/fzf/${variant}.sh"
+
+  if [[ -n "${TMUX}" && "${FZF_DEFAULT_OPTS}" != *--tmux* ]]; then
+    export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} --tmux"
+  fi
+}
+
+# Wrap fzf widgets to sync theme before invocation
+_wrap_fzf_widgets() {
+  local widget
+
+  for widget in fzf-history-widget fzf-file-widget fzf-cd-widget; do
+    if (( $+functions[$widget] )); then
+      functions[_orig_$widget]=${functions[$widget]}
+      eval "$widget() { _sync_fzf_theme; _orig_$widget; }"
+    fi
+  done
+}
+
+# Live sync via dark-notify (updates on each prompt; macOS — needs the signal
+# file. On Linux the file is absent, so this returns early and theming is
+# resolved once at shell start via OSC 11.)
+zmodload -F zsh/stat b:zstat
+typeset -g _last_theme=""
+typeset -g _theme_mtime=""
+
+_dark_notify_sync() {
+  [[ -r "${_theme_file}" ]] || return
+
+  local mtime
+  mtime=$(zstat +mtime "${_theme_file}" 2>/dev/null)
+  [[ "${mtime}" == "${_theme_mtime}" ]] && return
+  _theme_mtime="${mtime}"
+
+  local theme
+  theme=$(<"${_theme_file}")
+  if [[ "${theme}" != "${_last_theme}" ]]; then
+    _last_theme="${theme}"
+    _apply_theme "${theme}"
+  fi
+  _apply_theme_tools "${theme}"
+}

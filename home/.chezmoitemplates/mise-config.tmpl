@@ -1,4 +1,5 @@
 [tools]
+{{- if not (env "DOTFILES_DEVCONTAINER") }}
 bun = "latest"
 cmake = "latest"
 deno = "latest"
@@ -16,6 +17,7 @@ ruby = "latest"
 terraform = "latest"
 uv = "latest"
 zig = "latest"
+{{- end }}
 
 [settings]
 experimental = true
