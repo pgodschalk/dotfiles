@@ -102,7 +102,7 @@ _wrap_fzf_widgets() {
   local widget
 
   for widget in fzf-history-widget fzf-file-widget fzf-cd-widget; do
-    if (($ + functions[$widget])); then
+    if (( $+functions[$widget] )); then
       functions[_orig_$widget]=${functions[$widget]}
       eval "$widget() { _sync_fzf_theme; _orig_$widget; }"
     fi
