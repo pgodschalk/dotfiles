@@ -33,6 +33,9 @@ conflict.
   unprompted refactors or scope creep.
 - Prefer the standard library and existing dependencies; justify any new ones.
 - Minimal comments — self-documenting code; comment only the non-obvious "why".
+- In shell scripts, prefer long-hand flags wherever a long form exists (e.g.
+  `curl --fail --silent --show-error --location`,
+  `set -o errexit -o nounset -o pipefail`) for readability.
 - Verify before claiming done. Run it; report failures honestly. Never assert
   success without evidence.
 
