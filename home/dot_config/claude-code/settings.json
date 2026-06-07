@@ -30,5 +30,6 @@
       }
     }
   },
-  "theme": "auto"
+  "theme": "auto",
+  "effortLevel": "xhigh"
 }
