@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>nl.kernelpanics.dark-notify</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>{{ if eq .chezmoi.arch "arm64" }}/opt/homebrew{{ else }}/usr/local{{ end }}/bin/dark-notify</string>
+      <string>-c</string>
+      <string>{{ .chezmoi.homeDir }}/Library/Scripts/dark-notify-hook</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>XDG_RUNTIME_DIR</key>
+      <string>{{ .chezmoi.homeDir }}/Library/Application Support</string>
+    </dict>
+    <key>KeepAlive</key>
+    <true />
+    <key>RunAtLoad</key>
+    <true />
+    <key>StandardErrorPath</key>
+    <string>{{ .chezmoi.homeDir }}/Library/Logs/dark-notify.err</string>
+    <key>StandardOutPath</key>
+    <string>{{ .chezmoi.homeDir }}/Library/Logs/dark-notify.out</string>
+  </dict>
+</plist>

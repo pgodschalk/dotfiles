@@ -1,0 +1,17 @@
+font-family = "JetBrainsMono Nerd Font Mono"
+font-size = 16
+theme = light:alucard,dark:pro
+mouse-hide-while-typing = true
+background-opacity = 0.95
+background-blur = true
+window-padding-x = 16
+window-padding-y = 4
+window-height = 28
+window-width = 87
+shell-integration = zsh
+shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo,path
+macos-non-native-fullscreen = visible-menu
+macos-option-as-alt = left
+
+keybind = global:§=toggle_quick_terminal
+keybind = shift+enter=text:\x1b\r

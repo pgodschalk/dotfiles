@@ -1,0 +1,28 @@
+altscreen on
+caption always "%{= kw}%-w%{= BW}%n %t%{-}%+w %-= %c"
+
+# Set a large scrollback buffer
+defscrollback 100000
+
+# Always start `screen` with UTF-8 enabled (`screen -U`)
+defutf8 on
+
+# Make ` (backtick) the command key (press `~ to type `)
+escape `~
+
+# change the hardstatus settings to give an window list at the bottom of the
+# screen, with the time and date and with the current window highlighted
+hardstatus alwayslastline
+hardstatus string '%{= rW}%-Lw%{= KW}%50>%n %t%{= rW}%+Lw%< %{= kG}%-=%D %d %M %Y %c%{-}'
+
+# Disable the startup message
+startup_message off
+
+term screen-256color
+truecolor on
+
+# fix the scroll bar
+termcapinfo xterm* ti@:te@
+
+# disable visual bell
+vbell off

@@ -1,0 +1,46 @@
+# shellcheck shell=bash
+
+# Read a 1Password secret, caching the resolved value in the OS secret store.
+#
+# `op read` round-trips to the 1Password desktop app and costs 1-3 seconds,
+# which makes any .envrc using it block the prompt redraw chain. Stashing the
+# resolved value in the login keychain (macOS) or libsecret (Linux) reduces
+# subsequent reads to ~10ms while keeping the secret out of plaintext files.
+# With no secret store available it falls back to reading 1Password directly.
+#
+# Usage:
+#   export GITLAB_TOKEN="$(op_keychain my-gitlab-token op://Vault/item/field)"
+#
+# To force a refresh (e.g. after rotation):
+#   security delete-generic-password -s my-gitlab-token   # macOS
+#   secret-tool clear op_keychain my-gitlab-token         # Linux
+op_keychain() {
+  local service=$1
+  shift
+
+  local value=""
+
+  if command -v security >/dev/null 2>&1; then
+    # macOS login keychain.
+    value=$(security find-generic-password -a "$USER" -s "$service" -w \
+      2>/dev/null || true)
+    if [[ -z $value ]]; then
+      value=$(op read "$@")
+      security add-generic-password -a "$USER" -s "$service" -w "$value" -U \
+        >/dev/null
+    fi
+  elif command -v secret-tool >/dev/null 2>&1; then
+    # Linux libsecret (GNOME Keyring / KWallet).
+    value=$(secret-tool lookup op_keychain "$service" 2>/dev/null || true)
+    if [[ -z $value ]]; then
+      value=$(op read "$@")
+      printf '%s' "$value" \
+        | secret-tool store --label="$service" op_keychain "$service"
+    fi
+  else
+    # No secret store available: resolve directly, without caching.
+    value=$(op read "$@")
+  fi
+
+  printf '%s' "$value"
+}

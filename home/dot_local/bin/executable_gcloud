@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+#
+# Wrapper for gcloud:
+#   * Prepends /usr/bin so gcloud picks up BSD readlink (uutils readlink
+#     has incompatible error output).
+#   * When invoked inside Ghostty: mirrors Ghostty's ssh-terminfo feature
+#     for `gcloud compute ssh`. gcloud spawns ssh via execve and bypasses
+#     Ghostty's shell-function wrapper, leaving the remote PTY with
+#     TERM=xterm-ghostty (unknown to ncurses on the remote). We replicate
+#     the install (infocmp -> tic on the remote) using `--command` as the
+#     transport and reuse `ghostty +ssh-cache` so repeat connects skip
+#     the install. Falls back to xterm-256color if the install fails
+#     (e.g. remote has no `tic`, or we can't resolve a zone).
+
+export PATH="/usr/bin:${PATH}"
+
+# This wrapper is installed as `gcloud` on PATH, so resolve the real binary by
+# walking PATH and skipping ourselves (compared by inode via -ef, robust to
+# symlinks and differing path spellings). Works wherever gcloud lives —
+# Homebrew on macOS, the package manager or SDK install on Linux.
+GCLOUD=""
+for _cand in $(type -aP gcloud 2>/dev/null); do
+  [[ "${_cand}" -ef "${BASH_SOURCE[0]}" ]] && continue
+  GCLOUD="${_cand}"
+  break
+done
+unset _cand
+if [[ -z "${GCLOUD}" ]]; then
+  echo "gcloud: real binary not found on PATH" >&2
+  exit 127
+fi
+readonly GCLOUD
+
+# Pass through everything that isn't `gcloud compute ssh`.
+if [[ "${1-}" != "compute" || "${2-}" != "ssh" ]]; then
+  exec "${GCLOUD}" "$@"
+fi
+
+# Only mangle TERM when actually running inside Ghostty. TERM=xterm-ghostty
+# is the strongest signal: each terminal emulator restamps TERM for the
+# shells it spawns, whereas TERM_PROGRAM and GHOSTTY_* env vars leak through
+# tmux/zellij/Zed terminals. Inside tmux on Ghostty we also skip, since
+# tmux's own terminfo should pass through unchanged.
+if [[ "${TERM-}" != "xterm-ghostty" ]] \
+  || [[ -z "${GHOSTTY_BIN_DIR-}" ]] \
+  || [[ "${GHOSTTY_SHELL_FEATURES-}" != *ssh-terminfo* ]]; then
+  exec "${GCLOUD}" "$@"
+fi
+
+# Skip the install dance if the user supplied their own --command. Stacking
+# two --command flags would let gcloud silently keep only one of them.
+for arg in "$@"; do
+  case "${arg}" in
+    --command | --command=*)
+      exec env TERM="xterm-256color" "${GCLOUD}" "$@"
+      ;;
+  esac
+done
+
+# Parse instance and zone from args. The instance is the first positional
+# after `compute ssh`; --zone takes either `=` or space-separated value
+# form. Other flag-with-value combinations using the space form (e.g.
+# `--project X`) may misidentify X as the instance — `--flag=value` form
+# avoids this entirely and is what gcloud's own docs use.
+args=("$@")
+total=${#args[@]}
+instance=""
+zone=""
+i=2
+while ((i < total)); do
+  case "${args[i]}" in
+    --zone=*) zone="${args[i]#*=}" ;;
+    --zone)
+      ((i++))
+      ((i < total)) && zone="${args[i]}"
+      ;;
+    --*) ;;
+    *) [[ -z "${instance}" ]] && instance="${args[i]}" ;;
+  esac
+  ((i++))
+done
+
+ssh_term="xterm-256color"
+
+if [[ -n "${instance}" ]] && command -v infocmp >/dev/null 2>&1; then
+  ssh_target="gcloud:${instance}"
+
+  if "${GHOSTTY_BIN_DIR}/ghostty" +ssh-cache --host="${ssh_target}" \
+    >/dev/null 2>&1; then
+    ssh_term="xterm-ghostty"
+  else
+    # Cache miss. We need a zone for the install call: gcloud refuses to
+    # auto-resolve zones in non-interactive mode (anything with --command),
+    # the way it does for plain `gcloud compute ssh INSTANCE`. Read the
+    # user's configured default zone — same source gcloud's interactive
+    # auto-resolve picks first, no API call, no SIGPIPE traps.
+    if [[ -z "${zone}" ]]; then
+      zone="$("${GCLOUD}" config get-value compute/zone 2>/dev/null)"
+      [[ "${zone}" == "(unset)" ]] && zone=""
+    fi
+
+    if [[ -n "${zone}" ]]; then
+      ssh_terminfo="$(infocmp -0 -x xterm-ghostty 2>/dev/null)"
+
+      if [[ -n "${ssh_terminfo}" ]]; then
+        echo "Setting up xterm-ghostty terminfo on ${instance} via gcloud..." >&2
+
+        stderr_log="$(mktemp)"
+        if printf '%s\n' "${ssh_terminfo}" \
+          | "${GCLOUD}" "$@" --zone="${zone}" --ssh-flag=-T --command='
+              infocmp xterm-ghostty >/dev/null 2>&1 && exit 0
+              command -v tic >/dev/null 2>&1 || exit 1
+              mkdir -p ~/.terminfo 2>/dev/null && tic -x - 2>/dev/null && exit 0
+              exit 1
+            ' 2>"${stderr_log}"; then
+          ssh_term="xterm-ghostty"
+          "${GHOSTTY_BIN_DIR}/ghostty" +ssh-cache --add="${ssh_target}" \
+            >/dev/null 2>&1 || true
+        else
+          echo "Warning: Failed to install terminfo, falling back to xterm-256color." >&2
+          if [[ -s "${stderr_log}" ]]; then
+            sed 's/^/  gcloud: /' "${stderr_log}" >&2
+          fi
+        fi
+        rm -f "${stderr_log}"
+      fi
+    fi
+  fi
+fi
+
+exec env TERM="${ssh_term}" "${GCLOUD}" "$@"

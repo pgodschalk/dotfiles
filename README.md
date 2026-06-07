@@ -1,0 +1,237 @@
+# @pgodschalk/dotfiles
+
+[Report a Bug](https://github.com/pgodschalk/dotfiles/issues/new?assignees=&labels=bug&template=bug_report.md&title=bug%3A+)
+·
+[Request a Feature](https://github.com/pgodschalk/dotfiles/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=feat%3A+)
+
+My collection of dotfiles
+
+[![Project license](https://img.shields.io/github/license/pgodschalk/dotfiles.svg?style=flat-square)](LICENSE)
+
+[![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square)](https://github.com/pgodschalk/dotfiles/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
+[![code with love by pgodschalk](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-pgodschalk-ff1414.svg?style=flat-square)](https://github.com/pgodschalk)
+
+- [About](#about)
+  - [Built with](#built-with)
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
+- [Support](#support)
+- [Project assistance](#project-assistance)
+- [Contributing](#contributing)
+- [Authors & contributors](#authors--contributors)
+- [Security](#security)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
+
+## About
+
+My collection of dotfiles. I mainly use this with [Ghostty](https://ghostty.org)
+as a terminal emulator on macOS, and
+[Windows Terminal](https://github.com/microsoft/terminal) on Windows.
+
+[Zed](https://zed.dev) is my main editor, though I do keep
+[Visual Studio Code](https://code.visualstudio.com) around mainly for Windows
+support and Jupyter Notebooks (until that feature gets merged into mainline
+Zed).
+
+Other than that,
+
+- [1Password](https://1password.com) is my secrets manager.
+- [Lens](https://lenshq.io) is my Kubernetes IDE. I don't like TUI's but I also
+  don't like typing `kubectl` (even with aliases) thousands of times per day.
+- [Monodraw](https://monodraw.helftone.com) is my diagramming tool.
+- [OrbStack](https://orbstack.dev) runs my Docker containers, since Docker
+  Desktop is just slow, and gets in my way a lot.
+- [Passepartout](https://passepartoutvpn.app) is my VPN manager, other than
+  Tailscale.
+- [RapidAPI](https://rapidapi.com) is used for playing with API's, if
+  [xh](https://github.com/ducaale/xh) isn't enough.
+- [Secretive](https://github.com/maxgoedjen/secretive) is my SSH agent.
+- [SnippetsLab](https://www.renfei.org/snippets-lab/) is where I keep my code
+  snippets.
+- [TablePlus](https://tableplus.com) is my database browser.
+- [Tailscale](https://tailscale.com) is my personal VPN.
+- [Ulysses](https://www.ulysses.app) is my long form Markdown editor.
+- [UTM](https://mac.getutm.app) is my virtualization manager.
+- [Xcode](https://developer.apple.com/xcode/) kinda just exists.
+
+![Light theme](docs/assets/light.webp) ![Dark theme](docs/assets/dark.webp)
+
+### Built with
+
+- [chezmoi](https://www.chezmoi.io)
+
+## Getting started
+
+### Prerequisites
+
+- A macOS or Linux environment to copy or symlink everything into.
+
+### Installation
+
+These dotfiles are managed with [chezmoi](https://chezmoi.io). The chezmoi
+source state lives in `home/` (see `.chezmoiroot`).
+
+```sh
+# Install chezmoi (macOS)
+brew install chezmoi
+
+# Initialise from this repo and apply
+chezmoi init --apply pgodschalk/dotfiles
+```
+
+On a fresh machine, also remove any system-level `ZDOTDIR` override so the
+chezmoi-managed `~/.zshenv` can bootstrap it:
+
+```sh
+sudo rm -f /etc/zshenv      # macOS
+sudo rm -f /etc/zsh/zshenv  # Linux
+```
+
+## Usage
+
+Edit the source and apply:
+
+```sh
+chezmoi edit ~/.config/git/config   # opens the source file
+chezmoi apply                       # write changes to your home directory
+chezmoi cd                          # drop into the source directory
+```
+
+The repo keeps the XDG convention, so `$XDG_CONFIG_HOME` resolves to
+`~/Library/Application Support` on macOS but `~/.config` on Linux. Because
+chezmoi derives each target path statically from its source path, shared files
+are stored once as a canonical copy at their Linux target path
+(`home/dot_config/…`, `home/dot_local/…`) and a small macOS stub under
+`home/Library/…` pulls the canonical bytes in with chezmoi's `include` function.
+`home/.chezmoiignore` selects the right subtree per OS.
+
+## Roadmap
+
+See the [open issues](https://github.com/pgodschalk/dotfiles/issues) for a list
+of proposed features (and known issues).
+
+- [Top Feature Requests](https://github.com/pgodschalk/dotfiles/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc)
+  (Add your votes using the 👍 reaction)
+- [Top Bugs](https://github.com/pgodschalk/dotfiles/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc)
+  (Add your votes using the 👍 reaction)
+- [Newest Bugs](https://github.com/pgodschalk/dotfiles/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+
+## Support
+
+Reach out to the maintainer at one of the following places:
+
+- [GitHub issues](https://github.com/pgodschalk/dotfiles/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+)
+- Contact options listed on [this GitHub profile](https://github.com/pgodschalk)
+
+## Project assistance
+
+If you want to say **thank you** or/and support active development of dotfiles:
+
+- Add a [GitHub Star](https://github.com/pgodschalk/dotfiles) to the project.
+- Write interesting articles about the project on [Dev.to](https://dev.to/),
+  [Medium](https://medium.com/) or your personal blog.
+
+Together, we can make dotfiles **better**!
+
+## Contributing
+
+First off, thanks for taking the time to contribute! Contributions are what make
+the open-source community such an amazing place to learn, inspire, and create.
+Any contributions you make will benefit everybody else and are **greatly
+appreciated**.
+
+Please read [our contribution guidelines](CONTRIBUTING.md), and thank you for
+being involved!
+
+## Authors & contributors
+
+The original setup of this repository is by
+[Patrick Godschalk](https://github.com/pgodschalk).
+
+For a full list of all authors and contributors, see
+[the contributors page](https://github.com/pgodschalk/dotfiles/contributors).
+
+## Security
+
+dotfiles follows good practices of security, but 100% security cannot be
+assured. dotfiles is provided **"as is"** without any **warranty**. Use at your
+own risk.
+
+_For more information and to report security issues, please refer to our
+[security documentation](SECURITY.md)._
+
+## License
+
+This project is licensed under the EUPL-1.2 license.
+
+See [LICENSE](LICENSE.txt) for more information.
+
+## Acknowledgements
+
+- [$HOME/.hushlogin](https://github.com/mathiasbynens/dotfiles/blob/main/.hushlogin)
+  from [@mathiasbynens](https://github.com/mathiasbynens)
+- [$HOME/.ssh/config](https://infosec.mozilla.org/guidelines/openssh) from
+  [@mozilla](https://github.com/mozilla)
+- [$XDG_BIN_HOME/beep](https://github.com/garybernhardt/dotfiles/blob/main/bin/beep)
+  from [@garybernhardt](https://github.com/garybernhardt)
+- [$XDG_BIN_HOME/git-churn](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-churn)
+- [$XDG_BIN_HOME/git-divergence](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-divergence)
+- [$XDG_BIN_HOME/git-goodness](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-goodness)
+- [$XDG_BIN_HOME/git-what-the-hell-just-happened](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-what-the-hell-just-happened)
+- [$XDG_BIN_HOME/git-whodoneit](https://github.com/garybernhardt/dotfiles/blob/main/bin/git-whodoneit)
+- [$XDG_BIN_HOME/githelpers](https://github.com/garybernhardt/dotfiles/blob/main/.githelpers)
+  from [@garybernhardt](https://github.com/garybernhardt)
+- [$XDG_BIN_HOME/gn](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn)
+- [$XDG_BIN_HOME/gn.py](https://github.com/garybernhardt/dotfiles/blob/main/bin/gn.py)
+- [$XDG_CONFIG_HOME/com.mitchellh.ghostty/config](https://github.com/mitchellh/nixos-config/blob/main/users/mitchellh/ghostty.linux)
+  from [@mitchellh](https://github.com/mitchellh)
+- [$XDG_CONFIG_HOME/git/attributes](https://github.com/gitattributes/gitattributes/tree/master/Global)
+  from [@gitattributes](https://github.com/gitattributes)
+- [$XDG_CONFIG_HOME/git/config](https://github.com/garybernhardt/dotfiles/blob/main/.gitconfig)
+  from [@garybernhardt](https://github.com/garybernhardt)
+- [$XDG_CONFIG_HOME/git/config](https://blog.gitbutler.com/how-git-core-devs-configure-git)
+  from [@gitbutler](https://github.com/gitbutler)
+- [$XDG_CONFIG_HOME/git/config](https://www.git-tower.com/blog/make-git-rebase-safe-on-osx/)
+  from [@gittower](https://github.com/gittower)
+- [$XDG_CONFIG_HOME/git/config](https://jvns.ca/blog/2024/02/16/popular-git-config-options/)
+  from [@jvns](https://github.com/jvns)
+- [$XDG_CONFIG_HOME/git/config](https://github.com/mathiasbynens/dotfiles/blob/main/.gitconfig)
+  from [@mathiasbynens](https://github.com/mathiasbynens)
+- [$XDG_CONFIG_HOME/git/config](http://michael-kuehnel.de/git/2014/11/21/git-mac-osx-and-german-umlaute.html)
+  from [@mischah](https://github.com/mischah)
+- [$XDG_CONFIG_HOME/git/ignore](https://github.com/github/gitignore/tree/main/Global)
+  from [@github](https://github.com/github)
+- [$XDG_CONFIG_HOME/jj/config](https://github.com/mitchellh/nixos-config/blob/main/users/mitchellh/home-manager.nix)
+  from [@mitchellh](https://github.com/mitchellh)
+- [$XDG_CONFIG_HOME/nano/nanorc](https://bash-prompt.net/guides/nanorc-settings/)
+  from Elliot Cooper
+- [$XDG_CONFIG_HOME/python/pythonrc](https://github.com/b3nj5m1n/xdg-ninja/blob/main/programs/python.json#L4)
+  from [@b3nj5m1n](https://github.com/b3nj5m1n)
+- [$XDG_CONFIG_HOME/readline/inputrc](https://github.com/mathiasbynens/dotfiles/blob/main/.inputrc)
+  from [@mathiasbynens](https://github.com/mathiasbynens)
+- [$XDG_CONFIG_HOME/starship/starship.toml](https://starship.rs/presets/nerd-font)
+  from [@starship](https://github.com/starship)
+- [$XDG_CONFIG_HOME/vim/vimrc](https://github.com/mathiasbynens/dotfiles/blob/main/.vimrc)
+  from [@mathiasbynens](https://github.com/mathiasbynens)
+- [$XDG_CONFIG_HOME/.curlc](https://github.com/mathiasbynens/dotfiles/blob/main/.curlrc)
+  from [@mathiasbynens](https://github.com/mathiasbynens)
+- [$XDG_CONFIG_HOME/wgetrc](https://github.com/mathiasbynens/dotfiles/blob/main/.wgetrc)
+  from [@mathiasbynens](https://github.com/mathiasbynens)
+- [$XDG_DATA_HOME/gnupg/gpg.conf](https://github.com/drduh/config/blob/main/gpg.conf)
+  from [@drduh](https://github.com/drduh)
+- [$XDG_DATA_HOME/gnupg/gpg-agent.conf](https://github.com/drduh/config/blob/main/gpg-agent.conf)
+  from [@drduh](https://github.com/drduh)
+- [$ZDOTDIR/.aliases](https://github.com/mathiasbynens/dotfiles/blob/main/.aliases)
+  from [@mathiasbynens](https://github.com/mathiasbynens)
+- [$ZDOTDIR/.aliases](https://github.com/mitchellh/nixos-config/blob/main/users/mitchellh/home-manager.nix)
+  from [@mitchellh](https://github.com/mitchellh)
+- [$ZDOTDIR/.exports](https://github.com/mathiasbynens/dotfiles/blob/main/.exports)
+  from [@mathiasbynens](https://github.com/mathiasbynens)
+- [$ZDOTDIR/.functions](https://github.com/mathiasbynens/dotfiles/blob/main/.functions)
+  from [@mathiasbynens](https://github.com/mathiasbynens)
+- [$ZDOTDIR/.zprezto](https://github.com/sorin-ionescu/prezto) from
+  [@sorin-ionescu](https://github.com/sorin-ionescu)

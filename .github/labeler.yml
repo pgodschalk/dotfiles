@@ -1,0 +1,13 @@
+ci:
+  - changed-files:
+      - any-glob-to-any-file: ".github/workflows/**"
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "*.md"
+          - "**/*.md"
+          - "LICENSE.txt"
+security:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/codeql.yml"

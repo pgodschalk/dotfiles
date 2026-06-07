@@ -1,0 +1,19 @@
+{{ $zdot := "Library/Application Support/zsh" -}}
+{{ if ne .chezmoi.os "darwin" }}{{ $zdot = ".config/zsh" }}{{ end -}}
+
+["{{ $zdot }}/.zprezto"]
+    type = "git-repo"
+    url = "https://github.com/sorin-ionescu/prezto.git"
+    clone.args = ["--recursive"]
+    pull.args = ["--ff-only"]
+
+["{{ $zdot }}/.zprezto/contrib"]
+    type = "git-repo"
+    url = "https://github.com/belak/prezto-contrib.git"
+    clone.args = ["--recursive"]
+    pull.args = ["--ff-only"]
+
+["{{ $zdot }}/.zsh-defer"]
+    type = "git-repo"
+    url = "https://github.com/romkatv/zsh-defer.git"
+    pull.args = ["--ff-only"]

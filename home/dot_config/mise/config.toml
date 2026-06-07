@@ -1,0 +1,22 @@
+[tools]
+bun = "latest"
+cmake = "latest"
+deno = "latest"
+dotnet = "latest"
+go = "latest"
+helm = ["latest", "3"]
+java = "openjdk"
+kotlin = { version = "latest", asset_pattern = "kotlin-compiler-*.zip", bin_path = "kotlinc/bin" }
+node = "lts"
+php = "latest"
+poetry = "latest"
+python = ["3.14", "3.13", "3.12", "3.11", "3.10"]
+r = "latest"
+ruby = "latest"
+terraform = "latest"
+uv = "latest"
+zig = "latest"
+
+[settings]
+experimental = true
+env_shell_expand = true

@@ -1,0 +1,41 @@
+// Folder-specific settings
+//
+// For a full list of overridable settings, and general information on folder-specific settings,
+// see the documentation: https://zed.dev/docs/configuring-zed#settings-files
+{
+	"file_types": {
+		"Ghostty": ["**/ghostty/config"],
+		"Git Attributes": ["**/git/attributes"],
+		"Git Config": ["**/git/config*"],
+		"Git Ignore": ["**/git/ignore"],
+		"ini": ["**/npmrc", "**/wgetrc"],
+		"JSONC": ["**/Code/User/*.json"],
+		"Plain Text": [
+			"**/dot_hushlogin",
+			"**/private_gnupg/*.conf",
+			"**/bun/default-bun-packages",
+			"**/gem/default-gem-packages",
+			"**/gem/default-go-packages",
+			"**/npm/default-npm-packages",
+			"**/pip/default-python-packages"
+		],
+		"Python": [
+			"**/dot_local/bin/executable_gn",
+			"**/dot_local/bin/executable_gn.py"
+		],
+		"Ruby": ["**/dot_local/bin/executable_git-whodoneit"],
+		"Shell Script": [
+			"**/dot_local/bin/*",
+			"**/dot_config/zsh/dot_*",
+			"**/zsh/dot_theme-sync",
+			"**/dot_zshenv.tmpl",
+			"**/dot_config/direnv/direnvrc"
+		],
+		"SSH Config": ["**/private_dot_ssh/private_config"]
+	},
+	"languages": {
+		"Go Text Template": {
+			"format_on_save": "off"
+		}
+	}
+}

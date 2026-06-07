@@ -1,0 +1,232 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json\
+name: dotfiles
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  lint-ini:
+    name: Lint ini
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - name: Cache global bun packages
+        uses: actions/cache@v5
+        with:
+          key: bun-global-ini-${{ runner.os }}-prettier
+          path: ~/.bun/install/global
+      - name: Install Prettier with INI plugin
+        run: bun add --global prettier prettier-plugin-ini
+      - name: Format check with Prettier
+        run: |
+          prettier \
+            --check \
+            --parser ini \
+            --plugin \
+            ~/.bun/install/global/node_modules/prettier-plugin-ini/src/plugin.js \
+            home/dot_config/npm/npmrc
+  lint-json:
+    name: Lint JSON
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Biome
+        uses: biomejs/setup-biome@4c91541eaada48f67d7dbd7833600ce162b68f51 # v2.7.1
+      - name: Lint and format check with Biome
+        run: |
+          shopt -s globstar nullglob dotglob
+          files=(**/*.json **/*.jsonc)
+          if [[ ${#files[@]} -gt 0 ]]; then
+            biome ci "${files[@]}"
+          fi
+  lint-kdl:
+    name: Lint KDL
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Install kdlfmt
+        uses: hougesen/kdlfmt@8ae41018674bf39b14ef8fa7a342530d3eba9fc1 # v0.1.7
+      - name: Format check with kdlfmt
+        run: |
+          shopt -s globstar nullglob
+          files=(**/*.kdl)
+          if [[ ${#files[@]} -gt 0 ]]; then
+            kdlfmt check "${files[@]}"
+          fi
+  lint-markdown:
+    name: Lint Markdown
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Lint with markdownlint-cli2
+        uses: DavidAnson/markdownlint-cli2-action@ded1f9488f68a970bc66ea5619e13e9b52e601cd # v23.2.0
+        with:
+          globs: |
+            **/.github/PULL_REQUEST_TEMPLATE
+            **/*.md
+      - name: Set up bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - name: Cache global bun packages
+        uses: actions/cache@v5
+        with:
+          key: bun-global-markdown-${{ runner.os }}-prettier
+          path: ~/.bun/install/global
+      - name: Install Prettier
+        run: bun add --global prettier
+      - name: Format check with Prettier
+        run: |
+          prettier \
+            --check \
+            --parser markdown \
+            --prose-wrap always \
+            --print-width 80 \
+            "**/*.md" "**/.github/PULL_REQUEST_TEMPLATE"
+  lint-python:
+    name: Lint Python
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+      - name: Lint and format check with Ruff
+        uses: astral-sh/ruff-action@0ce1b0bf8b818ef400413f810f8a11cdbda0034b # v4.0.0
+        with:
+          src: home/dot_local/bin/executable_gn home/dot_local/bin/executable_gn.py home/dot_config/python/pythonrc
+      - name: Set up uv
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+      - name: Type check with ty
+        run: |
+          uvx ty check \
+            home/dot_local/bin/executable_gn \
+            home/dot_local/bin/executable_gn.py \
+            home/dot_config/python/pythonrc
+  lint-ruby:
+    name: Lint Ruby
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f # v1.310.0
+        with:
+          bundler-cache: true
+          ruby-version: "4.0"
+      - name: Install tools
+        run: gem install ruby-lsp steep
+      - name: Lint with RuboCop
+        run: bundle exec rubocop --format github home/dot_local/bin/executable_git-whodoneit
+      - name: Check with ruby-lsp
+        run: ruby-lsp-check home/dot_local/bin/executable_git-whodoneit
+      - name: Type check with Steep
+        run: steep check home/dot_local/bin/executable_git-whodoneit
+  lint-shell:
+    name: Lint Shell
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Install shfmt
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes shfmt
+        env:
+          DEBIAN_FRONTEND: noninteractive
+      - name: Lint with shellcheck
+        run: |
+          shopt -s globstar nullglob extglob
+
+          bash_files=(
+            **/*.env*
+            **/*.sh
+            home/dot_local/bin/executable_!(ai-generate|dark-notify-hook|launchctl-env|gn|gn.py|git-whodoneit)
+          )
+          if [[ ${#bash_files[@]} -gt 0 ]]; then
+            shellcheck --shell=bash "${bash_files[@]}"
+          fi
+
+          # shellcheck doesn't support zsh, skip zsh files
+      - name: Format check with shfmt
+        run: |
+          shopt -s globstar nullglob extglob
+          files=(
+            **/*.env*
+            **/*.sh
+            home/dot_local/bin/executable_!(gn|gn.py|git-whodoneit)
+          )
+
+          if [[ ${#files[@]} -gt 0 ]]; then
+            shfmt --diff --indent 2 --case-indent --binary-next-line \
+              "${files[@]}"
+          fi
+  lint-toml:
+    name: Lint TOML
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Tombi
+        uses: tombi-toml/setup-tombi@df24458044353545055a12fe0d0742df9d3c5bea # v1.1.2
+      - name: Lint and format check with Tombi
+        run: |
+          tombi format --check "**/*.toml"
+          tombi lint "**/*.toml"
+  lint-yaml:
+    name: Lint YAML
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: stable
+          cache: false
+      - name: Cache Go binaries
+        uses: actions/cache@v5
+        with:
+          key: go-bin-yaml-${{ runner.os }}-yamlfmt
+          path: ~/go/bin
+      - name: Install yamlfmt
+        run: go install github.com/google/yamlfmt/cmd/yamlfmt@latest
+      - name: Format check with yamlfmt
+        run: yamlfmt --lint "**/*.{yml,yaml}"

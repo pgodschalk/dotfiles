@@ -1,0 +1,11 @@
+certifi
+crcmod
+cryptography
+debugpy
+google_crc32c
+grpcio
+ipykernel
+numpy
+pip
+pyopenssl
+setuptools

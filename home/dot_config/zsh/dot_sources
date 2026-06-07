@@ -1,0 +1,182 @@
+# shellcheck shell=zsh
+
+_zdir="${ZDOTDIR:-${HOME}}"
+
+# Exports (must be first)
+if [[ -s "${_zdir}/.exports" ]]; then
+  source "${_zdir}/.exports"
+fi
+if [[ -s "${_zdir}/.exports_private" ]]; then
+  source "${_zdir}/.exports_private"
+fi
+
+# Theme sync (must be before prezto)
+if [[ -s "${_zdir}/.theme-sync" ]]; then
+  source "${_zdir}/.theme-sync"
+fi
+
+# Cache directory
+_cache="${XDG_CACHE_HOME:-${HOME}/.cache}/zsh"
+[[ -d "${_cache}" ]] || mkdir -p "${_cache}"
+
+# Export SSH agent public keys for signing (Linux only)
+if [[ "${DISTRO}" != "macos" ]] && [[ -n "${SSH_AUTH_SOCK}" ]] \
+    && (( $+commands[ssh-add] )); then
+  ssh-add -L > "${HOME}/.ssh/agent-keys.pub" 2>/dev/null || true
+
+  # Generate allowed-signers from agent keys
+  if [[ -s "${HOME}/.ssh/agent-keys.pub" ]]; then
+    _email="$(git config --global user.email 2>/dev/null)"
+    if [[ -n "${_email}" ]]; then
+      mkdir -p "${XDG_CONFIG_HOME}/git"
+      awk -v email="${_email}" '{print email, $1, $2}' \
+        "${HOME}/.ssh/agent-keys.pub" > "${XDG_CONFIG_HOME}/git/allowed-signers"
+    fi
+    unset _email
+  fi
+fi
+
+# zsh-defer
+if [[ -s "${ZDOTDIR}/.zsh-defer/zsh-defer.plugin.zsh" ]]; then
+  source "${ZDOTDIR}/.zsh-defer/zsh-defer.plugin.zsh"
+fi
+
+# Mise (cached by binary mtime)
+if (( $+commands[mise] )); then
+  _mise_cache="${_cache}/mise.zsh"
+  _mise_bin="${commands[mise]}"
+
+  if [[ ! -f "${_mise_cache}" ]] \
+      || [[ "${_mise_bin}" -nt "${_mise_cache}" ]]; then
+    mise activate zsh >| "${_mise_cache}"
+    zcompile "${_mise_cache}"
+  fi
+
+  source "${_mise_cache}"
+
+  unset _mise_cache _mise_bin
+fi
+
+# Prezto
+if [[ -s "${_zdir}/.zprezto/init.zsh" ]]; then
+  source "${_zdir}/.zprezto/init.zsh"
+fi
+
+# Prezto modules
+if [[ -s "${_zdir}/.zmodules" ]]; then
+  source "${_zdir}/.zmodules"
+fi
+
+# Completions (must be after prezto)
+if [[ -s "${_zdir}/.completions" ]]; then
+  source "${_zdir}/.completions"
+fi
+
+# Aliases
+[[ -s "${_zdir}/.aliases" ]] && source "${_zdir}/.aliases"
+[[ -s "${_zdir}/.aliases_private" ]] && source "${_zdir}/.aliases_private"
+
+# Functions
+[[ -s "${_zdir}/.functions" ]] && source "${_zdir}/.functions"
+[[ -s "${_zdir}/.functions_private" ]] && source "${_zdir}/.functions_private"
+
+# Sources
+if [[ -s "${_zdir}/.sources_private" ]]; then
+  source "${_zdir}/.sources_private"
+fi
+
+# Prompt (cached by binary mtime)
+if (( $+commands[starship] )); then
+  _starship_cache="${_cache}/starship.zsh"
+  _starship_bin="${commands[starship]}"
+  if [[ ! -f "${_starship_cache}" ]] \
+      || [[ "${_starship_bin}" -nt "${_starship_cache}" ]]; then
+    starship init zsh >| "${_starship_cache}"
+    zcompile "${_starship_cache}"
+  fi
+  source "${_starship_cache}"
+  unset _starship_cache _starship_bin
+fi
+
+# 1Password
+if [[ -s "${XDG_CONFIG_HOME}/op/plugins.sh" ]]; then
+  _load_op_plugins() {
+    source "${XDG_CONFIG_HOME}/op/plugins.sh"
+
+    # Replace aliases with functions (aliases break completion)
+    if (( $+aliases[brew] )) && (( $+functions[_brew] )); then
+      unalias brew
+      brew() { op plugin run -- brew "${@}" }
+      compdef _brew brew
+    fi
+
+    if (( $+aliases[gh] )) && (( $+functions[_gh] )); then
+      unalias gh
+      gh() { op plugin run -- gh "${@}" }
+      compdef _gh gh
+    fi
+
+    # Replace glab alias with function (bypass op plugin when GITLAB_TOKEN is
+    # set via mise)
+    if (( $+aliases[glab] )); then
+      unalias glab
+      glab() {
+        if [[ -n "${GITLAB_TOKEN}" ]]; then
+          command glab "${@}"
+        else
+          op plugin run -- glab "${@}"
+        fi
+      }
+    fi
+  }
+  _load_op_plugins
+  unfunction _load_op_plugins
+fi
+
+# fzf key-bindings and fuzzy completion (cached by binary mtime)
+if (( $+commands[fzf] )); then
+  _fzf_cache="${_cache}/fzf.zsh"
+  _fzf_bin="${commands[fzf]}"
+
+  if [[ ! -s "${_fzf_cache}" ]] \
+      || [[ "${_fzf_bin}" -nt "${_fzf_cache}" ]]; then
+    if fzf --zsh &>/dev/null; then
+      fzf --zsh >| "${_fzf_cache}"
+    elif [[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ]]; then
+      cat /usr/share/doc/fzf/examples/key-bindings.zsh \
+          /usr/share/doc/fzf/examples/completion.zsh >| "${_fzf_cache}"
+    elif (( $+commands[curl] )); then
+      # Download shell integration matching installed fzf version
+      _fzf_ver="$(fzf --version | awk '{print $1}')"
+      _fzf_url="https://raw.githubusercontent.com/junegunn/fzf/${_fzf_ver}/shell"
+      { curl --fail --silent --show-error --location \
+          "${_fzf_url}/key-bindings.zsh"
+        curl --fail --silent --show-error --location \
+          "${_fzf_url}/completion.zsh"
+      } >| "${_fzf_cache}" 2>/dev/null
+      unset _fzf_ver _fzf_url
+    fi
+    [[ -s "${_fzf_cache}" ]] && zcompile "${_fzf_cache}"
+  fi
+
+  [[ -s "${_fzf_cache}" ]] && source "${_fzf_cache}"
+  unset _fzf_cache _fzf_bin
+
+  # Wrap fzf widgets
+  (( $+functions[_wrap_fzf_widgets] )) && _wrap_fzf_widgets
+fi
+
+# Drop direnv's SIGINT mask so CTRL+C stays responsive during prompt redraw.
+# A cancelled `direnv export` produces no output, so eval leaves env unchanged.
+if (( $+functions[_direnv_hook] )); then
+  _direnv_hook() {
+    eval "$(command direnv export zsh)"
+  }
+fi
+
+# Enable live theme sync (only if .theme-sync defined the hook; macOS-only)
+if (( $+functions[_dark_notify_sync] )); then
+  precmd_functions+=(_dark_notify_sync)
+fi
+
+unset _t _src_start _zdir _cache

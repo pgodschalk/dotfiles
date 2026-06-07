@@ -1,0 +1,22 @@
+include /opt/homebrew/share/nano/*.nanorc
+include /opt/homebrew/share/nanorc/*.nanorc
+
+set atblanks
+set autoindent
+set backup
+set backupdir "~/Library/Caches/nano/backups/"
+set casesensitive
+set constantshow
+set cutfromcursor
+set historylog
+set indicator
+set linenumbers
+set minibar
+set nohelp
+set positionlog
+set smarthome
+set speller "aspell --dont-backup --check"
+set softwrap
+set tabsize 2
+set tabstospaces
+set zap

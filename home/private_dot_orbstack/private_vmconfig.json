@@ -1,0 +1,4 @@
+{
+	"data_allow_backup": true,
+	"k8s.enable": true
+}

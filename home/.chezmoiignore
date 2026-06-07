@@ -1,0 +1,11 @@
+{{ if eq .chezmoi.os "darwin" -}}
+.config/*/**
+!.config/claude-code/**
+!.config/zed/**
+.config/.curlrc
+.config/wgetrc
+.local/**
+{{- else -}}
+Library/**
+.orbstack/**
+{{- end -}}

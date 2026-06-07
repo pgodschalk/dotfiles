@@ -1,0 +1,8 @@
+# shellcheck shell=zsh
+
+{{ if eq .chezmoi.os "darwin" -}}
+export ZDOTDIR="${HOME}/Library/Application Support/zsh"
+{{ else -}}
+export ZDOTDIR="${XDG_CONFIG_HOME:-${HOME}/.config}/zsh"
+{{ end -}}
+[[ -f "${ZDOTDIR}/.zshenv" ]] && source "${ZDOTDIR}/.zshenv"

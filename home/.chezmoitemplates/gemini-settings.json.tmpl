@@ -1,0 +1,55 @@
+{{- $opAccount := "my.1password.eu" -}}
+{{- $cache := "Library/Caches" -}}
+{{- if ne .chezmoi.os "darwin" }}{{ $cache = ".cache" }}{{ end -}}
+{{- $mcpSecrets := dict "CONTEXT7_API_KEY" "op://Private/t7uhvov2kgiiwsivkc2rgehjn4/api token" "GITHUB_PERSONAL_ACCESS_TOKEN" "op://Private/bhmimlus3gz3xfqr4xnbobbdje/github mcp server" -}}
+{{- $servers := dict -}}
+{{- range $name, $srv := (include "dot_mcp.json" | fromJson).mcpServers -}}
+{{-   if hasKey $srv "url" -}}
+{{-     $entry := dict -}}
+{{-     if eq (dig "type" "" $srv) "sse" -}}{{ $entry = set $entry "url" $srv.url }}{{- else -}}{{ $entry = set $entry "httpUrl" $srv.url }}{{- end -}}
+{{-     if hasKey $srv "headers" -}}
+{{-       $hdrs := dict -}}
+{{-       range $hk, $hv := $srv.headers -}}
+{{-         $val := $hv -}}
+{{-         range $env, $ref := $mcpSecrets -}}
+{{-           if contains (printf "${%s}" $env) $val -}}{{ $val = $val | replace (printf "${%s}" $env) (onepasswordRead $ref $opAccount) }}{{- end -}}
+{{-         end -}}
+{{-         $hdrs = set $hdrs $hk $val -}}
+{{-       end -}}
+{{-       $entry = set $entry "headers" $hdrs -}}
+{{-     end -}}
+{{-     $servers = set $servers $name $entry -}}
+{{-   else -}}
+{{-     $args := list -}}
+{{-     range $a := $srv.args -}}{{ $args = append $args ($a | replace "${XDG_CACHE_HOME}" (printf "%s/%s" $.chezmoi.homeDir $cache)) }}{{- end -}}
+{{-     $entry := dict "command" $srv.command "args" $args -}}
+{{-     if hasKey $srv "env" -}}{{ $entry = set $entry "env" $srv.env }}{{- end -}}
+{{-     $servers = set $servers $name $entry -}}
+{{-   end -}}
+{{- end -}}
+{
+  "security": {
+    "auth": {
+      "selectedType": "oauth-personal"
+    }
+  },
+  "general": {
+    "plan": {
+      "modelRouting": false
+    },
+    "enableNotifications": true,
+    "enableAutoUpdate": false
+  },
+  "ui": {
+    "autoThemeSwitching": true
+  },
+  "ide": {
+    "enabled": true
+  },
+  "model": {},
+  "tools": {},
+  "experimental": {
+    "voice": {}
+  },
+  "mcpServers": {{ $servers | toPrettyJson | indent 2 | trim }}
+}
