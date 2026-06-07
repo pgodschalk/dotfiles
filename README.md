@@ -109,6 +109,40 @@ are stored once as a canonical copy at their Linux target path
 `home/Library/…` pulls the canonical bytes in with chezmoi's `include` function.
 `home/.chezmoiignore` selects the right subtree per OS.
 
+### Dev containers
+
+These dotfiles apply inside a dev container or
+[GitHub Codespace](https://docs.github.com/en/codespaces/setting-your-user-account-preferences/personalizing-github-codespaces-for-your-account#dotfiles)
+through the editor's personal dotfiles integration. Point your client at this
+repo — in VS Code, set `dotfiles.repository` to `pgodschalk/dotfiles` — and it
+clones the repo into the container and runs `install.sh`, which bootstraps
+chezmoi from `home/`.
+
+The only thing bootstrapped is chezmoi itself — installed into `~/.local/bin`
+via [get.chezmoi.io](https://get.chezmoi.io) when it is missing. Every other
+binary (`git`, `zsh`, `starship`, …) is assumed to already be present.
+
+Secret-backed configs resolve each secret in order: a named **environment
+variable** first, then **1Password** via `op`, then an empty fallback. So in a
+container — where 1Password is usually unavailable — supply the secrets as env
+vars through your platform's mechanism
+([Codespaces secrets](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces),
+or a local dev container's `remoteEnv`), and the apply picks them up. Anything
+left unset degrades to empty instead of failing the apply. The variables are:
+
+- `CONTEXT7_API_KEY` — Context7 MCP server (Zed, Gemini).
+- `GITHUB_PERSONAL_ACCESS_TOKEN` — GitHub MCP server (Zed, Gemini); falls back
+  to `GITHUB_TOKEN` when unset.
+- `GHA_LANGUAGE_SERVER_TOKEN` — Zed gh-actions-language-server.
+- `INTELEPHENSE_LICENCE_KEY` — intelephense license.
+
+Codespaces injects a scoped `GITHUB_TOKEN`/`GH_TOKEN` automatically (and
+pre-authenticates `gh`), so the GitHub MCP server picks it up via the fallback
+above — subject to that token's scopes. The other variables are never set
+automatically; add each one you want populated as a
+[Codespaces secret](https://docs.github.com/en/codespaces/managing-your-codespaces/managing-your-account-specific-secrets-for-github-codespaces)
+(or via a local dev container's `remoteEnv`).
+
 ## Roadmap
 
 See the [open issues](https://github.com/pgodschalk/dotfiles/issues) for a list

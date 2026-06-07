@@ -12,7 +12,7 @@
 {{-       range $hk, $hv := $srv.headers -}}
 {{-         $val := $hv -}}
 {{-         range $env, $ref := $mcpSecrets -}}
-{{-           if contains (printf "${%s}" $env) $val -}}{{ $val = $val | replace (printf "${%s}" $env) (onepasswordRead $ref $opAccount) }}{{- end -}}
+{{-           if contains (printf "${%s}" $env) $val -}}{{ $val = $val | replace (printf "${%s}" $env) (includeTemplate "secret.tmpl" (list $env $ref $opAccount)) }}{{- end -}}
 {{-         end -}}
 {{-         $hdrs = set $hdrs $hk $val -}}
 {{-       end -}}
