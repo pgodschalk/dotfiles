@@ -9,19 +9,25 @@ dracula_pro_extras_dir="${HOME}/Developer/for/me/dracula-pro-extras/themes"
 # Returns non-zero when there is no usable terminal.
 _query_terminal() {
   emulate -L zsh
-  local tty=/dev/tty saved reply chunk tries=0
+  local tty=/dev/tty saved reply='' chunk
   { : <"${tty}"; } 2>/dev/null || return 1
   saved="$(stty -g <"${tty}" 2>/dev/null)" || return 1
   stty -echo -icanon min 0 time 0 <"${tty}" 2>/dev/null
   print -n -- "${1}" >"${tty}" 2>/dev/null
-  while ((tries < 20)); do
-    chunk=""
-    IFS= read -r -t 0.01 -k 32 chunk <"${tty}" 2>/dev/null
-    reply+="${chunk}"
-    [[ "${reply}" == *n || "${reply}" == *$'\a'* || "${reply}" == *'\\'* ]] \
-      && break
-    ((tries++))
-  done
+
+  # Drain the reply one byte at a time. A fixed-size `read -k N` blocks waiting
+  # for bytes a short/variable-length reply never sends (its -t timeout is not
+  # honoured once a partial chunk has arrived), hanging startup on terminals
+  # that actually answer. Wait a little longer for the first byte (round-trip
+  # latency), then stop at the reply terminator (CSI 'n', or OSC ST/BEL) or when
+  # the stream falls quiet.
+  if IFS= read -r -t 0.3 -k 1 chunk <"${tty}" 2>/dev/null; then
+    reply="${chunk}"
+    while [[ "${reply}" != *n && "${reply}" != *$'\a'* && "${reply}" != *'\\'* ]]; do
+      IFS= read -r -t 0.1 -k 1 chunk <"${tty}" 2>/dev/null || break
+      reply+="${chunk}"
+    done
+  fi
   stty "${saved}" <"${tty}" 2>/dev/null
   print -r -- "${reply}"
 }
